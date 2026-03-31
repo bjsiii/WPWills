@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <title>GW Tracker</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, sans-serif; background: #0f1923; color: #fff; min-height: 100vh; }
+    .hdr { background: #1F6B75; padding: 20px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+    .hdr h1 { font-size: 26px; font-weight: 700; }
+    .sub { font-size: 14px; opacity: .7; margin-top: 3px; }
+    .rbtn { background: rgba(255,255,255,.15); border: none; color: #fff; padding: 12px 18px; border-radius: 10px; font-size: 16px; cursor: pointer; }
+    .jobs { padding: 14px; }
+    .dlbl { font-size: 14px; font-weight: 600; color: #1F6B75; text-transform: uppercase; letter-spacing: 1px; padding: 10px 4px 8px; }
+    .card { background: #1a2530; border-radius: 14px; margin-bottom: 12px; overflow: hidden; border-left: 5px solid #444; }
+    .card.ACTION { border-left-color: #FF6600; }
+    .card.HOT    { border-left-color: #FF0000; }
+    .card.VERBAL { border-left-color: #FFD700; }
+    .card.SOLD   { border-left-color: #00AA00; opacity: .7; }
+    .card.DEAD   { border-left-color: #CC0000; opacity: .5; }
+    .card.DARK   { border-left-color: #888; opacity: .6; }
+    .ctop { padding: 18px; cursor: pointer; display: flex; justify-content: space-between; align-items: flex-start; }
+    .cname { font-size: 22px; font-weight: 700; }
+    .cloc  { font-size: 16px; color: #8899aa; margin-top: 4px; }
+    .cmeta { font-size: 14px; color: #667788; margin-top: 4px; }
+    .pill  { font-size: 13px; font-weight: 700; padding: 5px 12px; border-radius: 20px; white-space: nowrap; }
+    .p-ACTION { background: #FF6600; color: #fff; }
+    .p-HOT    { background: #FF0000; color: #fff; }
+    .p-VERBAL { background: #FFD700; color: #000; }
+    .p-SOLD   { background: #00AA00; color: #fff; }
+    .p-DEAD   { background: #CC0000; color: #fff; }
+    .p-DARK   { background: #555;    color: #fff; }
+    .panel { display: none; padding: 0 18px 18px; border-top: 1px solid rgba(255,255,255,.06); }
+    .panel.open { display: block; }
+    .pnote { font-size: 14px; color: #8899aa; margin-bottom: 14px; padding-top: 12px; line-height: 1.5; }
+    .slbl { font-size: 13px; font-weight: 700; color: #667788; text-transform: uppercase; letter-spacing: 1px; margin: 14px 0 8px; }
+    .brow { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; }
+    .btn  { padding: 16px 10px; border: none; border-radius: 10px; font-size: 17px; font-weight: 700; cursor: pointer; flex: 1; min-width: 0; }
+    .b-dead   { background: #CC0000; color: #fff; }
+    .b-dark   { background: #555;    color: #fff; }
+    .b-hot    { background: #FF0000; color: #fff; }
+    .b-verbal { background: #FFD700; color: #000; }
+    .b-action { background: #FF6600; color: #fff; }
+    .b-sold   { background: #00AA00; color: #fff; }
+    .b-blue   { background: #1F6B75; color: #fff; }
+    .form { background: #111d27; border-radius: 10px; padding: 14px; margin-top: 10px; display: none; }
+    .form.open { display: block; }
+    .fld { margin-bottom: 12px; }
+    .fld label { font-size: 13px; color: #667788; display: block; margin-bottom: 6px; font-weight: 600; }
+    .fld input, .fld select { width: 100%; background: #1a2530; border: 1px solid #2a3a4a; color: #fff; padding: 14px; border-radius: 10px; font-size: 17px; }
+    .tgrid { display: grid; grid-template-columns: repeat(5,1fr); gap: 6px; }
+    .tbtn { padding: 14px 4px; background: #1a2530; border: 1px solid #2a3a4a; color: #aaa; border-radius: 10px; font-size: 14px; font-weight: 700; cursor: pointer; text-align: center; }
+    .tbtn.sel { background: #1F6B75; border-color: #1F6B75; color: #fff; }
+    .sbtn { width: 100%; padding: 18px; color: #fff; border: none; border-radius: 12px; font-size: 18px; font-weight: 700; cursor: pointer; margin-top: 12px; }
+    .ni { width: 100%; background: #1a2530; border: 1px solid #2a3a4a; color: #fff; padding: 14px; border-radius: 10px; font-size: 16px; resize: none; height: 80px; }
+    .toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: #00AA00; color: #fff; padding: 16px 28px; border-radius: 28px; font-weight: 700; font-size: 17px; opacity: 0; transition: opacity .3s; pointer-events: none; z-index: 999; white-space: nowrap; }
+    .toast.err  { background: #CC0000; }
+    .toast.show { opacity: 1; }
+    .loading { text-align: center; padding: 60px 20px; color: #445566; font-size: 17px; }
+  </style>
+</head>
+<body>
+
+<div class="hdr">
+  <div><h1>GW Tracker</h1><div class="sub" id="sub">Loading...</div></div>
+  <button class="rbtn" onclick="loadJobs()">Refresh</button>
+</div>
+<div class="jobs" id="jobs"><div class="loading">Loading jobs...</div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+  var U = '<?= url ?>';
+  var jobs = [];
+  var selType = '';
+
+  function loadJobs() {
+    document.getElementById('jobs').innerHTML = '<div class="loading">Loading...</div>';
+    fetch(U + '?action=getJobs')
+      .then(function(r) { return r.json(); })
+      .then(function(d) { jobs = d; renderJobs(); })
+      .catch(function() { document.getElementById('jobs').innerHTML = '<div class="loading">Error. Tap Refresh.</div>'; });
+  }
+
+  function renderJobs() {
+    var active = jobs.filter(function(j) { return j.status !== 'SOLD' && j.status !== 'DEAD'; });
+    var closed = jobs.filter(function(j) { return j.status === 'SOLD' || j.status === 'DEAD'; });
+    var h = '';
+    if (active.length) {
+      h += '<div class="dlbl">Active (' + active.length + ')</div>';
+      active.forEach(function(j, i) { h += makeCard(j, i); });
+    }
+    if (closed.length) {
+      h += '<div class="dlbl" style="margin-top:10px">Closed / Dead (' + closed.length + ')</div>';
+      closed.forEach(function(j, i) { h += makeCard(j, 'c' + i); });
+    }
+    if (!jobs.length) h = '<div class="loading">No jobs yet.</div>';
+    document.getElementById('jobs').innerHTML = h;
+    document.getElementById('sub').textContent = active.length + ' active · ' + closed.length + ' closed';
+  }
+
+  function makeCard(j, idx) {
+    var meta = '';
+    if (j.inspection) meta += 'Insp: ' + j.inspection;
+    if (j.close)      meta += (meta ? ' · ' : '') + 'Closed: ' + j.close;
+    if (j.install)    meta += (meta ? ' · ' : '') + 'Install: ' + j.install;
+    if (j.amount)     meta += (meta ? ' · ' : '') + '$' + Number(j.amount).toLocaleString();
+    return [
+      '<div class="card ' + j.status + '" id="card-' + idx + '">',
+        '<div class="ctop" data-idx="' + idx + '" onclick="tog(this)">',
+          '<div>',
+            '<div class="cname">' + j.customer + '</div>',
+            '<div class="cloc">'  + j.location  + '</div>',
+            (meta ? '<div class="cmeta">' + meta + '</div>' : ''),
+          '</div>',
+          '<span class="pill p-' + j.status + '">' + j.status + '</span>',
+        '</div>',
+        '<div class="panel" id="panel-' + idx + '">',
+          (j.notes ? '<div class="pnote">' + j.notes.substring(0,150) + '</div>' : ''),
+          '<div class="slbl">Set Status</div>',
+          '<div class="brow">',
+            '<button class="btn b-sold"   data-idx="' + idx + '"                     onclick="btnSold(this)">SOLD ✓</button>',
+            '<button class="btn b-verbal" data-idx="' + idx + '" data-status="VERBAL" onclick="btnStatus(this)">VERBAL</button>',
+            '<button class="btn b-hot"    data-idx="' + idx + '" data-status="HOT"    onclick="btnStatus(this)">HOT</button>',
+          '</div>',
+          '<div class="brow">',
+            '<button class="btn b-action" data-idx="' + idx + '" data-status="ACTION" onclick="btnStatus(this)">ACTION</button>',
+            '<button class="btn b-dark"   data-idx="' + idx + '" data-status="DARK"   onclick="btnNote(this)">DARK</button>',
+            '<button class="btn b-dead"   data-idx="' + idx + '" data-status="DEAD"   onclick="btnNote(this)">DEAD</button>',
+          '</div>',
+          '<div class="slbl">Log Update</div>',
+          '<div class="brow">',
+            '<button class="btn b-blue" data-idx="' + idx + '" data-field="install" data-label="Install Date" onclick="btnDate(this)">Install Date</button>',
+            '<button class="btn b-blue" data-idx="' + idx + '" data-field="eng"     data-label="Engineering"  onclick="btnDate(this)">Engineering</button>',
+            '<button class="btn b-blue" data-idx="' + idx + '" data-field="permit"  data-label="Permit"       onclick="btnDate(this)">Permit</button>',
+          '</div>',
+          '<div class="form" id="form-' + idx + '"></div>',
+        '</div>',
+      '</div>'
+    ].join('');
+  }
+
+  function tog(el) {
+    var idx = el.getAttribute('data-idx');
+    var panel = document.getElementById('panel-' + idx);
+    var isOpen = panel.classList.contains('open');
+    document.querySelectorAll('.panel').forEach(function(p) { p.classList.remove('open'); });
+    document.querySelectorAll('.form').forEach(function(f)  { f.classList.remove('open'); });
+    if (!isOpen) panel.classList.add('open');
+  }
+
+  function getJob(idx) {
+    if (typeof idx === 'string' && idx.charAt(0) === 'c') {
+      var cl = jobs.filter(function(j) { return j.status === 'SOLD' || j.status === 'DEAD'; });
+      return cl[parseInt(idx.substring(1))];
+    }
+    return jobs[parseInt(idx)];
+  }
+
+  function btnStatus(el) {
+    var idx    = el.getAttribute('data-idx');
+    var status = el.getAttribute('data-status');
+    var j = getJob(idx);
+    runSteps(j.customer, [{f:'status', v:status}], '', function() { loadJobs(); toast('Updated ✓'); });
+  }
+
+  function btnSold(el) {
+    var idx = el.getAttribute('data-idx');
+    var j = getJob(idx);
+    selType = j.type || '';
+    var today = new Date().toISOString().split('T')[0];
+    var types = ['WP','CSR','CR','FR','FFS'];
+    var tg = types.map(function(t) {
+      return '<button class="tbtn' + (selType === t ? ' sel' : '') + '" data-type="' + t + '" onclick="selT(this)">' + t + '</button>';
+    }).join('');
+    document.getElementById('form-' + idx).innerHTML = [
+      '<div class="fld"><label>Close Date</label><input type="date" id="cd-' + idx + '" value="' + today + '"></div>',
+      '<div class="fld"><label>Sale Amount ($)</label><input type="number" id="am-' + idx + '" placeholder="e.g. 18500"></div>',
+      '<div class="fld"><label>Job Type</label><div class="tgrid">' + tg + '</div></div>',
+      '<div class="fld"><label>Commission</label><select id="cm-' + idx + '"><option value="0.10">10% Standard</option><option value="0.07">7% Inside Sales</option></select></div>',
+      '<div class="fld"><label>Notes (optional)</label><textarea class="ni" id="nt-' + idx + '" placeholder="Quick note..."></textarea></div>',
+      '<button class="sbtn" style="background:#00AA00" data-idx="' + idx + '" onclick="subClose(this)">Save — Mark SOLD</button>'
+    ].join('');
+    document.getElementById('form-' + idx).classList.add('open');
+  }
+
+  function btnNote(el) {
+    var idx    = el.getAttribute('data-idx');
+    var status = el.getAttribute('data-status');
+    var bg = status === 'DEAD' ? '#CC0000' : '#555';
+    document.getElementById('form-' + idx).innerHTML = [
+      '<div class="fld"><label>Note (required)</label><textarea class="ni" id="nt-' + idx + '" style="height:90px" placeholder="Reason..."></textarea></div>',
+      '<button class="sbtn" style="background:' + bg + '" data-idx="' + idx + '" data-status="' + status + '" onclick="subNote(this)">Save — Mark ' + status + '</button>'
+    ].join('');
+    document.getElementById('form-' + idx).classList.add('open');
+  }
+
+  function btnDate(el) {
+    var idx   = el.getAttribute('data-idx');
+    var field = el.getAttribute('data-field');
+    var label = el.getAttribute('data-label');
+    var today = new Date().toISOString().split('T')[0];
+    document.getElementById('form-' + idx).innerHTML = [
+      '<div class="fld"><label>' + label + ' Date</label><input type="date" id="dv-' + idx + '" value="' + today + '"></div>',
+      '<button class="sbtn" style="background:#1F6B75" data-idx="' + idx + '" data-field="' + field + '" data-label="' + label + '" onclick="subDate(this)">Save ' + label + '</button>'
+    ].join('');
+    document.getElementById('form-' + idx).classList.add('open');
+  }
+
+  function selT(el) {
+    selType = el.getAttribute('data-type');
+    document.querySelectorAll('.tbtn').forEach(function(b) { b.classList.remove('sel'); });
+    el.classList.add('sel');
+  }
+
+  function subClose(el) {
+    var idx = el.getAttribute('data-idx');
+    var j   = getJob(idx);
+    var cd  = document.getElementById('cd-' + idx).value;
+    var am  = document.getElementById('am-' + idx).value;
+    var cm  = document.getElementById('cm-' + idx).value;
+    var nt  = document.getElementById('nt-' + idx).value.trim();
+    if (!cd || !am || !selType) { toast('Fill in all fields', true); return; }
+    runSteps(j.customer, [{f:'close',v:cd},{f:'amount',v:am},{f:'type',v:selType},{f:'commrate',v:cm}], nt, function() { loadJobs(); toast('Closed! ✓'); });
+  }
+
+  function subNote(el) {
+    var idx    = el.getAttribute('data-idx');
+    var status = el.getAttribute('data-status');
+    var j  = getJob(idx);
+    var nt = document.getElementById('nt-' + idx).value.trim();
+    if (!nt) { toast('Please add a note', true); return; }
+    runSteps(j.customer, [{f:'status', v:status}], nt, function() { loadJobs(); toast('Updated ✓'); });
+  }
+
+  function subDate(el) {
+    var idx   = el.getAttribute('data-idx');
+    var field = el.getAttribute('data-field');
+    var label = el.getAttribute('data-label');
+    var j  = getJob(idx);
+    var dv = document.getElementById('dv-' + idx).value;
+    if (!dv) { toast('Pick a date', true); return; }
+    runSteps(j.customer, [{f:field, v:dv}], '', function() { loadJobs(); toast(label + ' saved ✓'); });
+  }
+
+  function runSteps(customer, steps, notes, done) {
+    function next(i) {
+      if (i >= steps.length) { done(); return; }
+      var s = steps[i];
+      var url = U + '?action=updateJob' +
+        '&customer=' + encodeURIComponent(customer) +
+        '&field='    + encodeURIComponent(s.f) +
+        '&value='    + encodeURIComponent(s.v) +
+        '&notes='    + encodeURIComponent(i === 0 ? notes : '');
+      fetch(url).then(function(r) { return r.json(); }).then(function() { next(i+1); }).catch(function() { toast('Error', true); });
+    }
+    next(0);
+  }
+
+  function toast(msg, err) {
+    var t = document.getElementById('toast');
+    t.textContent = msg;
+    t.className = 'toast' + (err ? ' err' : '') + ' show';
+    setTimeout(function() { t.className = 'toast' + (err ? ' err' : ''); }, 2500);
+  }
+
+  loadJobs();
+</script>
+</body>
+</html>
