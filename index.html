@@ -89,7 +89,7 @@
 <body>
 
 <h1>Wills Builder</h1>
-<div class="subtitle">Groundworks - Contract Generator</div>
+<div class="subtitle">Contract Generator</div>
 
 <div class="tabs">
   <div class="tab wp active" onclick="switchTab('wp')" id="tab-wp"><span class="dot"></span>Waterproofing</div>
@@ -205,36 +205,40 @@ BACKGROUND:
 We use a contract system where two freeform text fields called Contractor Wills and Customer Wills are filled in based on what services are sold. The X and underlining in the initials lines force initials when the contract is generated. I need a checklist-driven tool that auto-generates the correct will language based on selections for a given job.
 
 OVERALL STRUCTURE:
-The app has four project tabs across the top: Waterproofing, Foundation Repair, Crawlspace, Concrete Lifting. Each tab has its own independent checklist. Tabs have a colored dot indicator that appears when items are checked in that tab. Currently only Waterproofing is active - the other three show placeholder panels. Section divider labels in the checklist are WHITE text. App title is Wills Builder.
+Four project tabs across the top: Waterproofing, Foundation Repair, Crawlspace, Concrete Lifting. Each tab is independent. Tabs have a colored dot that appears when items are checked. Only Waterproofing is active - others show placeholder panels. Section divider labels are WHITE. Title is Wills Builder. Subtitle is Contract Generator (no Groundworks prefix).
 
-Tab colors: Waterproofing = blue #4fc3f7, Foundation Repair = orange #f97316, Crawlspace = purple #a78bfa, Concrete Lifting = green #34d399.
+Tab colors: Waterproofing blue #4fc3f7, Foundation Repair orange #f97316, Crawlspace purple #a78bfa, Concrete Lifting green #34d399.
 
 WATERPROOFING CHECKLIST:
 
 SYSTEM section:
-- Gutter / Perimeter Drain: triggers perimeter drain contractor will bullet. Pump type selection dynamically changes the language. Selecting either pump also triggers the gutter bullet.
-- Pump Type (mutually exclusive): Triple Pump w/ Battery Backup, Single Pump w/ Battery Backup
-- AquaGrate: contractor will bullet
-- Inspection Ports: contractor will bullet
-- AirSystem: contractor will bullet. Child item Condensate Pump grayed until AirSystem checked. With condensate: expands bullet. Without: gravity drain language.
-- Wall Liner: contractor will bullet
+- Gutter / Perimeter Drain: triggers perimeter drain contractor will. Pump type dynamically changes language. Selecting pump triggers gutter bullet automatically.
+- Pump Type mutually exclusive: Triple Pump w/ Battery Backup, Single Pump w/ Battery Backup
+- AquaGrate: contractor will
+- Inspection Ports: contractor will
+- AirSystem: contractor will. Child item Condensate Pump grayed until AirSystem checked.
+  WITHOUT condensate: "Groundworks will install an AirSystem. The system will drain by gravity into the existing waterproofing system."
+  WITH condensate: expands to include condensate pump language (gravity drainage not sufficient).
+- Wall Liner: contractor will
 
 ELECTRICAL section:
-- Electrician GW: GW installs outlets, goes to CONTRACTOR wills
-- Electrician HO: HO installs outlets, goes to CUSTOMER wills
+- Electrician GW: GW installs outlets, contractor wills
+- Electrician HO: HO installs outlets, customer wills
 - Utilities Protection: tracking only, no language
 
 DEMOLITION section:
-- Drywall Removal GW with sub-options 1/2 Wall GW and Full Wall GW (all four drywall options mutually exclusive)
-- Drywall Removal HO with sub-options 1/2 Wall HO and Full Wall HO
+- Drywall Removal GW: sub-options 1/2 Wall GW and Full Wall GW. All four drywall options mutually exclusive.
+  Both GW drywall bullets include liquid nails language AND "This will also void your warranty." after "...will be damaged."
+- Drywall Removal HO: sub-options 1/2 Wall HO and Full Wall HO
 - Stairs: contractor will
-- Cut Through with GW Cuts (contractor will) and HO Cuts (customer will)
-- Baseboard Heater: customer will - plumber to cut and cap
+- Cut Through: GW Cuts (contractor will) and HO Cuts (customer will).
+  Both cut through bullets end with: "If/when any base plate(s) are reinstalled, nails MUST NOT be used to secure the base plate(s) to the concrete floor, as the drainage system is located beneath and will be damaged. This will also void your warranty. A construction adhesive such as Liquid Nails or comparable must be used instead."
+- Baseboard Heater: customer will, plumber to cut and cap
 
 SITE section:
 - DigSafe Flags: optional, customer will only when selected
 
-ADMIN section (tracking only):
+ADMIN section tracking only:
 - Permit B
 - 5 yr MSP
 
@@ -246,10 +250,10 @@ ALWAYS-PRESENT CONTRACTOR WILLS footer:
 
 ALWAYS-PRESENT CUSTOMER WILLS:
 Header: Homeowner to provide parking. Homeowner to remove personal effects.
-Footer: Homeowner is responsible for repair and replacement of all materials removed, altered, or affected... (full demolition responsibility language). Homeowner has reviewed and understands customer wills. Customer Initials: X______________
+Footer: Full demolition responsibility language. Homeowner has reviewed and understands customer wills. Customer Initials: X______________
 
 DESIGN:
-Dark theme #0f1117. Bebas Neue headings, IBM Plex Mono checklist and output. Orange #f97316 contractor copy button, blue #0e7faa customer copy button, white text. Copy buttons full-width at BOTTOM of each will block. Reset button per tab. Responsive single column on mobile. Rebuild prompt collapsed at bottom with Copy Prompt button white text on dark background.</div>
+Dark theme #0f1117. Bebas Neue headings, IBM Plex Mono checklist and output. Orange #f97316 contractor copy button, blue #0e7faa customer copy button, white text. Copy buttons full-width at BOTTOM of each will block. Reset button per tab. Responsive single column on mobile. Rebuild prompt collapsed at bottom with Copy Prompt button.</div>
     <button class="rebuild-copy-btn" id="rebuild-copy-btn" onclick="copyRebuildPrompt()">Copy Prompt</button>
   </div>
 </div>
@@ -268,23 +272,26 @@ function gutterBullet(p){
   return 'Groundworks will install a perimeter drain system to terminate into a sump pump basin containing '+d+'. Groundworks always recommends a full perimeter drain for maximum protection against groundwater seepage.';
 }
 function airBullet(c){
-  return c?'Groundworks will install an AirSystem in the utility room. A condensate pump will also be installed to remove moisture collected by the AirSystem, as gravity drainage is not sufficient in this installation.':'Groundworks will install an AirSystem in the utility room. The system will drain by gravity into the existing waterproofing system.';
+  return c
+    ?'Groundworks will install an AirSystem in the utility room. A condensate pump will also be installed to remove moisture collected by the AirSystem, as gravity drainage is not sufficient in this installation.'
+    :'Groundworks will install an AirSystem. The system will drain by gravity into the existing waterproofing system.';
 }
+var LIQUID_NAILS=' If/when any base plate(s) are reinstalled, nails MUST NOT be used to secure the base plate(s) to the concrete floor, as the drainage system is located beneath and will be damaged. This will also void your warranty. A construction adhesive such as Liquid Nails or comparable must be used instead.';
 var CB={
   wallliner:'Groundworks will install wall liner from sill plate to gutter on any wall containing a perimeter drain system.',
   aquagrate:'Groundworks will install AquaGrate, which IS NOT positioned on a footing; however, the design is meant to accommodate obstructions, which would otherwise need to be temporarily moved (noted on diagram in orange). The homeowner is aware that the cold joint in this area is still susceptible to groundwater seepage and could get wet, but the AquaGrate will connect to the larger drain system and catch water that passes over the floor until it reaches the drain.',
   ports:'Groundworks will install inspection ports along drain system for inspection purposes.',
   elecGW:'Groundworks will install dedicated electrical outlets as required by the scope of work. Groundworks always recommends dedicated outlet(s) for sump pumps to ensure circuits are not tripped causing the pump to be inoperable.',
-  drywallGWhalf:'Groundworks will remove up to the bottom one-half of drywall, insulation, and wall studs, but only as necessary as determined by the foreman to properly perform the requested waterproofing work. Materials will be set aside or disposed of at the customer\'s request. Customer is responsible for replacement. If/when any base plate(s) are reinstalled, nails must not be used to secure the base plate(s) to the concrete floor, as the drainage system is located beneath and may be damaged. A construction adhesive such as Liquid Nails or comparable must be used instead.',
-  drywallGWfull:'Groundworks will remove the entire wall, including drywall, insulation, and wall studs, but only as necessary as determined by the foreman to properly perform the requested waterproofing work. Materials will be set aside or disposed of at the customer\'s request. Customer is responsible for replacement. If/when any base plate(s) are reinstalled, nails must not be used to secure the base plate(s) to the concrete floor, as the drainage system is located beneath and may be damaged. A construction adhesive such as Liquid Nails or comparable must be used instead.',
+  drywallGWhalf:'Groundworks will remove up to the bottom one-half of drywall, insulation, and wall studs, but only as necessary as determined by the foreman to properly perform the requested waterproofing work. Materials will be set aside or disposed of at the customer\'s request. Customer is responsible for replacement.'+LIQUID_NAILS,
+  drywallGWfull:'Groundworks will remove the entire wall, including drywall, insulation, and wall studs, but only as necessary as determined by the foreman to properly perform the requested waterproofing work. Materials will be set aside or disposed of at the customer\'s request. Customer is responsible for replacement.'+LIQUID_NAILS,
   stairs:'Groundworks will remove and set aside any landings or stair treads to gain access to the working area. Groundworks cannot guarantee the condition of any wood once removed. Groundworks will attempt to reinstall stair treads upon completion of work, provided they are in good condition and safe to reuse. Homeowner is responsible for replacement of any stair components that cannot be safely reinstalled.',
-  cutGW:'Groundworks will remove section(s) of perpendicular wall(s), approximately 10" x 10" each, as necessary to allow the waterproofing system to pass through. Homeowner is responsible for replacement and repair of any materials removed.',
+  cutGW:'Groundworks will remove section(s) of perpendicular wall(s), approximately 10" x 10" each, as necessary to allow the waterproofing system to pass through. Homeowner is responsible for replacement and repair of any materials removed.'+LIQUID_NAILS,
 };
 var HB={
   elecHO:'Homeowner will install dedicated electrical outlets as required by the scope of work. Groundworks always recommends dedicated outlet(s) for sump pumps to ensure circuits are not tripped causing the pump to be inoperable.',
   drywallHOhalf:'Homeowner will remove the bottom base plate(s) and the lower 18 inches of studs as measured from the floor. Customer will be responsible for replacement. This includes base plate(s), drywall, insulation, electrical boxes, and any other items that would prevent access to the working area.',
   drywallHOfull:'Homeowner will remove the entire wall(s), including base plate(s), drywall, insulation, wall studs, electrical boxes, and any other items that would prevent access to the working area. Customer will be responsible for full replacement of all removed materials.',
-  cutHO:'Homeowner will remove section(s) of perpendicular wall(s), approximately 10" x 10" each, prior to installation to allow the waterproofing system to pass through. Homeowner is responsible for replacement and repair of all materials removed.',
+  cutHO:'Homeowner will remove section(s) of perpendicular wall(s), approximately 10" x 10" each, prior to installation to allow the waterproofing system to pass through. Homeowner is responsible for replacement and repair of all materials removed.'+LIQUID_NAILS,
   baseboard:'Homeowner to hire contractor/plumber to cut and cap baseboard heaters.',
   digsafe:'Homeowner agrees to leave any DigSafe flags in place that mark underground lines and/or hazards that the installation crew will need to be aware of.',
 };
