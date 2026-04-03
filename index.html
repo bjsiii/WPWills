@@ -190,6 +190,10 @@ body{background:#0f1117;color:#e8e8e8;font-family:'IBM Plex Sans',sans-serif;hei
 .send-status.sending{color:#4fc3f7;}
 .send-status.ok{color:#34d399;}
 .send-status.fail{color:#f87171;}
+.will-inline-copy{font-family:'IBM Plex Mono',monospace;font-size:.6rem;letter-spacing:1px;text-transform:uppercase;background:transparent;border:1px solid #3a3f55;color:#8892a4;padding:3px 10px;border-radius:4px;cursor:pointer;transition:all .15s;white-space:nowrap;}
+.will-inline-copy:hover{border-color:#c8ccd8;color:#c8ccd8;}
+.will-inline-copy.copied{border-color:#34d399;color:#34d399;}
+.fp-nested{padding-left:28px;border-left:2px solid #1e2435;margin-left:14px;}
 </style>
 </head>
 <body>
@@ -273,16 +277,19 @@ body{background:#0f1117;color:#e8e8e8;font-family:'IBM Plex Sans',sans-serif;hei
     <div class="sec-label">Pump</div>
     <div class="fp-item" onclick="toggleFP('pump',event)">
       <input type="checkbox" id="fp-pump" onchange="syncFromFP('pump');calcFP()">
-      <span class="fp-item-label">Sump pump</span>
+      <span class="fp-item-label">Primary sump pump</span>
     </div>
     <div class="pump-row">
       <button class="pump-opt active" id="fpo-single" onclick="setPumpFP('single')">Single</button>
       <button class="pump-opt" id="fpo-triple" onclick="setPumpFP('triple')">Triple</button>
     </div>
-    <div class="fp-item" onclick="toggleFP('condensation',event)">
-      <input type="checkbox" id="fp-condensation" onchange="syncFromFP('condensation');calcFP()">
-      <span class="fp-item-label">Condensation pump</span>
-      <input class="fp-manual" type="number" id="fv-condensation" value="1" min="1" onclick="event.stopPropagation()" oninput="calcFP()">
+    <div class="fp-item" onclick="toggleFP('pump2',event)">
+      <input type="checkbox" id="fp-pump2" onchange="calcFP()">
+      <span class="fp-item-label">Secondary sump pump</span>
+    </div>
+    <div class="pump-row">
+      <button class="pump-opt" id="fpo2-single" onclick="setPump2FP('single')">Single</button>
+      <button class="pump-opt" id="fpo2-triple" onclick="setPump2FP('triple')">Triple</button>
     </div>
 
     <!-- WALL & AIR -->
@@ -299,6 +306,10 @@ body{background:#0f1117;color:#e8e8e8;font-family:'IBM Plex Sans',sans-serif;hei
       <input type="checkbox" id="fp-airsystem" onchange="syncFromFP('airsystem');calcFP()">
       <span class="fp-item-label">Air system</span>
       <input class="fp-manual" type="number" id="fv-airsystem" value="1" min="1" onclick="event.stopPropagation()" oninput="calcFP()">
+    </div>
+    <div class="fp-item" style="padding-left:28px;" onclick="toggleFP('condensation',event)">
+      <input type="checkbox" id="fp-condensation" onchange="syncFromFP('condensation');calcFP()">
+      <span class="fp-item-label" style="font-size:.68rem;">+ Condensation pump<small>gravity cannot drain</small></span>
     </div>
 
     <!-- ACCESS & MISC -->
@@ -389,6 +400,10 @@ body{background:#0f1117;color:#e8e8e8;font-family:'IBM Plex Sans',sans-serif;hei
     </div>
 
     <div class="wills-section">Demolition</div>
+    <div class="wills-item wp-item" onclick="toggleWill('wp-stairs',event)">
+      <input type="checkbox" id="wp-stairs" onchange="willsUpdate()">
+      <span class="wills-label">Stairs</span>
+    </div>
     <div class="sub-group-label gw">Drywall — GW</div>
     <div class="wills-item dw-item" onclick="toggleWill('wp-drywall-gw-half',event)">
       <input type="checkbox" id="wp-drywall-gw-half" onchange="onDwChange('gw-half')">
@@ -406,10 +421,6 @@ body{background:#0f1117;color:#e8e8e8;font-family:'IBM Plex Sans',sans-serif;hei
     <div class="wills-item dw-item" onclick="toggleWill('wp-drywall-ho-full',event)">
       <input type="checkbox" id="wp-drywall-ho-full" onchange="onDwChange('ho-full')">
       <span class="wills-label">Full Wall <span class="wills-tag tag-h">HO</span></span>
-    </div>
-    <div class="wills-item wp-item" onclick="toggleWill('wp-stairs',event)">
-      <input type="checkbox" id="wp-stairs" onchange="willsUpdate()">
-      <span class="wills-label">Stairs</span>
     </div>
     <div class="sub-group-label neutral">Cut Through</div>
     <div class="wills-item dw-item" onclick="toggleWill('wp-cut-gw',event)">
@@ -478,12 +489,24 @@ body{background:#0f1117;color:#e8e8e8;font-family:'IBM Plex Sans',sans-serif;hei
         <button class="copy-btn" id="fp-copy-btn" onclick="copyFP()" style="display:none;">Copy material list</button>
       </div>
       <div class="will-block contractor collapsed" id="block-contractor">
-        <div class="will-title">Contractor Wills <button class="will-collapse-toggle" onclick="toggleBlock('contractor')">▶ expand</button></div>
+        <div class="will-title" style="display:flex;align-items:center;justify-content:space-between;">
+          <span>Contractor Wills</span>
+          <span style="display:flex;gap:8px;align-items:center;">
+            <button class="will-inline-copy" id="copy-contractor-inline" onclick="copyWill('contractor')">Copy</button>
+            <button class="will-collapse-toggle" onclick="toggleBlock('contractor')">▶ expand</button>
+          </span>
+        </div>
         <div class="will-content" id="contractor-output"><span class="empty-state">Select items in the Wills panel to generate contractor wills...</span></div>
         <button class="copy-btn" id="copy-contractor" onclick="copyWill('contractor')">Copy Contractor Wills</button>
       </div>
       <div class="will-block customer collapsed" id="block-customer">
-        <div class="will-title">Customer Wills <button class="will-collapse-toggle" onclick="toggleBlock('customer')">▶ expand</button></div>
+        <div class="will-title" style="display:flex;align-items:center;justify-content:space-between;">
+          <span>Customer Wills</span>
+          <span style="display:flex;gap:8px;align-items:center;">
+            <button class="will-inline-copy" id="copy-customer-inline" onclick="copyWill('customer')">Copy</button>
+            <button class="will-collapse-toggle" onclick="toggleBlock('customer')">▶ expand</button>
+          </span>
+        </div>
         <div class="will-content" id="customer-output"><span class="empty-state">Select items in the Wills panel to generate customer wills...</span></div>
         <button class="copy-btn" id="copy-customer" onclick="copyWill('customer')">Copy Customer Wills</button>
       </div>
@@ -491,7 +514,7 @@ body{background:#0f1117;color:#e8e8e8;font-family:'IBM Plex Sans',sans-serif;hei
     <!-- SUMMARY TAB -->
     <div class="tab-panel hidden" id="panel-summary">
       <div class="will-block" style="border-top:3px solid #34d399;">
-        <div class="will-title" style="color:#34d399;">Job Summary</div>
+        <div class="will-title" style="color:#34d399;">Flight Plan</div>
         <div id="summary-content"><div class="fp-empty">Complete the flight plan to generate a summary.</div></div>
       </div>
     </div>
@@ -499,7 +522,7 @@ body{background:#0f1117;color:#e8e8e8;font-family:'IBM Plex Sans',sans-serif;hei
     <div class="tab-panel hidden" id="panel-gmail">
       <div class="will-block" style="border-top:3px solid #ea4335;">
         <div class="will-title" style="color:#ea4335;">Send to Field Email</div>
-        <div class="gmail-meta-row"><span class="gmail-meta-key">To:</span><span class="gmail-meta-val">ben.settle@groundworks.com</span></div>
+        <div class="gmail-meta-row"><span class="gmail-meta-key">To:</span><span class="gmail-meta-val"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="2547404b0b5640515149406542574a504b41524a574e560b464a48">[email&#160;protected]</a></span></div>
         <div class="gmail-meta-row"><span class="gmail-meta-key">Subject:</span><span class="gmail-meta-val" id="gmail-subject">FlightPlan</span></div>
         <div class="gmail-preview" id="gmail-preview">Complete the flight plan to preview the email.</div>
         <button class="copy-btn" id="send-btn" onclick="sendEmail()" style="background:#ea4335;margin-top:11px;">Send via Gmail</button>
@@ -510,9 +533,18 @@ body{background:#0f1117;color:#e8e8e8;font-family:'IBM Plex Sans',sans-serif;hei
 </main>
 </div><!-- /shell -->
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+window.onerror=function(msg,src,line,col,err){
+  var s=document.getElementById('ai-status');
+  if(s){s.className='ai-status err';s.textContent='✗ JS Error: '+msg+' (line '+line+')';}
+  return false;
+};
+window.onunhandledrejection=function(e){
+  var s=document.getElementById('ai-status');
+  if(s){s.className='ai-status err';s.textContent='✗ Async error: '+(e.reason&&e.reason.message?e.reason.message:e.reason);}
+};
 // ── STATE ──
-var wallId=0, walls=[], fpPump='single', willPump='single';
+var wallId=0, walls=[], fpPump='single', fp2Pump='single', willPump='single';
 
 // ── NAV COLLAPSE ──
 function toggleNav(which){
@@ -537,14 +569,7 @@ function setWallChk(id,field,v){
   var w=walls.find(function(w){return w.id===id;});
   if(w){
     w[field]=v;
-    // if gutter is checked, auto-check liner for that wall
-    if(field==='gutter'&&v&&!w.liner){
-      w.liner=true;
-      var lel=document.getElementById('wl-'+id);
-      if(lel)lel.checked=true;
-    }
     calcFP();
-    // auto-sync wills if any gutter wall exists
     autoSyncWills();
   }
 }
@@ -558,7 +583,7 @@ function renderWalls(){
       +'<td style="text-align:center;"><input type="checkbox" class="wall-chk gutter-chk" id="wg-'+w.id+'" '+(w.gutter?'checked':'')+' onchange="setWallChk('+w.id+',\'gutter\',this.checked)"></td>'
       +'<td style="text-align:center;"><input type="checkbox" class="wall-chk liner-chk" id="wl-'+w.id+'" '+(w.liner?'checked':'')+' onchange="setWallChk('+w.id+',\'liner\',this.checked)"></td>'
       +'<td><input type="number" value="'+(w.width||'')+'" placeholder="w" min="0" step="0.5" oninput="setWallNum('+w.id+',\'width\',this.value)" title="Width (ft) — for floor area calc"></td>'
-      +'<td><button class="wall-del" onclick="removeWall('+w.id+')">✕</button></td>'
+      +'<td><button class="wall-del" onclick="removeWall('+w.id+')">&#x2715;</button></td>'
       +'</tr>';
   }).join('');
 }
@@ -591,6 +616,12 @@ function setPumpFP(t){
   document.getElementById('fpo-single').classList.toggle('active',t==='single');
   document.getElementById('fpo-triple').classList.toggle('active',t==='triple');
   setWillPump(t);
+  calcFP();
+}
+function setPump2FP(t){
+  fp2Pump=t;
+  document.getElementById('fpo2-single').classList.toggle('active',t==='single');
+  document.getElementById('fpo2-triple').classList.toggle('active',t==='triple');
   calcFP();
 }
 
@@ -678,22 +709,19 @@ function calcFP(){
 // ── BUILD PLAN ITEMS ──
 function getFPItems(s){
   var items=[];
-  if(s.hasGutter)           items.push({name:'Gutter',              qty:s.gutterWaste.toFixed(1)+' lf'});
+  if(s.hasGutter)              items.push({name:'Gutter',                          qty:s.gutterWaste.toFixed(1)+' lf'});
   if(chkFP('aquagrate')&&ov('fv-aquagrate')>0)
-                             items.push({name:'AquaGrate',           qty:ov('fv-aquagrate')+' lf'});
+                               items.push({name:'AquaGrate',                       qty:ov('fv-aquagrate')+' lf'});
   if(chkFP('discharge-buried')&&ov('fv-discharge-buried')>0)
-                             items.push({name:'Buried discharge',    qty:ov('fv-discharge-buried')+' lf'});
+                               items.push({name:'Buried discharge',                qty:ov('fv-discharge-buried')+' lf'});
   if(chkFP('discharge-internal')&&ov('fv-discharge-internal')>0)
-                             items.push({name:'Side discharge',      qty:ov('fv-discharge-internal')+' lf'});
-  if(chkFP('pump'))          items.push({name:'Sump pump ('+fpPump+')',qty:'1 unit'});
-  if(chkFP('condensation'))  items.push({name:'Condensation pump',  qty:ov('fv-condensation')+' unit'});
-  if(s.hasLiner)             items.push({name:'Wall liner',          qty:s.linerWaste.toFixed(1)+' lf'});
-  if(chkFP('airsystem'))     items.push({name:'Air system',          qty:ov('fv-airsystem')+' unit'});
-  // Ports: count walls that have gutter checked (or all walls if no gutter selected)
-  var portWalls=walls.filter(function(w){return w.gutter;}).length;
-  if(portWalls===0)portWalls=s.count;
-  if(portWalls>0)               items.push({name:'Inspection ports',    qty:portWalls+' ea', note:true});
-  if(chkFP('windowwell'))    items.push({name:'Window well tap',     qty:ov('fv-windowwell')+' ea'});
+                               items.push({name:'Side discharge',                  qty:ov('fv-discharge-internal')+' lf'});
+  if(chkFP('pump'))            items.push({name:'Primary sump pump ('+fpPump+')',  qty:'1 unit'});
+  if(chkFP('pump2'))           items.push({name:'Secondary sump pump ('+fp2Pump+')', qty:'1 unit'});
+  if(s.hasLiner)               items.push({name:'Wall liner',                      qty:s.linerWaste.toFixed(1)+' lf'});
+  if(chkFP('airsystem'))       items.push({name:'Air system',                      qty:ov('fv-airsystem')+' unit'});
+  if(chkFP('condensation'))    items.push({name:'+ Condensation pump',             qty:'1 unit'});
+  if(chkFP('windowwell'))      items.push({name:'Window well tap',                 qty:ov('fv-windowwell')+' ea'});
   return items;
 }
 
@@ -742,6 +770,21 @@ function renderSummary(){
     html+=items.map(function(it){return '<div class="fp-plan-row"><span>'+escHtml(it.name)+'</span><span class="fp-plan-qty">'+escHtml(it.qty)+'</span></div>';}).join('');
     html+='</div>';
   }
+  // Don't Forget — always at bottom of materials, before wills
+  var portCount=(walls.filter(function(w){return w.gutter;}).length||s.count);
+  var dontForget=[
+    {name:'Inspection ports', qty:portCount+' ea'},
+    {name:'Utilities protection', qty:'confirm'},
+    {name:'Permitting', qty:'confirm'},
+    {name:'Engineering', qty:'if required'},
+    {name:'Annual service plan', qty:'offer'}
+  ];
+  html+='<div style="margin-bottom:12px;"><div class="summary-section-title" style="color:#fbbf24;">Don’t Forget</div>';
+  html+=dontForget.map(function(it){
+    return '<div class="fp-plan-row"><span style="color:#fbbf24;">'+escHtml(it.name)+'</span><span class="fp-plan-qty" style="color:#fbbf24;">'+escHtml(it.qty)+'</span></div>';
+  }).join('');
+  html+='</div>';
+
   var contText=contEl?contEl.innerText:'';
   if(contText&&!contText.includes('Select items')){
     html+='<div style="margin-bottom:12px;"><div class="summary-section-title" style="color:#f97316;">Contractor Wills</div>';
@@ -752,19 +795,6 @@ function renderSummary(){
     html+='<div><div class="summary-section-title" style="color:#4fc3f7;">Customer Wills</div>';
     html+='<div class="will-content" style="font-size:.7rem;">'+custEl.innerHTML+'</div></div>';
   }
-  // Don't Forget section — always shown in summary
-  var dontForget=[
-    {name:'Inspection ports', qty:(walls.filter(function(w){return w.gutter;}).length||s.count)+' ea'},
-    {name:'Utilities protection', qty:'confirm'},
-    {name:'Permitting', qty:'confirm'},
-    {name:'Engineering', qty:'if required'},
-    {name:'Annual service plan', qty:'offer'}
-  ];
-  html+='<div style="margin-top:4px;"><div class="summary-section-title" style="color:#fbbf24;">Don’t Forget</div>';
-  html+=dontForget.map(function(it){
-    return '<div class="fp-plan-row"><span style="color:#fbbf24;">'+escHtml(it.name)+'</span><span class="fp-plan-qty" style="color:#fbbf24;">'+escHtml(it.qty)+'</span></div>';
-  }).join('');
-  html+='</div>';
 
   if(!html)html='<div class="fp-empty">Complete the flight plan to generate a summary.</div>';
   document.getElementById('summary-content').innerHTML=html;
@@ -800,7 +830,7 @@ async function sendEmail(){
   try {
     var resp=await fetch('https://api.anthropic.com/v1/messages',{
       method:'POST',
-      headers:{'Content-Type':'application/json'},
+      headers:{'Content-Type':'application/json','anthropic-version':'2023-06-01'},
       body:JSON.stringify({
         model:'claude-sonnet-4-6',max_tokens:512,
         system:'You are a Gmail assistant. Use the Gmail MCP tool to send the email exactly as specified. After sending respond with only: SENT',
@@ -828,63 +858,149 @@ async function runAI(){
   if(!input)return;
   var btn=document.getElementById('ai-go-btn');
   var status=document.getElementById('ai-status');
-  btn.disabled=true; status.className='ai-status thinking'; status.textContent='Parsing job description...';
-  var prompt='Return ONLY a raw JSON object, no markdown, no explanation. '
-    +'Schema: {"customer":string_or_null,"walls":[{"len":number,"gutter":boolean,"liner":boolean}],'
-    +'"gutterLF":number_or_null,"aquagrateLF":number_or_null,"pump":"single_or_triple_or_null",'
-    +'"condensationPump":boolean,"airSystem":boolean,"inspectionPorts":boolean,'
-    +'"windowWellTap":number_or_null,"buriedDischargeLF":number_or_null,"sideDischargeLF":number_or_null}. '
-    +'Rules: '
-    +'If total gutter LF given with no individual wall lengths create ONE wall with that length gutter:true liner:true. '
-    +'If individual wall lengths listed create one entry per wall. '
-    +'triple pump or triple means pump:triple. single pump means pump:single. '
-    +'air system with condensation pump means airSystem:true AND condensationPump:true. '
-    +'air system alone means airSystem:true condensationPump:false. '
-    +'Use null for anything not mentioned. '
-    +'Input: '+input;
+  btn.disabled=true;
+  status.className='ai-status thinking';
+  status.textContent='Parsing...';
+
+  var system='You are a waterproofing job data extractor. The user speaks naturally or uses voice-to-text. '
+    +'Extract job details and return ONLY a valid JSON object. No markdown. No explanation. No code fences. '
+    +'Start your response with { and end with }. '
+    +'JSON fields: '
+    +'customer (string or null), '
+    +'gutterLF (number or null - total gutter linear feet), '
+    +'aquagrateLF (number or null), '
+    +'wallCount (number or null - number of walls mentioned), '
+    +'pump (string: "single" or "triple" or null), '
+    +'condensationPump (boolean), '
+    +'airSystem (boolean), '
+    +'wallLinerAll (boolean), '
+    +'windowWellTap (number or null), '
+    +'buriedDischargeLF (number or null), '
+    +'sideDischargeLF (number or null). '
+    +'Rules: address/street = customer. '
+    +'gutter/drain/perimeter = gutterLF. '
+    +'aquagrate/aqua grate = aquagrateLF. '
+    +'triple pump/triple sump = pump:triple. single pump = pump:single. '
+    +'air system = airSystem:true. '
+    +'condensation/condensate pump = condensationPump:true. '
+    +'wall liner on all/liner all walls = wallLinerAll:true. '
+    +'window well/window tap = windowWellTap count. '
+    +'Use null for anything not mentioned.';
+
   try {
     var resp=await fetch('https://api.anthropic.com/v1/messages',{
       method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:800,messages:[{role:'user',content:prompt}]})
+      headers:{'Content-Type':'application/json','anthropic-version':'2023-06-01'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-6',
+        max_tokens:400,
+        system:system,
+        messages:[{role:'user',content:input}]
+      })
     });
-    if(!resp.ok){var et=await resp.text();throw new Error('API '+resp.status+': '+et.slice(0,120));}
-    var data=await resp.json();
-    if(!data.content||!data.content.length){throw new Error('Empty response. Full: '+JSON.stringify(data).slice(0,150));}
-    var raw=data.content.filter(function(b){return b.type==='text';}).map(function(b){return b.text;}).join('').trim();
-    if(!raw){throw new Error('No text in response');}
-    var clean=raw.replace(/^```[\w]*\n?/,'').replace(/\n?```\s*$/,'').trim();
+
+    // Read raw text first so we can debug whatever comes back
+    var rawResp=await resp.text();
+
+    // Try to parse as JSON API response
+    var data;
+    try{ data=JSON.parse(rawResp); }
+    catch(pe){ throw new Error('Sandbox returned non-JSON: '+rawResp.slice(0,120)); }
+
+    // Handle API errors
+    if(data.error){ throw new Error('API: '+data.error.message); }
+    if(!resp.ok){ throw new Error('HTTP '+resp.status+': '+rawResp.slice(0,120)); }
+
+    // Extract text content
+    var raw='';
+    if(data.content&&data.content.length){
+      raw=data.content.filter(function(b){return b.type==='text';}).map(function(b){return b.text;}).join('').trim();
+    } else if(typeof data.completion==='string'){
+      raw=data.completion.trim(); // older API format fallback
+    }
+    if(!raw){ throw new Error('No text in response. Keys: '+Object.keys(data).join(',')); }
+
+    // Strip markdown fences if model added them
+    var clean=raw.replace(/^```[a-zA-Z]*/,'').replace(/```\s*$/,'').trim();
+
+    // Pull out the JSON object
     var m=clean.match(/\{[\s\S]*\}/);
-    if(!m){throw new Error('No JSON object found. Response was: '+raw.slice(0,100));}
+    if(!m){ throw new Error('No JSON found. Response: '+raw.slice(0,100)); }
+
     var parsed=JSON.parse(m[0]);
     applyAIParse(parsed);
-    status.className='ai-status done'; status.textContent='✓ Form filled — review and adjust as needed.';
+    status.className='ai-status done';
+    status.textContent='✓ Filled — review and adjust.';
+
   } catch(e){
-    status.className='ai-status err'; status.textContent='✗ '+e.message;
+    status.className='ai-status err';
+    status.textContent='✗ '+e.message;
   }
   btn.disabled=false;
 }
+
+
 function applyAIParse(p){
-  if(p.customer){var ce=document.getElementById('fp-customer');if(ce){ce.value=p.customer;}}
+  // Customer / address
+  if(p.customer){var ce=document.getElementById('fp-customer');if(ce)ce.value=p.customer;}
+
+  // Walls — handle several cases from voice input
   walls=[];wallId=0;
+  var linerAll=!!p.wallLinerAll;
   if(p.walls&&p.walls.length){
-    p.walls.forEach(function(w){addWall(w.len||0,0,w.gutter!==false,w.liner!==false);});
+    // Individual wall lengths given
+    p.walls.forEach(function(w){addWall(w.len||0,0,w.gutter!==false,linerAll||w.liner!==false);});
+  } else if(p.gutterLF&&p.gutterLF>0&&p.wallCount&&p.wallCount>1){
+    // Total gutter footage + wall count — split evenly across walls
+    var perWall=Math.round((p.gutterLF/p.wallCount)*10)/10;
+    for(var i=0;i<p.wallCount;i++)addWall(perWall,0,true,linerAll);
   } else if(p.gutterLF&&p.gutterLF>0){
-    addWall(p.gutterLF,0,true,true);
+    // Just total footage — one wall
+    addWall(p.gutterLF,0,true,linerAll||true);
+  } else if(p.wallCount&&p.wallCount>0){
+    // Just a wall count with no footage
+    for(var i=0;i<p.wallCount;i++)addWall(0,0,false,linerAll);
   } else {
     for(var i=0;i<4;i++)addWall();
   }
+
+  // AquaGrate
   var aqC=document.getElementById('fp-aquagrate'),aqV=document.getElementById('fv-aquagrate');
   if(p.aquagrateLF&&p.aquagrateLF>0){if(aqC)aqC.checked=true;if(aqV)aqV.value=p.aquagrateLF;syncFromFP('aquagrate');}
   else{if(aqC)aqC.checked=false;}
+
+  // Pump
   if(p.pump){var pC=document.getElementById('fp-pump');if(pC)pC.checked=true;setPumpFP(p.pump);}
-  var conC=document.getElementById('fp-condensation');if(conC)conC.checked=!!p.condensationPump;syncFromFP('condensation');
-  var airC=document.getElementById('fp-airsystem');if(airC)airC.checked=!!p.airSystem;syncFromFP('airsystem');
-  var portC=document.getElementById('fp-ports');if(portC)portC.checked=!!p.inspectionPorts;syncFromFP('ports');
-  if(p.windowWellTap&&p.windowWellTap>0){var wwC=document.getElementById('fp-windowwell');if(wwC)wwC.checked=true;var wwV=document.getElementById('fv-windowwell');if(wwV)wwV.value=p.windowWellTap;syncFromFP('windowwell');}
-  if(p.buriedDischargeLF&&p.buriedDischargeLF>0){var bdC=document.getElementById('fp-discharge-buried');if(bdC)bdC.checked=true;var bdV=document.getElementById('fv-discharge-buried');if(bdV)bdV.value=p.buriedDischargeLF;}
-  if(p.sideDischargeLF&&p.sideDischargeLF>0){var sdC=document.getElementById('fp-discharge-internal');if(sdC)sdC.checked=true;var sdV=document.getElementById('fv-discharge-internal');if(sdV)sdV.value=p.sideDischargeLF;}
-  renderWalls();calcFP();
+
+  // Condensation pump — can come with air system
+  var conC=document.getElementById('fp-condensation');
+  if(conC)conC.checked=!!p.condensationPump;
+  syncFromFP('condensation');
+
+  // Air system
+  var airC=document.getElementById('fp-airsystem');
+  if(airC)airC.checked=!!p.airSystem;
+  syncFromFP('airsystem');
+
+  // Window well
+  if(p.windowWellTap&&p.windowWellTap>0){
+    var wwC=document.getElementById('fp-windowwell');if(wwC)wwC.checked=true;
+    var wwV=document.getElementById('fv-windowwell');if(wwV)wwV.value=p.windowWellTap;
+    syncFromFP('windowwell');
+  }
+
+  // Discharges
+  if(p.buriedDischargeLF&&p.buriedDischargeLF>0){
+    var bdC=document.getElementById('fp-discharge-buried');if(bdC)bdC.checked=true;
+    var bdV=document.getElementById('fv-discharge-buried');if(bdV)bdV.value=p.buriedDischargeLF;
+  }
+  if(p.sideDischargeLF&&p.sideDischargeLF>0){
+    var sdC=document.getElementById('fp-discharge-internal');if(sdC)sdC.checked=true;
+    var sdV=document.getElementById('fv-discharge-internal');if(sdV)sdV.value=p.sideDischargeLF;
+  }
+
+  renderWalls();
+  calcFP();
 }
 
 function copyFP(){
@@ -909,7 +1025,9 @@ function toggleWill(id,e){
   if(e&&e.target.tagName==='BUTTON')return;
   var el=document.getElementById(id);
   if(!el)return;
-  el.checked=!el.checked;
+  // Don't double-toggle if user clicked directly on the checkbox
+  if(e&&e.target===el){}
+  else{el.checked=!el.checked;}
   if(id==='wp-airsystem')onAirChange();
   else if(id.startsWith('wp-drywall'))onDwChange(id.replace('wp-drywall-',''));
   else willsUpdate();
@@ -1002,13 +1120,15 @@ function renderWill(lines,elId){
 
 function copyWill(which){
   var el=document.getElementById(which+'-output');
-  var btn=document.getElementById('copy-'+which);
   navigator.clipboard.writeText(el.innerText).then(function(){
-    btn.textContent='Copied!'; btn.classList.add('copied');
-    setTimeout(function(){
-      btn.textContent=which==='contractor'?'Copy Contractor Wills':'Copy Customer Wills';
-      btn.classList.remove('copied');
-    },2000);
+    // Update both the inline button and the expanded copy button
+    ['copy-'+which, 'copy-'+which+'-inline'].forEach(function(btnId){
+      var btn=document.getElementById(btnId);
+      if(!btn)return;
+      var orig=btn.textContent;
+      btn.textContent='Copied!'; btn.classList.add('copied');
+      setTimeout(function(){btn.textContent=orig;btn.classList.remove('copied');},2000);
+    });
   });
 }
 
@@ -1029,13 +1149,14 @@ function resetWills(){
 function toggleBlock(which){
   var block=document.getElementById('block-'+which);
   var btn=block.querySelector('.will-collapse-toggle');
+  if(!block||!btn)return;
   var collapsed=block.classList.toggle('collapsed');
   btn.textContent=collapsed?'▶ expand':'▼ collapse';
 }
+
 // ── INIT ──
 for(var i=0;i<4;i++) addWall();
-willsUpdate();
-renderMain();
+willsUpdate(); renderMain();
 </script>
 </body>
 </html>
