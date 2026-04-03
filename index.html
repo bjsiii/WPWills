@@ -242,39 +242,13 @@ body{background:#0f1117;color:#e8e8e8;font-family:'IBM Plex Sans',sans-serif;hei
     <button class="add-wall-btn" onclick="addWall()">+ add wall</button>
 
     <!-- DRAINAGE -->
-    <div class="sec-label">Drainage</div>
+    <div class="sec-label">System</div>
 
-    <!-- Gutter: driven by wall G checkboxes, shown here as read-only summary -->
     <div class="fp-item" style="cursor:default;">
       <span style="width:14px;flex-shrink:0;"></span>
       <span class="fp-item-label">Gutter<small>set per wall (G column)</small></span>
-      <span class="fp-qty" id="fq-gutter">—</span>
+      <span class="fp-qty" id="fq-gutter">&#8212;</span>
     </div>
-
-    <!-- AquaGrate: manual LF -->
-    <div class="fp-item" onclick="toggleFP('aquagrate',event)">
-      <input type="checkbox" id="fp-aquagrate" onchange="syncFromFP('aquagrate');calcFP()">
-      <span class="fp-item-label">AquaGrate<small>manual LF</small></span>
-      <input class="fp-manual" type="number" id="fv-aquagrate" value="0" min="0" onclick="event.stopPropagation()" oninput="calcFP()">
-      <span class="fp-unit">lf</span>
-    </div>
-
-    <div class="fp-item" onclick="toggleFP('discharge-buried',event)">
-      <input type="checkbox" id="fp-discharge-buried" onchange="calcFP()">
-      <span class="fp-item-label">Buried discharge<small>manual LF</small></span>
-      <input class="fp-manual" type="number" id="fv-discharge-buried" value="0" min="0" onclick="event.stopPropagation()" oninput="calcFP()">
-      <span class="fp-unit">lf</span>
-    </div>
-
-    <div class="fp-item" onclick="toggleFP('discharge-internal',event)">
-      <input type="checkbox" id="fp-discharge-internal" onchange="calcFP()">
-      <span class="fp-item-label">Side discharge<small>manual LF</small></span>
-      <input class="fp-manual" type="number" id="fv-discharge-internal" value="0" min="0" onclick="event.stopPropagation()" oninput="calcFP()">
-      <span class="fp-unit">lf</span>
-    </div>
-
-    <!-- PUMP -->
-    <div class="sec-label">Pump</div>
     <div class="fp-item" onclick="toggleFP('pump',event)">
       <input type="checkbox" id="fp-pump" onchange="syncFromFP('pump');calcFP()">
       <span class="fp-item-label">Primary sump pump</span>
@@ -291,17 +265,22 @@ body{background:#0f1117;color:#e8e8e8;font-family:'IBM Plex Sans',sans-serif;hei
       <button class="pump-opt" id="fpo2-single" onclick="setPump2FP('single')">Single</button>
       <button class="pump-opt" id="fpo2-triple" onclick="setPump2FP('triple')">Triple</button>
     </div>
-
-    <!-- WALL & AIR -->
-    <div class="sec-label">Wall &amp; Air</div>
-
-    <!-- Wall liner: driven by wall L checkboxes -->
     <div class="fp-item" style="cursor:default;">
       <span style="width:14px;flex-shrink:0;"></span>
-      <span class="fp-item-label">Wall liner<small>set per wall (L column)</small></span>
-      <span class="fp-qty" id="fq-wallliner">—</span>
+      <span class="fp-item-label">Wall liner<small>set per wall (WL column)</small></span>
+      <span class="fp-qty" id="fq-wallliner">&#8212;</span>
     </div>
-
+    <div class="fp-item" onclick="toggleFP('aquagrate',event)">
+      <input type="checkbox" id="fp-aquagrate" onchange="syncFromFP('aquagrate');calcFP()">
+      <span class="fp-item-label">AquaGrate<small>manual LF</small></span>
+      <input class="fp-manual" type="number" id="fv-aquagrate" value="0" min="0" onclick="event.stopPropagation()" oninput="calcFP()">
+      <span class="fp-unit">lf</span>
+    </div>
+    <div class="fp-item" onclick="toggleFP('ports',event)">
+      <input type="checkbox" id="fp-ports" onchange="syncFromFP('ports');calcFP()">
+      <span class="fp-item-label">Inspection ports<small>auto: 1 per gutter wall</small></span>
+      <span class="fp-qty" id="fq-ports">&#8212;</span>
+    </div>
     <div class="fp-item" onclick="toggleFP('airsystem',event)">
       <input type="checkbox" id="fp-airsystem" onchange="syncFromFP('airsystem');calcFP()">
       <span class="fp-item-label">Air system</span>
@@ -312,12 +291,18 @@ body{background:#0f1117;color:#e8e8e8;font-family:'IBM Plex Sans',sans-serif;hei
       <span class="fp-item-label" style="font-size:.68rem;">+ Condensation pump<small>gravity cannot drain</small></span>
     </div>
 
-    <!-- ACCESS & MISC -->
-    <div class="sec-label">Access &amp; Misc</div>
-    <div class="fp-item" onclick="toggleFP('ports',event)">
-      <input type="checkbox" id="fp-ports" onchange="syncFromFP('ports');calcFP()">
-      <span class="fp-item-label">Inspection ports<small>auto: 1 per wall</small></span>
-      <span class="fp-qty" id="fq-ports">—</span>
+    <div class="sec-label">Misc</div>
+    <div class="fp-item" onclick="toggleFP('discharge-buried',event)">
+      <input type="checkbox" id="fp-discharge-buried" onchange="calcFP()">
+      <span class="fp-item-label">Additional discharge<small>manual LF</small></span>
+      <input class="fp-manual" type="number" id="fv-discharge-buried" value="0" min="0" onclick="event.stopPropagation()" oninput="calcFP()">
+      <span class="fp-unit">lf</span>
+    </div>
+    <div class="fp-item" onclick="toggleFP('discharge-internal',event)">
+      <input type="checkbox" id="fp-discharge-internal" onchange="calcFP()">
+      <span class="fp-item-label">Side discharge<small>manual LF</small></span>
+      <input class="fp-manual" type="number" id="fv-discharge-internal" value="0" min="0" onclick="event.stopPropagation()" oninput="calcFP()">
+      <span class="fp-unit">lf</span>
     </div>
     <div class="fp-item" onclick="toggleFP('windowwell',event)">
       <input type="checkbox" id="fp-windowwell" onchange="syncFromFP('windowwell');calcFP()">
@@ -325,7 +310,6 @@ body{background:#0f1117;color:#e8e8e8;font-family:'IBM Plex Sans',sans-serif;hei
       <input class="fp-manual" type="number" id="fv-windowwell" value="1" min="0" onclick="event.stopPropagation()" oninput="calcFP()">
     </div>
 
-    <!-- SUMMARY -->
     <div class="fp-summary">
       <div class="fp-sum-grid">
         <div class="fp-stat"><div class="fp-stat-label">Walls</div><div class="fp-stat-val" id="fs-walls">0</div></div>
@@ -359,6 +343,11 @@ body{background:#0f1117;color:#e8e8e8;font-family:'IBM Plex Sans',sans-serif;hei
       <button class="pump-opt" id="wpo-single" onclick="setWillPump('single')">Single</button>
       <button class="pump-opt" id="wpo-triple" onclick="setWillPump('triple')">Triple</button>
     </div>
+    <div class="wills-item wp-item" onclick="toggleWill('wp-wallliner',event)">
+      <input type="checkbox" id="wp-wallliner" onchange="willsUpdate()">
+      <span class="wills-label">Wall Liner</span>
+      <span class="auto-badge" id="ab-wallliner" style="display:none;">auto</span>
+    </div>
     <div class="wills-item wp-item" onclick="toggleWill('wp-aquagrate',event)">
       <input type="checkbox" id="wp-aquagrate" onchange="willsUpdate()">
       <span class="wills-label">AquaGrate</span>
@@ -381,22 +370,22 @@ body{background:#0f1117;color:#e8e8e8;font-family:'IBM Plex Sans',sans-serif;hei
         <span class="auto-badge" id="ab-condensate" style="display:none;">auto</span>
       </div>
     </div>
-    <div class="wills-item wp-item" onclick="toggleWill('wp-wallliner',event)">
-      <input type="checkbox" id="wp-wallliner" onchange="willsUpdate()">
-      <span class="wills-label">Wall Liner</span>
-      <span class="auto-badge" id="ab-wallliner" style="display:none;">auto</span>
+    <div class="wills-item wp-item" onclick="toggleWill('wp-windowwell',event)">
+      <input type="checkbox" id="wp-windowwell" onchange="willsUpdate()">
+      <span class="wills-label">Window Well Tap</span>
+      <span class="auto-badge" id="ab-windowwell" style="display:none;">auto</span>
     </div>
 
     <div class="wills-section">Electrical</div>
     <div class="sub-group-label gw">GW installs</div>
     <div class="wills-item elec-item" onclick="toggleWill('wp-elec-gw',event)">
       <input type="checkbox" id="wp-elec-gw" onchange="willsUpdate()">
-      <span class="wills-label">Electrician — GW <span class="wills-tag tag-c">Contractor</span></span>
+      <span class="wills-label">Electrician &#8212; GW <span class="wills-tag tag-c">Contractor</span></span>
     </div>
     <div class="sub-group-label ho">HO installs</div>
     <div class="wills-item elec-item" onclick="toggleWill('wp-elec-ho',event)">
       <input type="checkbox" id="wp-elec-ho" onchange="willsUpdate()">
-      <span class="wills-label">Electrician — HO <span class="wills-tag tag-h">Customer</span></span>
+      <span class="wills-label">Electrician &#8212; HO <span class="wills-tag tag-h">Customer</span></span>
     </div>
 
     <div class="wills-section">Demolition</div>
@@ -404,19 +393,19 @@ body{background:#0f1117;color:#e8e8e8;font-family:'IBM Plex Sans',sans-serif;hei
       <input type="checkbox" id="wp-stairs" onchange="willsUpdate()">
       <span class="wills-label">Stairs</span>
     </div>
-    <div class="sub-group-label gw">Drywall — GW</div>
+    <div class="sub-group-label gw">Drywall &#8212; GW</div>
     <div class="wills-item dw-item" onclick="toggleWill('wp-drywall-gw-half',event)">
       <input type="checkbox" id="wp-drywall-gw-half" onchange="onDwChange('gw-half')">
-      <span class="wills-label">½ Wall <span class="wills-tag tag-c">GW</span></span>
+      <span class="wills-label">1/2 Wall <span class="wills-tag tag-c">GW</span></span>
     </div>
     <div class="wills-item dw-item" onclick="toggleWill('wp-drywall-gw-full',event)">
       <input type="checkbox" id="wp-drywall-gw-full" onchange="onDwChange('gw-full')">
       <span class="wills-label">Full Wall <span class="wills-tag tag-c">GW</span></span>
     </div>
-    <div class="sub-group-label ho">Drywall — HO</div>
+    <div class="sub-group-label ho">Drywall &#8212; HO</div>
     <div class="wills-item dw-item" onclick="toggleWill('wp-drywall-ho-half',event)">
       <input type="checkbox" id="wp-drywall-ho-half" onchange="onDwChange('ho-half')">
-      <span class="wills-label">½ Wall <span class="wills-tag tag-h">HO</span></span>
+      <span class="wills-label">1/2 Wall <span class="wills-tag tag-h">HO</span></span>
     </div>
     <div class="wills-item dw-item" onclick="toggleWill('wp-drywall-ho-full',event)">
       <input type="checkbox" id="wp-drywall-ho-full" onchange="onDwChange('ho-full')">
@@ -435,19 +424,8 @@ body{background:#0f1117;color:#e8e8e8;font-family:'IBM Plex Sans',sans-serif;hei
       <input type="checkbox" id="wp-baseboard" onchange="willsUpdate()">
       <span class="wills-label">Baseboard Heater <span class="wills-tag tag-h">Customer</span></span>
     </div>
-    <div class="wills-item wp-item" onclick="toggleWill('wp-windowwell',event)">
-      <input type="checkbox" id="wp-windowwell" onchange="willsUpdate()">
-      <span class="wills-label">Window Well Tap</span>
-      <span class="auto-badge" id="ab-windowwell" style="display:none;">auto</span>
-    </div>
 
-    <div class="wills-section">Site</div>
-    <div class="wills-item wp-item" onclick="toggleWill('wp-digsafe',event)">
-      <input type="checkbox" id="wp-digsafe" onchange="willsUpdate()">
-      <span class="wills-label">DigSafe Flags</span>
-    </div>
-
-    <div class="wills-section">Admin</div>
+    <div class="wills-section">Misc</div>
     <div class="wills-item wp-item" onclick="toggleWill('wp-permit',event)">
       <input type="checkbox" id="wp-permit" onchange="willsUpdate()">
       <span class="wills-label">Permit B</span>
@@ -455,6 +433,10 @@ body{background:#0f1117;color:#e8e8e8;font-family:'IBM Plex Sans',sans-serif;hei
     <div class="wills-item wp-item" onclick="toggleWill('wp-msp',event)">
       <input type="checkbox" id="wp-msp" onchange="willsUpdate()">
       <span class="wills-label">5 yr MSP</span>
+    </div>
+    <div class="wills-item wp-item" onclick="toggleWill('wp-digsafe',event)">
+      <input type="checkbox" id="wp-digsafe" onchange="willsUpdate()">
+      <span class="wills-label">DigSafe Flags</span>
     </div>
 
     <button class="wills-reset" onclick="resetWills()">Reset wills</button>
@@ -522,10 +504,11 @@ body{background:#0f1117;color:#e8e8e8;font-family:'IBM Plex Sans',sans-serif;hei
     <div class="tab-panel hidden" id="panel-gmail">
       <div class="will-block" style="border-top:3px solid #ea4335;">
         <div class="will-title" style="color:#ea4335;">Send to Field Email</div>
-        <div class="gmail-meta-row"><span class="gmail-meta-key">To:</span><span class="gmail-meta-val"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="2547404b0b5640515149406542574a504b41524a574e560b464a48">[email&#160;protected]</a></span></div>
+        <p style="font-family:monospace;font-size:.62rem;color:#8892a4;margin-bottom:10px;">Opens Mail app pre-filled. Tap Send to deliver.</p>
+        <div class="gmail-meta-row"><span class="gmail-meta-key">To:</span><span class="gmail-meta-val">ben.settle@groundworks.com</span></div>
         <div class="gmail-meta-row"><span class="gmail-meta-key">Subject:</span><span class="gmail-meta-val" id="gmail-subject">FlightPlan</span></div>
         <div class="gmail-preview" id="gmail-preview">Complete the flight plan to preview the email.</div>
-        <button class="copy-btn" id="send-btn" onclick="sendEmail()" style="background:#ea4335;margin-top:11px;">Send via Gmail</button>
+        <button class="copy-btn" id="send-btn" onclick="sendEmail()" style="background:#ea4335;margin-top:11px;">Open in Mail</button>
         <div class="send-status" id="send-status"></div>
       </div>
     </div>
@@ -533,25 +516,25 @@ body{background:#0f1117;color:#e8e8e8;font-family:'IBM Plex Sans',sans-serif;hei
 </main>
 </div><!-- /shell -->
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
 window.onerror=function(msg,src,line,col,err){
   var s=document.getElementById('ai-status');
-  if(s){s.className='ai-status err';s.textContent='✗ JS Error: '+msg+' (line '+line+')';}
+  if(s){s.className='ai-status err';s.textContent='X JS Error: '+msg+' (line '+line+')';}
   return false;
 };
 window.onunhandledrejection=function(e){
   var s=document.getElementById('ai-status');
-  if(s){s.className='ai-status err';s.textContent='✗ Async error: '+(e.reason&&e.reason.message?e.reason.message:e.reason);}
+  if(s){s.className='ai-status err';s.textContent='X Async error: '+(e.reason&&e.reason.message?e.reason.message:e.reason);}
 };
-// ── STATE ──
+// -- STATE --
 var wallId=0, walls=[], fpPump='single', fp2Pump='single', willPump='single';
 
-// ── NAV COLLAPSE ──
+// -- NAV COLLAPSE --
 function toggleNav(which){
   document.getElementById('nav-'+which).classList.toggle('collapsed');
 }
 
-// ── WALLS ──
+// -- WALLS --
 function addWall(len,width,gutter,liner){
   var id=++wallId;
   walls.push({id:id,len:len||0,width:width||0,gutter:!!gutter,liner:liner!==undefined?liner:!!gutter});
@@ -582,13 +565,13 @@ function renderWalls(){
       +'<td><input type="number" value="'+(w.len||'')+'" placeholder="ft" min="0" step="0.5" oninput="setWallNum('+w.id+',\'len\',this.value)"></td>'
       +'<td style="text-align:center;"><input type="checkbox" class="wall-chk gutter-chk" id="wg-'+w.id+'" '+(w.gutter?'checked':'')+' onchange="setWallChk('+w.id+',\'gutter\',this.checked)"></td>'
       +'<td style="text-align:center;"><input type="checkbox" class="wall-chk liner-chk" id="wl-'+w.id+'" '+(w.liner?'checked':'')+' onchange="setWallChk('+w.id+',\'liner\',this.checked)"></td>'
-      +'<td><input type="number" value="'+(w.width||'')+'" placeholder="w" min="0" step="0.5" oninput="setWallNum('+w.id+',\'width\',this.value)" title="Width (ft) — for floor area calc"></td>'
+      +'<td><input type="number" value="'+(w.width||'')+'" placeholder="w" min="0" step="0.5" oninput="setWallNum('+w.id+',\'width\',this.value)" title="Width (ft)  -  for floor area calc"></td>'
       +'<td><button class="wall-del" onclick="removeWall('+w.id+')">&#x2715;</button></td>'
       +'</tr>';
   }).join('');
 }
 
-// ── STATS ──
+// -- STATS --
 function getStats(){
   var h=parseFloat(document.getElementById('fp-height').value)||8;
   var wp=(parseFloat(document.getElementById('fp-waste').value)||10)/100;
@@ -610,7 +593,7 @@ function getStats(){
 function ov(id){var el=document.getElementById(id);return el?(parseFloat(el.value)||0):0;}
 function chkFP(id){var el=document.getElementById('fp-'+id);return el&&el.checked;}
 
-// ── FP PUMP ──
+// -- FP PUMP --
 function setPumpFP(t){
   fpPump=t;
   document.getElementById('fpo-single').classList.toggle('active',t==='single');
@@ -625,7 +608,7 @@ function setPump2FP(t){
   calcFP();
 }
 
-// ── WILLS PUMP ──
+// -- WILLS PUMP --
 function setWillPump(t){
   willPump=t;
   document.getElementById('wpo-single').classList.toggle('active',t==='single');
@@ -633,14 +616,14 @@ function setWillPump(t){
   willsUpdate();
 }
 
-// ── FP ITEM TOGGLE ──
+// -- FP ITEM TOGGLE --
 function toggleFP(id,e){
   if(e&&(e.target.tagName==='INPUT'||e.target.tagName==='BUTTON'))return;
   var el=document.getElementById('fp-'+id);
   if(el&&el.type==='checkbox'){el.checked=!el.checked; syncFromFP(id); calcFP();}
 }
 
-// ── SYNC FP → WILLS ──
+// -- SYNC FP -> WILLS --
 var FP_TO_WILLS={
   'aquagrate':   ['wp-aquagrate'],
   'ports':       ['wp-ports'],
@@ -685,28 +668,28 @@ function autoSyncWills(){
   willsUpdate();
 }
 
-// ── CALC FP ──
+// -- CALC FP --
 function calcFP(){
   var s=getStats();
   // summary stats
   document.getElementById('fs-walls').textContent=s.count;
   document.getElementById('fs-lf').textContent=s.totalLF.toFixed(1)+' lf';
   document.getElementById('fs-gutter').textContent=s.gutterLF.toFixed(1)+' lf';
-  document.getElementById('fs-floor').textContent=s.floor>0?Math.round(s.floor)+' sf':'— sf';
+  document.getElementById('fs-floor').textContent=s.floor>0?Math.round(s.floor)+' sf':' -  sf';
 
   // gutter qty display (from walls)
-  document.getElementById('fq-gutter').textContent=s.hasGutter?s.gutterWaste.toFixed(1)+' lf (w/waste)':'—';
+  document.getElementById('fq-gutter').textContent=s.hasGutter?s.gutterWaste.toFixed(1)+' lf (w/waste)':' - ';
   // liner qty display (from walls)
-  document.getElementById('fq-wallliner').textContent=s.hasLiner?s.linerWaste.toFixed(1)+' lf (w/waste)':'—';
+  document.getElementById('fq-wallliner').textContent=s.hasLiner?s.linerWaste.toFixed(1)+' lf (w/waste)':' - ';
   // ports
   var gutterWallCount=walls.filter(function(w){return w.gutter;}).length||s.count;
-  document.getElementById('fq-ports').textContent=gutterWallCount>0?gutterWallCount+' ea (auto)':'—';
+  document.getElementById('fq-ports').textContent=gutterWallCount>0?gutterWallCount+' ea (auto)':' - ';
 
   autoSyncWills();
   renderMain();
 }
 
-// ── BUILD PLAN ITEMS ──
+// -- BUILD PLAN ITEMS --
 function getFPItems(s){
   var items=[];
   if(s.hasGutter)              items.push({name:'Gutter',                          qty:s.gutterWaste.toFixed(1)+' lf'});
@@ -728,7 +711,7 @@ function getFPItems(s){
 function renderMain(){
   var cust=document.getElementById('fp-customer').value||'';
   var custEl=document.getElementById('main-cust');
-  if(custEl)custEl.textContent=cust?'— '+cust:'';
+  if(custEl)custEl.textContent=cust?' -  '+cust:'';
   var s=getStats();
   var items=getFPItems(s);
   var el=document.getElementById('fp-plan-rows');
@@ -770,7 +753,7 @@ function renderSummary(){
     html+=items.map(function(it){return '<div class="fp-plan-row"><span>'+escHtml(it.name)+'</span><span class="fp-plan-qty">'+escHtml(it.qty)+'</span></div>';}).join('');
     html+='</div>';
   }
-  // Don't Forget — always at bottom of materials, before wills
+  // Don\'t Forget  -  always at bottom of materials, before wills
   var portCount=(walls.filter(function(w){return w.gutter;}).length||s.count);
   var dontForget=[
     {name:'Inspection ports', qty:portCount+' ea'},
@@ -779,7 +762,7 @@ function renderSummary(){
     {name:'Engineering', qty:'if required'},
     {name:'Annual service plan', qty:'offer'}
   ];
-  html+='<div style="margin-bottom:12px;"><div class="summary-section-title" style="color:#fbbf24;">Don’t Forget</div>';
+  html+='<div style="margin-bottom:12px;"><div class="summary-section-title" style="color:#fbbf24;">Don\'t Forget</div>';
   html+=dontForget.map(function(it){
     return '<div class="fp-plan-row"><span style="color:#fbbf24;">'+escHtml(it.name)+'</span><span class="fp-plan-qty" style="color:#fbbf24;">'+escHtml(it.qty)+'</span></div>';
   }).join('');
@@ -803,7 +786,7 @@ function buildEmailBody(){
   var s=getStats();
   var cust=document.getElementById('fp-customer').value||'(no customer)';
   var items=getFPItems(s);
-  var lines=['FLIGHTPLAN — '+cust, new Date().toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'}),''];
+  var lines=['FLIGHTPLAN  -  '+cust, new Date().toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'}),''];
   lines.push('SCOPE','  Walls: '+s.count+' | Perimeter: '+s.totalLF.toFixed(1)+' lf | Height: '+s.h+' ft');
   if(s.floor>0)lines.push('  Est. floor: '+Math.round(s.floor)+' sf');
   lines.push('  Gutter: '+s.gutterLF.toFixed(1)+' lf | Liner: '+s.linerLF.toFixed(1)+' lf | Waste: '+Math.round(s.wp*100)+'%','');
@@ -816,211 +799,34 @@ function buildEmailBody(){
 }
 function renderGmail(){
   var cust=document.getElementById('fp-customer').value||'';
-  document.getElementById('gmail-subject').textContent='FlightPlan'+(cust?' — '+cust:'');
+  document.getElementById('gmail-subject').textContent='FlightPlan'+(cust?'  -  '+cust:'');
   document.getElementById('gmail-preview').textContent=buildEmailBody();
 }
-async function sendEmail(){
-  var btn=document.getElementById('send-btn');
-  var status=document.getElementById('send-status');
+function sanitizeForEmail(s){
+  return String(s)
+    .replace(/[ -  - ]/g,' - ')
+    .replace(/['']/g,"'")
+    .replace(/[""]/g,'"')
+    .replace(/\u2022/g,'*')
+    .replace(/[^\x00-\x7f]/g,'');
+}
+function sendEmail(){
   var cust=document.getElementById('fp-customer').value||'';
-  var subject='FlightPlan'+(cust?' — '+cust:'');
-  var body=buildEmailBody();
-  btn.disabled=true; btn.textContent='Sending...';
-  status.className='send-status sending'; status.textContent='Connecting to Gmail...';
-  try {
-    var resp=await fetch('https://api.anthropic.com/v1/messages',{
-      method:'POST',
-      headers:{'Content-Type':'application/json','anthropic-version':'2023-06-01'},
-      body:JSON.stringify({
-        model:'claude-sonnet-4-6',max_tokens:512,
-        system:'You are a Gmail assistant. Use the Gmail MCP tool to send the email exactly as specified. After sending respond with only: SENT',
-        messages:[{role:'user',content:'Send this email via Gmail.\nTo: ben.settle@groundworks.com\nSubject: '+subject+'\nBody:\n'+body}],
-        mcp_servers:[{type:'url',url:'https://gmail.mcp.claude.com/mcp',name:'gmail'}]
-      })
-    });
-    if(!resp.ok){var et=await resp.text();throw new Error('API '+resp.status+': '+et.slice(0,100));}
-    var data=await resp.json();
-    var toolResults=data.content.filter(function(b){return b.type==='mcp_tool_result';});
-    var txt=data.content.filter(function(b){return b.type==='text';}).map(function(b){return b.text;}).join('');
-    var ok=toolResults.length>0||txt.toUpperCase().includes('SENT')||txt.toLowerCase().includes('success');
-    if(ok){
-      status.className='send-status ok'; status.textContent='✓ Sent to ben.settle@groundworks.com';
-      btn.textContent='Sent!'; btn.classList.add('copied');
-      setTimeout(function(){btn.textContent='Send via Gmail';btn.classList.remove('copied');btn.disabled=false;},3000);
-    } else { throw new Error(txt.slice(0,100)||'No confirmation'); }
-  } catch(e){
-    status.className='send-status fail'; status.textContent='✗ '+e.message;
-    btn.textContent='Send via Gmail'; btn.disabled=false;
-  }
-}
-async function runAI(){
-  var input=document.getElementById('ai-input').value.trim();
-  if(!input)return;
-  var btn=document.getElementById('ai-go-btn');
-  var status=document.getElementById('ai-status');
-  btn.disabled=true;
-  status.className='ai-status thinking';
-  status.textContent='Parsing...';
-
-  var system='You are a waterproofing job data extractor. The user speaks naturally or uses voice-to-text. '
-    +'Extract job details and return ONLY a valid JSON object. No markdown. No explanation. No code fences. '
-    +'Start your response with { and end with }. '
-    +'JSON fields: '
-    +'customer (string or null), '
-    +'gutterLF (number or null - total gutter linear feet), '
-    +'aquagrateLF (number or null), '
-    +'wallCount (number or null - number of walls mentioned), '
-    +'pump (string: "single" or "triple" or null), '
-    +'condensationPump (boolean), '
-    +'airSystem (boolean), '
-    +'wallLinerAll (boolean), '
-    +'windowWellTap (number or null), '
-    +'buriedDischargeLF (number or null), '
-    +'sideDischargeLF (number or null). '
-    +'Rules: address/street = customer. '
-    +'gutter/drain/perimeter = gutterLF. '
-    +'aquagrate/aqua grate = aquagrateLF. '
-    +'triple pump/triple sump = pump:triple. single pump = pump:single. '
-    +'air system = airSystem:true. '
-    +'condensation/condensate pump = condensationPump:true. '
-    +'wall liner on all/liner all walls = wallLinerAll:true. '
-    +'window well/window tap = windowWellTap count. '
-    +'Use null for anything not mentioned.';
-
-  try {
-    var resp=await fetch('https://api.anthropic.com/v1/messages',{
-      method:'POST',
-      headers:{'Content-Type':'application/json','anthropic-version':'2023-06-01'},
-      body:JSON.stringify({
-        model:'claude-sonnet-4-6',
-        max_tokens:400,
-        system:system,
-        messages:[{role:'user',content:input}]
-      })
-    });
-
-    // Read raw text first so we can debug whatever comes back
-    var rawResp=await resp.text();
-
-    // Try to parse as JSON API response
-    var data;
-    try{ data=JSON.parse(rawResp); }
-    catch(pe){ throw new Error('Sandbox returned non-JSON: '+rawResp.slice(0,120)); }
-
-    // Handle API errors
-    if(data.error){ throw new Error('API: '+data.error.message); }
-    if(!resp.ok){ throw new Error('HTTP '+resp.status+': '+rawResp.slice(0,120)); }
-
-    // Extract text content
-    var raw='';
-    if(data.content&&data.content.length){
-      raw=data.content.filter(function(b){return b.type==='text';}).map(function(b){return b.text;}).join('').trim();
-    } else if(typeof data.completion==='string'){
-      raw=data.completion.trim(); // older API format fallback
-    }
-    if(!raw){ throw new Error('No text in response. Keys: '+Object.keys(data).join(',')); }
-
-    // Strip markdown fences if model added them
-    var clean=raw.replace(/^```[a-zA-Z]*/,'').replace(/```\s*$/,'').trim();
-
-    // Pull out the JSON object
-    var m=clean.match(/\{[\s\S]*\}/);
-    if(!m){ throw new Error('No JSON found. Response: '+raw.slice(0,100)); }
-
-    var parsed=JSON.parse(m[0]);
-    applyAIParse(parsed);
-    status.className='ai-status done';
-    status.textContent='✓ Filled — review and adjust.';
-
-  } catch(e){
-    status.className='ai-status err';
-    status.textContent='✗ '+e.message;
-  }
-  btn.disabled=false;
+  var subject='FlightPlan'+(cust?' - '+cust:'');
+  var body=sanitizeForEmail(buildEmailBody());
+  var mailto='mailto:ben.settle@groundworks.com'
+    +'?subject='+encodeURIComponent(subject)
+    +'&body='+encodeURIComponent(body);
+  window.open(mailto);
+  var status=document.getElementById('send-status');
+  status.className='send-status ok';
+  status.textContent='Mail app opened -- tap Send to deliver.';
+  var btn=document.getElementById('send-btn');
+  btn.textContent='Opened!';btn.classList.add('copied');
+  setTimeout(function(){btn.textContent='Open in Mail';btn.classList.remove('copied');},3000);
 }
 
 
-function applyAIParse(p){
-  // Customer / address
-  if(p.customer){var ce=document.getElementById('fp-customer');if(ce)ce.value=p.customer;}
-
-  // Walls — handle several cases from voice input
-  walls=[];wallId=0;
-  var linerAll=!!p.wallLinerAll;
-  if(p.walls&&p.walls.length){
-    // Individual wall lengths given
-    p.walls.forEach(function(w){addWall(w.len||0,0,w.gutter!==false,linerAll||w.liner!==false);});
-  } else if(p.gutterLF&&p.gutterLF>0&&p.wallCount&&p.wallCount>1){
-    // Total gutter footage + wall count — split evenly across walls
-    var perWall=Math.round((p.gutterLF/p.wallCount)*10)/10;
-    for(var i=0;i<p.wallCount;i++)addWall(perWall,0,true,linerAll);
-  } else if(p.gutterLF&&p.gutterLF>0){
-    // Just total footage — one wall
-    addWall(p.gutterLF,0,true,linerAll||true);
-  } else if(p.wallCount&&p.wallCount>0){
-    // Just a wall count with no footage
-    for(var i=0;i<p.wallCount;i++)addWall(0,0,false,linerAll);
-  } else {
-    for(var i=0;i<4;i++)addWall();
-  }
-
-  // AquaGrate
-  var aqC=document.getElementById('fp-aquagrate'),aqV=document.getElementById('fv-aquagrate');
-  if(p.aquagrateLF&&p.aquagrateLF>0){if(aqC)aqC.checked=true;if(aqV)aqV.value=p.aquagrateLF;syncFromFP('aquagrate');}
-  else{if(aqC)aqC.checked=false;}
-
-  // Pump
-  if(p.pump){var pC=document.getElementById('fp-pump');if(pC)pC.checked=true;setPumpFP(p.pump);}
-
-  // Condensation pump — can come with air system
-  var conC=document.getElementById('fp-condensation');
-  if(conC)conC.checked=!!p.condensationPump;
-  syncFromFP('condensation');
-
-  // Air system
-  var airC=document.getElementById('fp-airsystem');
-  if(airC)airC.checked=!!p.airSystem;
-  syncFromFP('airsystem');
-
-  // Window well
-  if(p.windowWellTap&&p.windowWellTap>0){
-    var wwC=document.getElementById('fp-windowwell');if(wwC)wwC.checked=true;
-    var wwV=document.getElementById('fv-windowwell');if(wwV)wwV.value=p.windowWellTap;
-    syncFromFP('windowwell');
-  }
-
-  // Discharges
-  if(p.buriedDischargeLF&&p.buriedDischargeLF>0){
-    var bdC=document.getElementById('fp-discharge-buried');if(bdC)bdC.checked=true;
-    var bdV=document.getElementById('fv-discharge-buried');if(bdV)bdV.value=p.buriedDischargeLF;
-  }
-  if(p.sideDischargeLF&&p.sideDischargeLF>0){
-    var sdC=document.getElementById('fp-discharge-internal');if(sdC)sdC.checked=true;
-    var sdV=document.getElementById('fv-discharge-internal');if(sdV)sdV.value=p.sideDischargeLF;
-  }
-
-  renderWalls();
-  calcFP();
-}
-
-function copyFP(){
-  var s=getStats();
-  var cust=document.getElementById('fp-customer').value||'Customer';
-  var waste=Math.round(s.wp*100);
-  var lines=['FLIGHTPLAN — '+cust,'',
-    'Walls: '+s.count+'  |  Full perimeter: '+s.totalLF.toFixed(1)+' lf  |  Height: '+s.h+' ft',
-    'Gutter walls: '+s.gutterLF.toFixed(1)+' lf  |  Liner walls: '+s.linerLF.toFixed(1)+' lf'];
-  if(s.floor>0)lines.push('Est. floor area: '+Math.round(s.floor)+' sf');
-  lines.push('Waste factor: '+waste+'%','','MATERIALS');
-  getFPItems(s).forEach(function(it){lines.push('  '+it.name+': '+it.qty);});
-  var btn=document.getElementById('fp-copy-btn');
-  navigator.clipboard.writeText(lines.join('\n')).then(function(){
-    btn.textContent='Copied!'; btn.classList.add('copied');
-    setTimeout(function(){btn.textContent='Copy material list';btn.classList.remove('copied');},2000);
-  });
-}
-
-// ── WILLS ──
 function toggleWill(id,e){
   if(e&&e.target.tagName==='BUTTON')return;
   var el=document.getElementById(id);
@@ -1151,10 +957,10 @@ function toggleBlock(which){
   var btn=block.querySelector('.will-collapse-toggle');
   if(!block||!btn)return;
   var collapsed=block.classList.toggle('collapsed');
-  btn.textContent=collapsed?'▶ expand':'▼ collapse';
+  btn.textContent=collapsed?'> expand':'v collapse';
 }
 
-// ── INIT ──
+// -- INIT --
 for(var i=0;i<4;i++) addWall();
 willsUpdate(); renderMain();
 </script>
