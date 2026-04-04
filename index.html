@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,15 +9,13 @@
 *{box-sizing:border-box;margin:0;padding:0;}
 body{background:#0f1117;color:#e8e8e8;font-family:'IBM Plex Sans',sans-serif;height:100vh;display:flex;flex-direction:column;overflow:hidden;}
 .shell{display:flex;flex:1;min-height:0;}
-
 .nav-fp,.nav-wills{display:flex;flex-direction:column;flex-shrink:0;overflow:hidden;transition:width .22s cubic-bezier(.4,0,.2,1);}
-.nav-fp{width:272px;background:#0b0d13;border-right:1px solid #1e2435;}
+.nav-fp{width:260px;background:#0b0d13;border-right:1px solid #1e2435;}
 .nav-wills{width:248px;background:#0d0f18;border-right:1px solid #1e2435;}
 .nav-fp.collapsed{width:38px;}
 .nav-wills.collapsed{width:38px;}
 .nav-inner{flex:1;overflow-y:auto;overflow-x:hidden;}
 .nav-fp.collapsed .nav-inner,.nav-wills.collapsed .nav-inner{opacity:0;pointer-events:none;}
-
 .nav-toggle{display:flex;align-items:center;gap:9px;padding:16px 11px 13px;border-bottom:1px solid #1e2435;cursor:pointer;user-select:none;flex-shrink:0;}
 .nav-toggle-icon{font-size:.7rem;flex-shrink:0;transition:transform .22s;line-height:1;}
 .nav-fp .nav-toggle-icon{color:#4fc3f7;}
@@ -29,27 +26,23 @@ body{background:#0f1117;color:#e8e8e8;font-family:'IBM Plex Sans',sans-serif;hei
 .nav-fp .nav-toggle-label{color:#4fc3f7;}
 .nav-wills .nav-toggle-label{color:#a78bfa;}
 .nav-fp.collapsed .nav-toggle-label,.nav-wills.collapsed .nav-toggle-label{display:none;}
-
 .fp-customer{padding:10px 14px;border-bottom:1px solid #1e2435;}
 .fp-customer label{font-family:'IBM Plex Mono',monospace;font-size:.55rem;letter-spacing:1.5px;text-transform:uppercase;color:#8892a4;display:block;margin-bottom:4px;}
 .fp-customer input{width:100%;background:#181c27;border:1px solid #2a2f3f;border-radius:5px;padding:5px 8px;font-size:.76rem;color:#e8e8e8;font-family:'IBM Plex Mono',monospace;}
 .fp-customer input::placeholder{color:#2a3050;}
 .fp-customer input:focus{outline:none;border-color:#4fc3f7;}
-
 .sec-label{font-family:'IBM Plex Mono',monospace;font-size:.56rem;letter-spacing:2px;text-transform:uppercase;color:#ffffff;padding:10px 14px 4px;display:flex;align-items:center;justify-content:space-between;}
-
 .wall-settings{display:flex;gap:8px;flex-wrap:wrap;padding:6px 14px 8px;}
 .wall-settings label{font-family:'IBM Plex Mono',monospace;font-size:.6rem;color:#8892a4;display:flex;align-items:center;gap:4px;}
 .wall-settings input{width:42px;background:#181c27;border:1px solid #2a2f3f;border-radius:4px;padding:3px 4px;font-size:.68rem;color:#e8e8e8;font-family:'IBM Plex Mono',monospace;}
 .wall-settings input:focus{outline:none;border-color:#4fc3f7;}
-
 .wall-tbl-wrap{padding:0 14px;}
 .wtbl{width:100%;border-collapse:collapse;}
 .wtbl th{font-family:'IBM Plex Mono',monospace;font-size:.53rem;letter-spacing:1px;text-transform:uppercase;color:#8892a4;padding:0 4px 4px;text-align:left;border-bottom:1px solid #1e2435;}
 .wtbl th.center{text-align:center;}
 .wtbl td{padding:3px 4px;border-bottom:1px solid #0f1117;vertical-align:middle;}
 .wtbl tr:last-child td{border-bottom:none;}
-.wtbl input[type=number]{background:#181c27;border:1px solid #2a2f3f;border-radius:4px;padding:3px 5px;font-size:.7rem;color:#e8e8e8;font-family:'IBM Plex Mono',monospace;width:46px;}
+.wtbl input[type=number]{background:#181c27;border:1px solid #2a2f3f;border-radius:4px;padding:3px 5px;font-size:.7rem;color:#e8e8e8;font-family:'IBM Plex Mono',monospace;width:52px;}
 .wtbl input[type=number]:focus{outline:none;border-color:#4fc3f7;}
 .wnum{font-family:'IBM Plex Mono',monospace;font-size:.58rem;color:#8892a4;text-align:right;padding-right:4px!important;white-space:nowrap;}
 .wall-chk{appearance:none;-webkit-appearance:none;width:14px;height:14px;border:1.5px solid #2a2f3f;border-radius:3px;cursor:pointer;display:block;margin:0 auto;position:relative;flex-shrink:0;transition:all .14s;}
@@ -58,10 +51,8 @@ body{background:#0f1117;color:#e8e8e8;font-family:'IBM Plex Sans',sans-serif;hei
 .wall-chk:checked::after{content:'v';position:absolute;top:-2px;left:1px;font-size:9px;color:#0f1117;font-weight:bold;}
 .wall-del{background:none;border:none;color:#1e2435;cursor:pointer;font-size:12px;padding:0 2px;line-height:1;transition:color .12s;}
 .wall-del:hover{color:#f87171;}
-
 .add-wall-btn{font-family:'IBM Plex Mono',monospace;font-size:.58rem;letter-spacing:1px;text-transform:uppercase;background:transparent;border:1px dashed #2a2f3f;color:#8892a4;padding:4px 10px;border-radius:4px;cursor:pointer;width:calc(100% - 28px);margin:6px 14px;transition:all .15s;display:block;}
 .add-wall-btn:hover{border-color:#4fc3f7;color:#4fc3f7;}
-
 .fp-item{display:flex;align-items:center;gap:9px;padding:6px 14px;cursor:pointer;transition:background .12s;}
 .fp-item:hover{background:#141820;}
 .fp-item input[type=checkbox]{appearance:none;-webkit-appearance:none;width:14px;height:14px;border:1.5px solid #3a3f55;border-radius:3px;cursor:pointer;flex-shrink:0;position:relative;transition:all .15s;}
@@ -73,24 +64,20 @@ body{background:#0f1117;color:#e8e8e8;font-family:'IBM Plex Sans',sans-serif;hei
 .fp-manual{background:#181c27;border:1px solid #2a2f3f;border-radius:4px;padding:3px 5px;font-size:.68rem;color:#e8e8e8;font-family:'IBM Plex Mono',monospace;width:46px;text-align:center;}
 .fp-manual:focus{outline:none;border-color:#4fc3f7;}
 .fp-unit{font-family:'IBM Plex Mono',monospace;font-size:.58rem;color:#8892a4;}
-
 .pump-row{display:flex;gap:4px;padding:3px 14px 4px 38px;}
 .pump-opt{font-family:'IBM Plex Mono',monospace;font-size:.6rem;padding:3px 9px;border:1px solid #2a2f3f;border-radius:12px;cursor:pointer;background:transparent;color:#8892a4;transition:all .12s;}
 .pump-opt.active{background:#4fc3f7;color:#0f1117;border-color:#4fc3f7;font-weight:500;}
-
 .fp-summary{padding:10px 14px;border-top:1px solid #1e2435;flex-shrink:0;}
-.fp-sum-grid{display:grid;grid-template-columns:1fr 1fr;gap:5px;}
+.fp-sum-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:5px;}
 .fp-stat{background:#181c27;border-radius:5px;padding:5px 8px;}
 .fp-stat-label{font-family:'IBM Plex Mono',monospace;font-size:.52rem;letter-spacing:1px;color:#8892a4;text-transform:uppercase;}
 .fp-stat-val{font-family:'IBM Plex Mono',monospace;font-size:.82rem;font-weight:500;color:#4fc3f7;margin-top:1px;}
-
 .wills-section{font-family:'IBM Plex Mono',monospace;font-size:.56rem;letter-spacing:2px;text-transform:uppercase;color:#ffffff;padding:10px 14px 4px;border-top:1px solid #1e2435;margin-top:4px;}
 .wills-section:first-of-type{margin-top:0;}
 .wills-item{display:flex;align-items:center;gap:8px;padding:5px 14px;cursor:pointer;transition:background .12s;}
 .wills-item:hover{background:#141820;}
 .wills-item input[type=checkbox]{appearance:none;-webkit-appearance:none;width:13px;height:13px;border:1.5px solid #3a3f55;border-radius:3px;cursor:pointer;flex-shrink:0;position:relative;transition:all .15s;}
 .wills-item.wp-item input:checked{background:#4fc3f7;border-color:#4fc3f7;}
-.wills-item.pump-item input:checked{background:#f97316;border-color:#f97316;}
 .wills-item.dw-item input:checked{background:#a78bfa;border-color:#a78bfa;}
 .wills-item.elec-item input:checked{background:#34d399;border-color:#34d399;}
 .wills-item.misc-item input:checked{background:#f87171;border-color:#f87171;}
@@ -108,15 +95,12 @@ body{background:#0f1117;color:#e8e8e8;font-family:'IBM Plex Sans',sans-serif;hei
 .sub-group-label{font-family:'IBM Plex Mono',monospace;font-size:.56rem;letter-spacing:1px;text-transform:uppercase;padding:4px 8px 2px;}
 .sub-group-label.contractor{color:#f97316;background:#f9731610;border-left:2px solid #f97316;margin:4px 8px 2px;}
 .sub-group-label.customer{color:#4fc3f7;background:#4fc3f710;border-left:2px solid #4fc3f7;margin:4px 8px 2px;}
-.sub-group-label.neutral{color:#555;padding-left:14px;}
 .wills-reset{font-family:'IBM Plex Mono',monospace;font-size:.58rem;letter-spacing:1px;text-transform:uppercase;background:transparent;border:1px solid #2a2f3f;color:#555;padding:5px 10px;border-radius:4px;cursor:pointer;margin:10px 14px;width:calc(100% - 28px);transition:all .15s;}
 .wills-reset:hover{border-color:#f87171;color:#f87171;}
-
 .main{flex:1;display:flex;flex-direction:column;min-width:0;overflow:hidden;}
 .main-header{display:flex;align-items:baseline;gap:10px;padding:12px 20px 0;}
 .main-header h1{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:2px;color:#4fc3f7;}
 .main-sub{font-family:'IBM Plex Mono',monospace;font-size:.62rem;letter-spacing:1px;color:#3a3f55;}
-
 .will-block{background:#181c27;border:1px solid #2a2f3f;border-radius:8px;padding:15px 17px;}
 .will-block.fp-out{border-top:3px solid #4fc3f7;}
 .will-block.contractor{border-top:3px solid #f97316;}
@@ -132,12 +116,11 @@ body{background:#0f1117;color:#e8e8e8;font-family:'IBM Plex Sans',sans-serif;hei
 .will-collapse-toggle:hover{color:#8892a4;}
 .empty-state{color:#3a3f55;font-style:italic;font-size:.73rem;}
 .initials-text{color:#f97316;}
-
+.bullet-label{color:#ffffff;font-weight:bold;}
 .fp-plan-row{display:flex;justify-content:space-between;align-items:baseline;padding:5px 0;border-bottom:1px solid #1e2435;font-family:'IBM Plex Mono',monospace;font-size:.75rem;}
 .fp-plan-row:last-child{border-bottom:none;}
 .fp-plan-qty{color:#4fc3f7;}
 .fp-empty{font-family:'IBM Plex Mono',monospace;font-size:.73rem;color:#3a3f55;font-style:italic;}
-
 .main-copy-btn{font-family:'IBM Plex Mono',monospace;font-size:.74rem;font-weight:500;letter-spacing:1px;text-transform:uppercase;border:none;color:#fff;padding:11px 0;border-radius:5px;cursor:pointer;transition:all .15s;width:100%;margin-top:11px;display:block;}
 .fp-out .main-copy-btn{background:#1a3a4a;border:1px solid #4fc3f744;color:#4fc3f7;}
 .fp-out .main-copy-btn:hover{background:#1e4a5e;}
@@ -146,11 +129,9 @@ body{background:#0f1117;color:#e8e8e8;font-family:'IBM Plex Sans',sans-serif;hei
 .customer .main-copy-btn{background:#0e7faa;}
 .customer .main-copy-btn:hover{background:#0a6a8f;}
 .main-copy-btn.copied{background:#16a34a!important;color:#fff!important;border-color:#16a34a!important;}
-
 .inline-copy{font-family:'IBM Plex Mono',monospace;font-size:.6rem;letter-spacing:1px;text-transform:uppercase;background:transparent;border:1px solid #3a3f55;color:#8892a4;padding:3px 10px;border-radius:4px;cursor:pointer;transition:all .15s;white-space:nowrap;}
 .inline-copy:hover{border-color:#c8ccd8;color:#c8ccd8;}
 .inline-copy.copied{border-color:#34d399;color:#34d399;}
-
 .tab-bar{display:flex;padding:0 20px;border-bottom:1px solid #1e2435;flex-shrink:0;}
 .tab-btn{font-family:'IBM Plex Mono',monospace;font-size:.66rem;letter-spacing:1.5px;text-transform:uppercase;padding:9px 16px 8px;cursor:pointer;border:none;background:transparent;color:#555;border-bottom:2px solid transparent;transition:all .15s;}
 .tab-btn:hover{color:#aaa;}
@@ -159,8 +140,6 @@ body{background:#0f1117;color:#e8e8e8;font-family:'IBM Plex Sans',sans-serif;hei
 .tab-panel{padding:16px 20px;display:flex;flex-direction:column;gap:14px;}
 .tab-panel.hidden{display:none!important;}
 .summary-section-title{font-family:'IBM Plex Mono',monospace;font-size:.56rem;letter-spacing:2px;text-transform:uppercase;color:#8892a4;margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid #1e2435;}
-
-/* REBUILD SECTION */
 .rebuild-section{padding:0 20px 20px;}
 .rebuild-toggle{font-family:'IBM Plex Mono',monospace;font-size:.58rem;letter-spacing:2px;text-transform:uppercase;color:#2a3050;cursor:pointer;background:none;border:1px dashed #1e2435;padding:5px 12px;border-radius:4px;transition:all .15s;}
 .rebuild-toggle:hover{color:#555;border-color:#3a3f55;}
@@ -183,12 +162,12 @@ body{background:#0f1117;color:#e8e8e8;font-family:'IBM Plex Sans',sans-serif;hei
     <span class="nav-toggle-icon">&#9664;</span>
     <span class="nav-toggle-label">FlightPlan</span>
   </div>
-  <div class="nav-inner" id="fp-inner">
+  <div class="nav-inner">
     <div class="fp-customer">
       <label>Customer</label>
       <input type="text" id="fp-customer" placeholder="Name / address" oninput="renderMain()">
     </div>
-    <div class="sec-label">Walls <span style="font-family:'IBM Plex Mono',monospace;font-size:.5rem;color:#8892a4;">LF | G | WL | W</span></div>
+    <div class="sec-label">Walls <span style="font-family:'IBM Plex Mono',monospace;font-size:.5rem;color:#8892a4;">LF | G | WL</span></div>
     <div class="wall-settings">
       <label>Height <input type="number" id="fp-height" value="8" min="1" step="0.5" oninput="calcFP()"> ft</label>
       <label>Waste <input type="number" id="fp-waste" value="5" min="0" max="50" oninput="calcFP()"> %</label>
@@ -200,7 +179,6 @@ body{background:#0f1117;color:#e8e8e8;font-family:'IBM Plex Sans',sans-serif;hei
           <th>Length</th>
           <th class="center" title="Gutter">G</th>
           <th class="center" title="Wall Liner">WL</th>
-          <th>Width</th>
           <th></th>
         </tr></thead>
         <tbody id="wall-tbody"></tbody>
@@ -212,7 +190,7 @@ body{background:#0f1117;color:#e8e8e8;font-family:'IBM Plex Sans',sans-serif;hei
     <div class="fp-item" style="cursor:default;">
       <span style="width:14px;flex-shrink:0;"></span>
       <span class="fp-item-label">Gutter<small>set per wall (G column)</small></span>
-      <span class="fp-qty" id="fq-gutter">&#8212;</span>
+      <span class="fp-qty" id="fq-gutter">&mdash;</span>
     </div>
     <div class="fp-item" onclick="toggleFP('pump',event)">
       <input type="checkbox" id="fp-pump" onchange="syncFromFP('pump');calcFP()">
@@ -233,7 +211,7 @@ body{background:#0f1117;color:#e8e8e8;font-family:'IBM Plex Sans',sans-serif;hei
     <div class="fp-item" style="cursor:default;">
       <span style="width:14px;flex-shrink:0;"></span>
       <span class="fp-item-label">Wall liner<small>set per wall (WL column)</small></span>
-      <span class="fp-qty" id="fq-wallliner">&#8212;</span>
+      <span class="fp-qty" id="fq-wallliner">&mdash;</span>
     </div>
     <div class="fp-item" onclick="toggleFP('aquagrate',event)">
       <input type="checkbox" id="fp-aquagrate" onchange="syncFromFP('aquagrate');calcFP()">
@@ -244,7 +222,7 @@ body{background:#0f1117;color:#e8e8e8;font-family:'IBM Plex Sans',sans-serif;hei
     <div class="fp-item" onclick="toggleFP('ports',event)">
       <input type="checkbox" id="fp-ports" onchange="syncFromFP('ports');calcFP()">
       <span class="fp-item-label">Inspection ports<small>auto: 1 per gutter wall</small></span>
-      <span class="fp-qty" id="fq-ports">&#8212;</span>
+      <span class="fp-qty" id="fq-ports">&mdash;</span>
     </div>
     <div class="fp-item" onclick="toggleFP('airsystem',event)">
       <input type="checkbox" id="fp-airsystem" onchange="syncFromFP('airsystem');calcFP()">
@@ -280,7 +258,6 @@ body{background:#0f1117;color:#e8e8e8;font-family:'IBM Plex Sans',sans-serif;hei
         <div class="fp-stat"><div class="fp-stat-label">Walls</div><div class="fp-stat-val" id="fs-walls">0</div></div>
         <div class="fp-stat"><div class="fp-stat-label">Full perim.</div><div class="fp-stat-val" id="fs-lf">0 lf</div></div>
         <div class="fp-stat"><div class="fp-stat-label">Gutter LF</div><div class="fp-stat-val" id="fs-gutter">0 lf</div></div>
-        <div class="fp-stat"><div class="fp-stat-label">Floor est.</div><div class="fp-stat-val" id="fs-floor">&#8212;</div></div>
       </div>
     </div>
   </div>
@@ -292,8 +269,7 @@ body{background:#0f1117;color:#e8e8e8;font-family:'IBM Plex Sans',sans-serif;hei
     <span class="nav-toggle-icon">&#9664;</span>
     <span class="nav-toggle-label">Wills</span>
   </div>
-  <div class="nav-inner" id="wills-inner">
-
+  <div class="nav-inner">
     <div class="wills-section" style="border-top:none;margin-top:0;">System</div>
     <div class="wills-item wp-item" onclick="toggleWill('wp-gutter',event)">
       <input type="checkbox" id="wp-gutter" onchange="willsUpdate()">
@@ -404,7 +380,6 @@ body{background:#0f1117;color:#e8e8e8;font-family:'IBM Plex Sans',sans-serif;hei
       <input type="checkbox" id="wp-msp" onchange="willsUpdate()">
       <span class="wills-label misc-red" id="lbl-msp">5 yr MSP</span>
     </div>
-
     <button class="wills-reset" onclick="resetWills()">Reset wills</button>
   </div>
 </nav>
@@ -418,12 +393,12 @@ body{background:#0f1117;color:#e8e8e8;font-family:'IBM Plex Sans',sans-serif;hei
   </div>
   <div class="tab-bar">
     <button class="tab-btn active" id="tab-output" onclick="switchTab('output')">Output</button>
-    <button class="tab-btn" id="tab-summary" onclick="switchTab('summary')">Summary</button>
+    <button class="tab-btn" id="tab-summary" onclick="switchTab('summary')">Flight Plan &mdash; FINAL</button>
   </div>
   <div class="tab-panels">
     <div class="tab-panel" id="panel-output">
       <div class="will-block fp-out">
-        <div class="will-title">Flight Plan &#8212; Material List</div>
+        <div class="will-title">Flight Plan &mdash; Material List</div>
         <div id="fp-plan-rows"><div class="fp-empty">Add walls and select materials in the left panel.</div></div>
         <button class="main-copy-btn" id="fp-copy-btn" onclick="copyFP()" style="display:none;">Copy material list</button>
       </div>
@@ -432,7 +407,7 @@ body{background:#0f1117;color:#e8e8e8;font-family:'IBM Plex Sans',sans-serif;hei
           <span>Contractor Wills</span>
           <span style="display:flex;gap:8px;align-items:center;">
             <button class="inline-copy" id="copy-contractor-inline" onclick="copyWill('contractor')">Copy</button>
-            <button class="will-collapse-toggle" onclick="toggleBlock('contractor')">&#9658; expand</button>
+            <button class="will-collapse-toggle" id="toggle-contractor" onclick="toggleBlock('contractor')">&#9658; expand</button>
           </span>
         </div>
         <div class="will-content" id="contractor-output"><span class="empty-state">Select items in the Wills panel to generate contractor wills...</span></div>
@@ -443,7 +418,7 @@ body{background:#0f1117;color:#e8e8e8;font-family:'IBM Plex Sans',sans-serif;hei
           <span>Customer Wills</span>
           <span style="display:flex;gap:8px;align-items:center;">
             <button class="inline-copy" id="copy-customer-inline" onclick="copyWill('customer')">Copy</button>
-            <button class="will-collapse-toggle" onclick="toggleBlock('customer')">&#9658; expand</button>
+            <button class="will-collapse-toggle" id="toggle-customer" onclick="toggleBlock('customer')">&#9658; expand</button>
           </span>
         </div>
         <div class="will-content" id="customer-output"><span class="empty-state">Select items in the Wills panel to generate customer wills...</span></div>
@@ -452,7 +427,7 @@ body{background:#0f1117;color:#e8e8e8;font-family:'IBM Plex Sans',sans-serif;hei
     </div>
     <div class="tab-panel hidden" id="panel-summary">
       <div class="will-block" style="border-top:3px solid #34d399;">
-        <div class="will-title" style="color:#34d399;">Summary</div>
+        <div class="will-title" style="color:#34d399;">Flight Plan &mdash; FINAL</div>
         <div id="summary-content"><div class="fp-empty">Complete the flight plan to generate a summary.</div></div>
       </div>
     </div>
@@ -467,49 +442,55 @@ body{background:#0f1117;color:#e8e8e8;font-family:'IBM Plex Sans',sans-serif;hei
 LAYOUT: Three-column layout filling the full viewport height.
 - LEFT panel (collapsible, labeled FlightPlan in blue Bebas Neue): Flight plan material calculator
 - MIDDLE panel (collapsible, labeled Wills in purple Bebas Neue): Legal will language checklist
-- RIGHT area (main): Output and Summary tabs
+- RIGHT area (main): Output and Flight Plan FINAL tabs
 
 FLIGHTPLAN PANEL:
 - Customer name text input at top
-- Wall table with columns: wall number, Length (ft), G (gutter checkbox, blue when checked), WL (wall liner checkbox, orange when checked), Width (ft), delete button
+- Wall table with columns: wall number, Length (ft), G (gutter checkbox blue when checked), WL (wall liner checkbox orange when checked), delete button. NO width column.
 - Height and Waste % inputs above the table
 - Add wall button
-- System items: Gutter (auto from wall G column, shows LF with waste), Primary sump pump (Single/Triple toggle buttons), Secondary sump pump (Single/Triple toggle buttons), Wall liner (auto from wall WL column), AquaGrate (manual LF input), Inspection ports (auto: 1 per gutter wall), Air system (quantity input), Condensate pump (child of air system)
+- System items: Gutter (auto from wall G column, shows LF with waste), Primary sump pump (Single/Triple toggle), Secondary sump pump (Single/Triple toggle), Wall liner (auto from wall WL column), AquaGrate (manual LF), Inspection ports (auto: 1 per gutter wall), Air system (quantity), Condensate pump child of air system
 - Misc items: Additional discharge (LF), Side discharge (LF), Window well tap (quantity)
-- Summary stats grid at bottom: Walls count, Full perimeter LF, Gutter LF, Floor estimate SF
+- Summary stats at bottom (3 columns, NO floor estimate): Walls count, Full perimeter LF, Gutter LF
+- All placeholder dashes use &mdash; HTML entity rendered via innerHTML (NOT textContent)
 - Checking FlightPlan items auto-syncs to Wills panel (AquaGrate, ports, airsystem, condensation, windowwell)
-- Pump type selected in FlightPlan also sets pump type in Wills
+- Pump type in FlightPlan also sets pump type in Wills
 
 WILLS PANEL sections (section labels WHITE):
-- System: Gutter/Perimeter Drain (with Single/Triple pump toggle), Wall Liner, AquaGrate, Inspection Ports, AirSystem (with child Condensate pump grayed until AirSystem checked), Window Well Tap. Auto-badge shown when item was auto-synced from FlightPlan.
-- Electrical: Contractor sub-bar (orange) with Electrician [Contractor] tag; Customer sub-bar (blue) with Electrician [Customer] tag
-- Demolition: Contractor sub-bar with Drywall 1/2 Wall [Contractor], Drywall Full Wall [Contractor], Cut Through [Contractor], Stairs [Contractor]; Customer sub-bar with Drywall 1/2 Wall [Customer], Drywall Full Wall [Customer], Cut Through [Customer], Baseboard Heater [Customer]. All four drywall options mutually exclusive.
+- System: Gutter/Perimeter Drain (Single/Triple pump toggle), Wall Liner, AquaGrate, Inspection Ports, AirSystem (child Condensate pump grayed until AirSystem checked), Window Well Tap. Auto-badge shown when auto-synced from FlightPlan.
+- Electrical: Contractor sub-bar (orange) with Electrician [Contractor]; Customer sub-bar (blue) with Electrician [Customer]
+- Demolition: Contractor sub-bar: Drywall 1/2 Wall [Contractor], Drywall Full Wall [Contractor], Cut Through [Contractor], Stairs [Contractor]; Customer sub-bar: Drywall 1/2 Wall [Customer], Drywall Full Wall [Customer], Cut Through [Customer], Baseboard Heater [Customer]. All four drywall options mutually exclusive.
 - Site: DigSafe Flags
-- Misc: Utilities Protection, Permit B, 5yr MSP - labels RED until checked, then white
+- Misc: Utilities Protection, Permit B, 5yr MSP - labels RED until checked then white
 
 OUTPUT TAB:
-- Flight Plan Material List block (blue top border): shows all selected materials with quantities. At bottom always shows Don't Forget section with Utilities Protection, Permit B, 5yr MSP - red if unchecked in Wills Misc, white if checked.
-- Contractor Wills block (orange top border, collapsed by default, expand toggle): shows generated legal bullets + initials line
-- Customer Wills block (blue top border, collapsed by default): shows generated legal bullets + initials line
-- Each wills block has inline Copy button (always visible) and full-width Copy button (visible when expanded)
-- Copy buttons only copy the legal text, not the Don't Forget section
+- Flight Plan Material List block (blue top border): materials with quantities, Don't Forget section at bottom with MISC items red if unchecked white if checked
+- Contractor Wills block (orange, collapsed by default): expand/collapse toggle using arrow characters (NOT HTML entities in button text - use actual arrow characters or simple text like '> expand' and 'v collapse')
+- Customer Wills block (blue, collapsed by default): same
+- Inline Copy button always visible, full-width Copy button visible when expanded
+- Copy only copies legal text not Don't Forget section
 
-SUMMARY TAB: Shows scope (customer, walls, perimeter, height, floor), materials list, Don't Forget items (red/white based on checked state), contractor wills, customer wills.
+FLIGHT PLAN FINAL TAB (formerly Summary): Shows scope, materials, Don't Forget items, contractor wills, customer wills. Tab label and block title both read "Flight Plan - FINAL"
 
-WILL LANGUAGE - CONTRACTOR:
-- Gutter: dynamic based on pump type (single or triple sump pump with battery backup)
-- Wall liner, AquaGrate, Inspection Ports, AirSystem (gravity or condensate version), Electrician GW, Drywall GW half, Drywall GW full, Stairs, Cut Through GW, Window Well Tap
-- AirSystem WITHOUT condensate: "Groundworks will install an AirSystem. The system will drain by gravity into the existing waterproofing system."
-- AirSystem WITH condensate: "Groundworks will install an AirSystem in the utility room. A condensate pump will also be installed..."
-- All Drywall GW and Cut Through GW bullets end with liquid nails + warranty language: "If/when any base plate(s) are reinstalled, nails MUST NOT be used to secure the base plate(s) to the concrete floor, as the drainage system is located beneath and will be damaged. This will also void your warranty. A construction adhesive such as Liquid Nails or comparable must be used instead."
-- Footer: Homeowner has reviewed and understands contractor wills. Customer Initials: X______________
+WILL BULLET LABELS: Every bullet prefixed with bold all-caps label and colon.
+CONTRACTOR labels: SYSTEM, WALL LINER, AQUAGRATE, INSPECTION PORTS, AIR SYSTEM, ELECTRICIAN, CONTRACTOR DEMOLITION - DRYWALL, CONTRACTOR DEMOLITION - STAIRS, CONTRACTOR DEMOLITION - CUT THROUGH, WINDOW WELL, ACKNOWLEDGEMENT
+CUSTOMER labels: PARKING, PERSONAL EFFECTS, DIGSAFE, ELECTRICIAN, CUSTOMER DEMOLITION - DRYWALL, CUSTOMER DEMOLITION - CUT THROUGH, BASEBOARD HEATER, RESPONSIBILITY, ACKNOWLEDGEMENT
 
-WILL LANGUAGE - CUSTOMER:
-- Header: Homeowner to provide parking. Homeowner to remove personal effects.
-- DigSafe Flags, Electrician HO, Drywall HO 1/2 Wall (10 inches NOT 18), Drywall HO Full Wall, Cut Through HO (ends with liquid nails + warranty language), Baseboard Heater
-- Footer: Full demolition responsibility language. Homeowner has reviewed. Customer Initials: X______________
+WILL LANGUAGE:
+- SYSTEM: dynamic pump type (single or triple sump pump with battery backup)
+- AIR SYSTEM without condensate: "Groundworks will install an AirSystem. The system will drain by gravity into the existing waterproofing system."
+- AIR SYSTEM with condensate: "Groundworks will install an AirSystem in the utility room. A condensate pump will also be installed..."
+- Liquid nails + warranty language appended to: Contractor Demolition Drywall (both versions), Contractor Demolition Cut Through, Customer Demolition Drywall 1/2 Wall, Customer Demolition Drywall Full Wall, Customer Demolition Cut Through. Text: "If/when any base plate(s) are reinstalled, nails MUST NOT be used to secure the base plate(s) to the concrete floor, as the drainage system is located beneath and will be damaged. This will also void your warranty. A construction adhesive such as Liquid Nails or comparable must be used instead."
+- Customer Demolition Drywall 1/2 Wall: "lower 10 inches of studs" (NOT 18 inches)
+- ACKNOWLEDGEMENT on both contractor and customer wills
+- RESPONSIBILITY: full demolition liability language on customer wills
+- PARKING and PERSONAL EFFECTS: always-present header items on customer wills
+- Contractor footer: Homeowner has reviewed and understands contractor wills. Customer Initials: X______________
+- Customer footer: Homeowner has reviewed and understands customer wills. Customer Initials: X______________
 
-DESIGN: Dark theme #0f1117. Panels slightly darker (#0b0d13 FlightPlan, #0d0f18 Wills). Bebas Neue headings, IBM Plex Mono throughout. FlightPlan accent blue #4fc3f7, Wills accent purple #a78bfa. Copy buttons: orange #f97316 contractor, blue #0e7faa customer. Rebuild prompt collapsed at very bottom of main area.</div>
+MISC items (Utilities Protection, Permit B, 5yr MSP): always shown in Wills panel in RED until checked then white. Appear in Don't Forget section of output in red if unchecked white if checked.
+
+DESIGN: Dark #0f1117. FlightPlan panel #0b0d13, Wills panel #0d0f18. Bebas Neue headings, IBM Plex Mono everywhere. Blue #4fc3f7 FlightPlan accent, purple #a78bfa Wills accent. Orange #f97316 contractor, blue #0e7faa customer copy buttons white text. Expand/collapse toggles use plain text characters not HTML entities. All dynamic dash placeholders use innerHTML with &mdash; entity. Rebuild prompt collapsed at bottom of main area.</div>
       <button class="rebuild-copy-btn" id="rebuild-copy-btn" onclick="copyRebuildPrompt()">Copy Prompt</button>
     </div>
   </div>
@@ -521,22 +502,21 @@ var wallId=0,walls=[],fpPump='single',fp2Pump='single',willPump='single';
 
 function toggleNav(w){document.getElementById('nav-'+w).classList.toggle('collapsed');}
 
-function addWall(len,width,gutter,liner){
+function addWall(len,gutter,liner){
   var id=++wallId;
-  walls.push({id:id,len:len||0,width:width||0,gutter:!!gutter,liner:liner!==undefined?liner:!!gutter});
+  walls.push({id:id,len:len||0,gutter:!!gutter,liner:liner!==undefined?liner:!!gutter});
   renderWalls();calcFP();
 }
 function removeWall(id){walls=walls.filter(function(w){return w.id!==id;});renderWalls();calcFP();}
-function setWallNum(id,field,v){var w=walls.find(function(w){return w.id===id;});if(w){w[field]=parseFloat(v)||0;calcFP();}}
+function setWallNum(id,v){var w=walls.find(function(w){return w.id===id;});if(w){w.len=parseFloat(v)||0;calcFP();}}
 function setWallChk(id,field,v){var w=walls.find(function(w){return w.id===id;});if(w){w[field]=v;calcFP();autoSyncWills();}}
 
 function renderWalls(){
   document.getElementById('wall-tbody').innerHTML=walls.map(function(w,i){
     return '<tr><td class="wnum">'+(i+1)+'</td>'
-      +'<td><input type="number" value="'+(w.len||'')+'" placeholder="ft" min="0" step="0.5" oninput="setWallNum('+w.id+',\'len\',this.value)"></td>'
+      +'<td><input type="number" value="'+(w.len||'')+'" placeholder="ft" min="0" step="0.5" oninput="setWallNum('+w.id+',this.value)"></td>'
       +'<td style="text-align:center;"><input type="checkbox" class="wall-chk gutter-chk" '+(w.gutter?'checked':'')+' onchange="setWallChk('+w.id+',\'gutter\',this.checked)"></td>'
       +'<td style="text-align:center;"><input type="checkbox" class="wall-chk liner-chk" '+(w.liner?'checked':'')+' onchange="setWallChk('+w.id+',\'liner\',this.checked)"></td>'
-      +'<td><input type="number" value="'+(w.width||'')+'" placeholder="w" min="0" step="0.5" oninput="setWallNum('+w.id+',\'width\',this.value)"></td>'
       +'<td><button class="wall-del" onclick="removeWall('+w.id+')">&#x2715;</button></td></tr>';
   }).join('');
 }
@@ -547,8 +527,7 @@ function getStats(){
   var totalLF=walls.reduce(function(s,w){return s+w.len;},0);
   var gutterLF=walls.filter(function(w){return w.gutter;}).reduce(function(s,w){return s+w.len;},0);
   var linerLF=walls.filter(function(w){return w.liner;}).reduce(function(s,w){return s+w.len;},0);
-  var floor=walls.filter(function(w){return w.len>0&&w.width>0;}).reduce(function(s,w){return s+w.len*w.width;},0);
-  return{count:walls.length,totalLF:totalLF,gutterLF:gutterLF,gutterWaste:gutterLF*(1+wp),linerLF:linerLF,linerWaste:linerLF*(1+wp),floor:floor,h:h,wp:wp,hasGutter:gutterLF>0,hasLiner:linerLF>0};
+  return{count:walls.length,totalLF:totalLF,gutterLF:gutterLF,gutterWaste:gutterLF*(1+wp),linerLF:linerLF,linerWaste:linerLF*(1+wp),h:h,wp:wp,hasGutter:gutterLF>0,hasLiner:linerLF>0};
 }
 function ov(id){var el=document.getElementById(id);return el?(parseFloat(el.value)||0):0;}
 function chkFP(id){var el=document.getElementById('fp-'+id);return el&&el.checked;}
@@ -589,11 +568,10 @@ function calcFP(){
   document.getElementById('fs-walls').textContent=s.count;
   document.getElementById('fs-lf').textContent=s.totalLF.toFixed(1)+' lf';
   document.getElementById('fs-gutter').textContent=s.gutterLF.toFixed(1)+' lf';
-  document.getElementById('fs-floor').textContent=s.floor>0?Math.round(s.floor)+' sf':'&#8212;';
-  document.getElementById('fq-gutter').textContent=s.hasGutter?s.gutterWaste.toFixed(1)+' lf':'&#8212;';
-  document.getElementById('fq-wallliner').textContent=s.hasLiner?s.linerWaste.toFixed(1)+' lf':'&#8212;';
   var gwc=walls.filter(function(w){return w.gutter;}).length;
-  document.getElementById('fq-ports').textContent=gwc>0?gwc+' ea (auto)':'&#8212;';
+  document.getElementById('fq-gutter').innerHTML=s.hasGutter?s.gutterWaste.toFixed(1)+' lf':'&mdash;';
+  document.getElementById('fq-wallliner').innerHTML=s.hasLiner?s.linerWaste.toFixed(1)+' lf':'&mdash;';
+  document.getElementById('fq-ports').innerHTML=gwc>0?gwc+' ea (auto)':'&mdash;';
   autoSyncWills();
   renderMain();
 }
@@ -631,7 +609,6 @@ function renderMain(){
   var el=document.getElementById('fp-plan-rows');
   var btn=document.getElementById('fp-copy-btn');
 
-  // Update MISC label colors
   MISC.forEach(function(m){
     var lbl=document.getElementById(m.lblId);
     if(lbl)lbl.className=getW(m.id)?'wills-label':'wills-label misc-red';
@@ -639,8 +616,7 @@ function renderMain(){
 
   if(!items.length){
     el.innerHTML='<div class="fp-empty">Add walls and select materials in the left panel.</div>';
-    btn.style.display='none';
-    return;
+    btn.style.display='none';return;
   }
   btn.style.display='block';
   var html=items.map(function(it){
@@ -661,10 +637,7 @@ function copyFP(){
   var el=document.getElementById('fp-plan-rows');
   var rows=el.querySelectorAll('.fp-plan-row');
   var lines=[];
-  rows.forEach(function(r){
-    var cells=r.querySelectorAll('span');
-    if(cells.length>=2)lines.push(cells[0].innerText+': '+cells[1].innerText);
-  });
+  rows.forEach(function(r){var c=r.querySelectorAll('span');if(c.length>=2)lines.push(c[0].innerText+': '+c[1].innerText);});
   navigator.clipboard.writeText(lines.join('\n')).then(function(){
     var btn=document.getElementById('fp-copy-btn');
     btn.textContent='Copied!';btn.classList.add('copied');
@@ -688,7 +661,6 @@ function renderSummary(){
   html+='<div style="font-family:monospace;font-size:.74rem;line-height:1.8;color:#c8ccd8;">';
   html+='<div><span style="color:#8892a4;">Customer: </span>'+escHtml(cust)+'</div>';
   html+='<div><span style="color:#8892a4;">Walls: </span>'+s.count+' &nbsp;|&nbsp; Perimeter: '+s.totalLF.toFixed(1)+' lf &nbsp;|&nbsp; Height: '+s.h+' ft</div>';
-  if(s.floor>0)html+='<div><span style="color:#8892a4;">Est. floor: </span>'+Math.round(s.floor)+' sf</div>';
   html+='</div></div>';
   if(items.length){
     html+='<div style="margin-bottom:12px;"><div class="summary-section-title">Materials</div>';
@@ -736,66 +708,69 @@ function onDwChange(sel){
 }
 
 var LN=' If/when any base plate(s) are reinstalled, nails MUST NOT be used to secure the base plate(s) to the concrete floor, as the drainage system is located beneath and will be damaged. This will also void your warranty. A construction adhesive such as Liquid Nails or comparable must be used instead.';
-var CB={
-  wallliner:'Groundworks will install wall liner from sill plate to gutter on any wall containing a perimeter drain system.',
-  aquagrate:'Groundworks will install AquaGrate, which IS NOT positioned on a footing; however, the design is meant to accommodate obstructions, which would otherwise need to be temporarily moved (noted on diagram in orange). The homeowner is aware that the cold joint in this area is still susceptible to groundwater seepage and could get wet, but the AquaGrate will connect to the larger drain system and catch water that passes over the floor until it reaches the drain.',
-  ports:'Groundworks will install inspection ports along drain system for inspection purposes.',
-  elecGW:'Groundworks will install dedicated electrical outlets as required by the scope of work. Groundworks always recommends dedicated outlet(s) for sump pumps to ensure circuits are not tripped causing the pump to be inoperable.',
-  drywallGWhalf:'Groundworks will remove up to the bottom one-half of drywall, insulation, and wall studs, but only as necessary as determined by the foreman to properly perform the requested waterproofing work. Materials will be set aside or disposed of at the customer\'s request. Customer is responsible for replacement.'+LN,
-  drywallGWfull:'Groundworks will remove the entire wall, including drywall, insulation, and wall studs, but only as necessary as determined by the foreman to properly perform the requested waterproofing work. Materials will be set aside or disposed of at the customer\'s request. Customer is responsible for replacement.'+LN,
-  stairs:'Groundworks will remove and set aside any landings or stair treads to gain access to the working area. Groundworks cannot guarantee the condition of any wood once removed. Groundworks will attempt to reinstall stair treads upon completion of work, provided they are in good condition and safe to reuse. Homeowner is responsible for replacement of any stair components that cannot be safely reinstalled.',
-  cutGW:'Groundworks will remove section(s) of perpendicular wall(s), approximately 10" x 10" each, as necessary to allow the waterproofing system to pass through. Homeowner is responsible for replacement and repair of any materials removed.'+LN,
-  windowwell:'Groundworks will install a window well tap to direct any water from the window well into the perimeter drain system.',
-};
-var HB={
-  elecHO:'Homeowner will install dedicated electrical outlets as required by the scope of work. Groundworks always recommends dedicated outlet(s) for sump pumps to ensure circuits are not tripped causing the pump to be inoperable.',
-  drywallHOhalf:'Homeowner will remove the bottom base plate(s) and the lower 10 inches of studs as measured from the floor. Customer will be responsible for replacement. This includes base plate(s), drywall, insulation, electrical boxes, and any other items that would prevent access to the working area.',
-  drywallHOfull:'Homeowner will remove the entire wall(s), including base plate(s), drywall, insulation, wall studs, electrical boxes, and any other items that would prevent access to the working area. Customer will be responsible for full replacement of all removed materials.',
-  cutHO:'Homeowner will remove section(s) of perpendicular wall(s), approximately 10" x 10" each, prior to installation to allow the waterproofing system to pass through. Homeowner is responsible for replacement and repair of all materials removed.'+LN,
-  baseboard:'Homeowner to hire contractor/plumber to cut and cap baseboard heaters.',
-  digsafe:'Homeowner agrees to leave any DigSafe flags in place that mark underground lines and/or hazards that the installation crew will need to be aware of.',
-};
-var CHEADER=['Homeowner to provide parking for Groundworks truck and crew.','Homeowner to remove personal effects from working area.'];
-var CFOOTER=['Homeowner is responsible for repair and replacement of all materials removed, altered, or affected as a result of demolition and installation work performed by Groundworks. This includes, but is not limited to, drywall, insulation (including spray foam), framing, flooring, tile, bathroom fixtures, stairs, and any other finished or structural components.','Homeowner has reviewed and understands customer wills.'];
-var CONTFOOTER=['Homeowner has reviewed and understands contractor wills.'];
-var INITIALS='Customer Initials: X______________';
 
-function gutterBullet(){
-  var d=willPump==='triple'?'a triple sump pump with battery backup':'a single sump pump with battery backup';
-  return 'Groundworks will install a perimeter drain system to terminate into a sump pump basin containing '+d+'. Groundworks always recommends a full perimeter drain for maximum protection against groundwater seepage.';
-}
-function airBullet(){
-  return getW('wp-condensate')
-    ?'Groundworks will install an AirSystem in the utility room. A condensate pump will also be installed to remove moisture collected by the AirSystem, as gravity drainage is not sufficient in this installation.'
-    :'Groundworks will install an AirSystem. The system will drain by gravity into the existing waterproofing system.';
-}
+function lbl(tag,text){return '<span class="bullet-label">'+tag+':</span> '+text;}
+
+var CB={
+  gutter:function(){var d=willPump==='triple'?'a triple sump pump with battery backup':'a single sump pump with battery backup';return lbl('SYSTEM','Groundworks will install a perimeter drain system to terminate into a sump pump basin containing '+d+'. Groundworks always recommends a full perimeter drain for maximum protection against groundwater seepage.');},
+  wallliner:lbl('WALL LINER','Groundworks will install wall liner from sill plate to gutter on any wall containing a perimeter drain system.'),
+  aquagrate:lbl('AQUAGRATE','Groundworks will install AquaGrate, which IS NOT positioned on a footing; however, the design is meant to accommodate obstructions, which would otherwise need to be temporarily moved (noted on diagram in orange). The homeowner is aware that the cold joint in this area is still susceptible to groundwater seepage and could get wet, but the AquaGrate will connect to the larger drain system and catch water that passes over the floor until it reaches the drain.'),
+  ports:lbl('INSPECTION PORTS','Groundworks will install inspection ports along drain system for inspection purposes.'),
+  airsystem:function(cond){return cond?lbl('AIR SYSTEM','Groundworks will install an AirSystem in the utility room. A condensate pump will also be installed to remove moisture collected by the AirSystem, as gravity drainage is not sufficient in this installation.'):lbl('AIR SYSTEM','Groundworks will install an AirSystem. The system will drain by gravity into the existing waterproofing system.');},
+  elecGW:lbl('ELECTRICIAN','Groundworks will install dedicated electrical outlets as required by the scope of work. Groundworks always recommends dedicated outlet(s) for sump pumps to ensure circuits are not tripped causing the pump to be inoperable.'),
+  drywallGWhalf:lbl('CONTRACTOR DEMOLITION \u2014 DRYWALL','Groundworks will remove up to the bottom one-half of drywall, insulation, and wall studs, but only as necessary as determined by the foreman to properly perform the requested waterproofing work. Materials will be set aside or disposed of at the customer\'s request. Customer is responsible for replacement.'+LN),
+  drywallGWfull:lbl('CONTRACTOR DEMOLITION \u2014 DRYWALL','Groundworks will remove the entire wall, including drywall, insulation, and wall studs, but only as necessary as determined by the foreman to properly perform the requested waterproofing work. Materials will be set aside or disposed of at the customer\'s request. Customer is responsible for replacement.'+LN),
+  stairs:lbl('CONTRACTOR DEMOLITION \u2014 STAIRS','Groundworks will remove and set aside any landings or stair treads to gain access to the working area. Groundworks cannot guarantee the condition of any wood once removed. Groundworks will attempt to reinstall stair treads upon completion of work, provided they are in good condition and safe to reuse. Homeowner is responsible for replacement of any stair components that cannot be safely reinstalled.'),
+  cutGW:lbl('CONTRACTOR DEMOLITION \u2014 CUT THROUGH','Groundworks will remove section(s) of perpendicular wall(s), approximately 10" x 10" each, as necessary to allow the waterproofing system to pass through. Homeowner is responsible for replacement and repair of any materials removed.'+LN),
+  windowwell:lbl('WINDOW WELL','Groundworks will install a window well tap to direct any water from the window well into the perimeter drain system.'),
+  ack:lbl('ACKNOWLEDGEMENT','Homeowner has reviewed and understands contractor wills.'),
+};
+
+var HB={
+  parking:lbl('PARKING','Homeowner to provide parking for Groundworks truck and crew.'),
+  effects:lbl('PERSONAL EFFECTS','Homeowner to remove personal effects from working area.'),
+  digsafe:lbl('DIGSAFE','Homeowner agrees to leave any DigSafe flags in place that mark underground lines and/or hazards that the installation crew will need to be aware of.'),
+  elecHO:lbl('ELECTRICIAN','Homeowner will install dedicated electrical outlets as required by the scope of work. Groundworks always recommends dedicated outlet(s) for sump pumps to ensure circuits are not tripped causing the pump to be inoperable.'),
+  drywallHOhalf:lbl('CUSTOMER DEMOLITION \u2014 DRYWALL','Homeowner will remove the bottom base plate(s) and the lower 10 inches of studs as measured from the floor. Customer will be responsible for replacement. This includes base plate(s), drywall, insulation, electrical boxes, and any other items that would prevent access to the working area.'+LN),
+  drywallHOfull:lbl('CUSTOMER DEMOLITION \u2014 DRYWALL','Homeowner will remove the entire wall(s), including base plate(s), drywall, insulation, wall studs, electrical boxes, and any other items that would prevent access to the working area. Customer will be responsible for full replacement of all removed materials.'+LN),
+  cutHO:lbl('CUSTOMER DEMOLITION \u2014 CUT THROUGH','Homeowner will remove section(s) of perpendicular wall(s), approximately 10" x 10" each, prior to installation to allow the waterproofing system to pass through. Homeowner is responsible for replacement and repair of all materials removed.'+LN),
+  baseboard:lbl('BASEBOARD HEATER','Homeowner to hire contractor/plumber to cut and cap baseboard heaters.'),
+  responsibility:lbl('RESPONSIBILITY','Homeowner is responsible for repair and replacement of all materials removed, altered, or affected as a result of demolition and installation work performed by Groundworks. This includes, but is not limited to, drywall, insulation (including spray foam), framing, flooring, tile, bathroom fixtures, stairs, and any other finished or structural components.'),
+  ack:lbl('ACKNOWLEDGEMENT','Homeowner has reviewed and understands customer wills.'),
+};
+
+var INITIALS='Customer Initials: X______________';
 
 function willsUpdate(){
   MISC.forEach(function(m){
-    var lbl=document.getElementById(m.lblId);
-    if(lbl)lbl.className=getW(m.id)?'wills-label':'wills-label misc-red';
+    var lbl2=document.getElementById(m.lblId);
+    if(lbl2)lbl2.className=getW(m.id)?'wills-label':'wills-label misc-red';
   });
+  var cond=getW('wp-airsystem')&&getW('wp-condensate');
   var cL=[];
-  if(getW('wp-gutter'))          cL.push(gutterBullet());
+  if(getW('wp-gutter'))          cL.push(CB.gutter());
   if(getW('wp-wallliner'))       cL.push(CB.wallliner);
   if(getW('wp-aquagrate'))       cL.push(CB.aquagrate);
   if(getW('wp-ports'))           cL.push(CB.ports);
-  if(getW('wp-airsystem'))       cL.push(airBullet());
+  if(getW('wp-airsystem'))       cL.push(CB.airsystem(cond));
   if(getW('wp-elec-gw'))         cL.push(CB.elecGW);
   if(getW('wp-drywall-gw-half')) cL.push(CB.drywallGWhalf);
   if(getW('wp-drywall-gw-full')) cL.push(CB.drywallGWfull);
   if(getW('wp-stairs'))          cL.push(CB.stairs);
   if(getW('wp-cut-gw'))          cL.push(CB.cutGW);
   if(getW('wp-windowwell'))      cL.push(CB.windowwell);
-  CONTFOOTER.forEach(function(l){cL.push(l);});
-  var hL=CHEADER.slice();
+  cL.push(CB.ack);
+
+  var hL=[HB.parking,HB.effects];
   if(getW('wp-digsafe'))         hL.push(HB.digsafe);
   if(getW('wp-elec-ho'))         hL.push(HB.elecHO);
   if(getW('wp-drywall-ho-half')) hL.push(HB.drywallHOhalf);
   if(getW('wp-drywall-ho-full')) hL.push(HB.drywallHOfull);
   if(getW('wp-cut-ho'))          hL.push(HB.cutHO);
   if(getW('wp-baseboard'))       hL.push(HB.baseboard);
-  CFOOTER.forEach(function(l){hL.push(l);});
+  hL.push(HB.responsibility);
+  hL.push(HB.ack);
+
   renderWill(cL,'contractor-output');
   renderWill(hL,'customer-output');
   renderMain();
@@ -804,7 +779,7 @@ function willsUpdate(){
 function renderWill(lines,elId){
   var el=document.getElementById(elId);
   var parts=lines.map(function(l){
-    return '<span data-copyable="true">* '+l.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')+'</span>';
+    return '<span data-copyable="true">* '+l+'</span>';
   });
   parts.push('<span class="initials-text" data-copyable="true">*\n* '+INITIALS+'</span>');
   el.innerHTML=parts.join('\n\n');
@@ -839,10 +814,10 @@ function resetWills(){
 
 function toggleBlock(which){
   var block=document.getElementById('block-'+which);
-  var btn=block.querySelector('.will-collapse-toggle');
+  var btn=document.getElementById('toggle-'+which);
   if(!block||!btn)return;
   var collapsed=block.classList.toggle('collapsed');
-  btn.textContent=collapsed?'&#9658; expand':'&#9660; collapse';
+  btn.textContent=collapsed?'> expand':'v collapse';
 }
 
 function toggleRebuild(){document.getElementById('rebuild-box').classList.toggle('visible');}
