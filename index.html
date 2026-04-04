@@ -59,10 +59,8 @@
   .pump-item input[type=checkbox]:checked{background:#f97316!important;border-color:#f97316!important;}
   .drywall-item input[type=checkbox]:checked{background:#a78bfa!important;border-color:#a78bfa!important;}
   .elec-item input[type=checkbox]:checked{background:#34d399!important;border-color:#34d399!important;}
-  .misc-item input[type=checkbox]:checked{background:#f87171!important;border-color:#f87171!important;}
   .check-label{font-size:.82rem;color:#c8ccd8;font-family:'IBM Plex Mono',monospace;user-select:none;line-height:1.3;}
   .check-label small{display:block;font-size:.65rem;color:#555;margin-top:1px;}
-  .check-label.misc-unchecked{color:#f87171;}
   .tag{font-size:.55rem;letter-spacing:1px;text-transform:uppercase;padding:1px 5px;border-radius:3px;margin-left:4px;font-family:'IBM Plex Mono',monospace;vertical-align:middle;}
   .tag-c{background:#f9731622;color:#f97316;border:1px solid #f9731644;}
   .tag-h{background:#4fc3f722;color:#4fc3f7;border:1px solid #4fc3f744;}
@@ -72,6 +70,8 @@
   .sub-group-label{font-family:'IBM Plex Mono',monospace;font-size:.6rem;letter-spacing:1px;text-transform:uppercase;margin-bottom:6px;color:#f97316;}
   .child-item{margin-left:14px;border-left:2px solid #1e2435;padding-left:8px;}
   .child-item input[type=checkbox]:checked{background:#2dd4bf!important;border-color:#2dd4bf!important;}
+  .misc-label-red{font-size:.82rem;color:#f87171;font-family:'IBM Plex Mono',monospace;user-select:none;line-height:1.3;}
+  .misc-label-white{font-size:.82rem;color:#c8ccd8;font-family:'IBM Plex Mono',monospace;user-select:none;line-height:1.3;}
   .placeholder-panel{padding:40px 20px;text-align:center;color:#3a3f55;font-family:'IBM Plex Mono',monospace;font-size:.8rem;line-height:2;}
   .placeholder-panel .icon{font-size:2rem;margin-bottom:8px;}
   .output-panel{display:flex;flex-direction:column;gap:16px;}
@@ -84,8 +84,9 @@
   .will-content{font-family:'IBM Plex Mono',monospace;font-size:.78rem;line-height:1.8;color:#c8ccd8;white-space:pre-wrap;background:#0f1117;border:1px solid #1e2435;border-radius:5px;padding:14px;min-height:60px;}
   .empty-state{color:#3a3f55;font-style:italic;font-size:.75rem;}
   .initials-text{color:#f97316;}
-  .dont-forget{color:#f87171;}
-  .dont-forget-done{color:#c8ccd8;}
+  .dont-forget-header{display:block;margin-top:12px;padding-top:10px;border-top:1px solid #1e2435;font-family:'IBM Plex Mono',monospace;font-size:.6rem;letter-spacing:2px;color:#3a3f55;text-transform:uppercase;}
+  .dont-forget-red{color:#f87171;}
+  .dont-forget-white{color:#c8ccd8;}
   .copy-btn{font-family:'IBM Plex Mono',monospace;font-size:.78rem;font-weight:500;letter-spacing:1px;text-transform:uppercase;border:none;color:#fff;padding:13px 0;border-radius:5px;cursor:pointer;transition:all .15s;width:100%;margin-top:12px;display:block;}
   .contractor .copy-btn{background:#f97316;}
   .contractor .copy-btn:hover{background:#ea6a0a;}
@@ -165,33 +166,28 @@
     <div class="check-item"><input type="checkbox" id="wp-digsafe" onchange="update()"><label class="check-label" for="wp-digsafe">DigSafe Flags</label></div>
 
     <div class="section-divider">Misc</div>
-    <div class="check-item misc-item"><input type="checkbox" id="wp-utilities" onchange="update()"><label class="check-label misc-unchecked" id="lbl-utilities" for="wp-utilities">Utilities Protection</label></div>
-    <div class="check-item misc-item"><input type="checkbox" id="wp-permit" onchange="update()"><label class="check-label misc-unchecked" id="lbl-permit" for="wp-permit">Permit B</label></div>
-    <div class="check-item misc-item"><input type="checkbox" id="wp-msp" onchange="update()"><label class="check-label misc-unchecked" id="lbl-msp" for="wp-msp">5 yr MSP</label></div>
+    <div class="check-item"><input type="checkbox" id="wp-utilities" onchange="update()"><label class="misc-label-red" id="lbl-utilities" for="wp-utilities">Utilities Protection</label></div>
+    <div class="check-item"><input type="checkbox" id="wp-permit" onchange="update()"><label class="misc-label-red" id="lbl-permit" for="wp-permit">Permit B</label></div>
+    <div class="check-item"><input type="checkbox" id="wp-msp" onchange="update()"><label class="misc-label-red" id="lbl-msp" for="wp-msp">5 yr MSP</label></div>
 
     <button class="reset-btn" onclick="resetWP()">Reset Waterproofing</button>
   </div>
 
   <div id="panel-fr" class="checklist-panel" style="display:none;">
     <div class="placeholder-panel">
-      <div class="icon">🏗</div>
-      Foundation Repair<br>checklist coming soon.<br><br>
+      <div class="icon">🏗</div>Foundation Repair<br>checklist coming soon.<br><br>
       <span style="font-size:.65rem;color:#2a3450;">Provide checklist items and<br>will language to activate this tab.</span>
     </div>
   </div>
-
   <div id="panel-cs" class="checklist-panel" style="display:none;">
     <div class="placeholder-panel">
-      <div class="icon">🕳</div>
-      Crawlspace Encapsulation<br>checklist coming soon.<br><br>
+      <div class="icon">🕳</div>Crawlspace Encapsulation<br>checklist coming soon.<br><br>
       <span style="font-size:.65rem;color:#2a3450;">Provide checklist items and<br>will language to activate this tab.</span>
     </div>
   </div>
-
   <div id="panel-cl" class="checklist-panel" style="display:none;">
     <div class="placeholder-panel">
-      <div class="icon">🪨</div>
-      Concrete Lifting<br>checklist coming soon.<br><br>
+      <div class="icon">🪨</div>Concrete Lifting<br>checklist coming soon.<br><br>
       <span style="font-size:.65rem;color:#2a3450;">Provide checklist items and<br>will language to activate this tab.</span>
     </div>
   </div>
@@ -223,36 +219,36 @@ We use a contract system where two freeform text fields called Contractor Wills 
 OVERALL STRUCTURE:
 Four project tabs: Waterproofing, Foundation Repair, Crawlspace, Concrete Lifting. Each tab independent. Tabs have colored dot when items checked. Only Waterproofing active - others show placeholders. Section divider labels WHITE. Tab colors: Waterproofing #4fc3f7, Foundation Repair #f97316, Crawlspace #a78bfa, Concrete Lifting #34d399.
 
-WATERPROOFING CHECKLIST SECTIONS:
+WATERPROOFING CHECKLIST:
 
-SYSTEM: Gutter/Perimeter Drain, Pump Type (Triple or Single - mutually exclusive), AquaGrate, Inspection Ports, AirSystem (with child Condensate Pump grayed until AirSystem checked), Wall Liner.
+SYSTEM: Gutter/Perimeter Drain, Pump Type (Triple or Single mutually exclusive, orange when checked), AquaGrate, Inspection Ports, AirSystem (child Condensate Pump grayed until AirSystem checked, teal when checked), Wall Liner.
 
-ELECTRICAL: Sub-labeled Contractor and Customer sections.
-- Contractor: Electrician with orange Contractor tag
-- Customer: Electrician with blue Customer tag
+ELECTRICAL section with two colored sub-section bars:
+- Contractor sub-section (orange bar): Electrician with orange [Contractor] tag
+- Customer sub-section (blue bar): Electrician with blue [Customer] tag
 
-DEMOLITION: Two sub-sections labeled Contractor and Customer with colored left-border bars.
-- Contractor sub-section: Drywall 1/2 Wall (Contractor tag), Drywall Full Wall (Contractor tag), Cut Through (Contractor tag), Stairs (Contractor tag)
-- Customer sub-section: Drywall 1/2 Wall (Customer tag), Drywall Full Wall (Customer tag), Cut Through (Customer tag), Baseboard Heater (Customer tag)
+DEMOLITION section with two colored sub-section bars:
+- Contractor sub-section (orange bar): Drywall 1/2 Wall [Contractor], Drywall Full Wall [Contractor], Cut Through [Contractor], Stairs [Contractor]
+- Customer sub-section (blue bar): Drywall 1/2 Wall [Customer], Drywall Full Wall [Customer], Cut Through [Customer], Baseboard Heater [Customer]
 - All four drywall options mutually exclusive across both sections.
 
 SITE: DigSafe Flags (optional)
 
-MISC: Always-visible section at bottom. Three items always shown in RED until checked, then white:
+MISC section - always visible, labels RED until checked then WHITE:
 - Utilities Protection
 - Permit B
 - 5 yr MSP
 
-OUTPUT PANEL: After the generated wills bullets, show a "Don't Forget" block at the bottom of EACH will block. The three MISC items (Utilities Protection, Permit B, 5yr MSP) always appear there. If unchecked in checklist: shown in RED. If checked: shown in normal white text.
+OUTPUT PANEL - two blocks (Contractor Wills, Customer Wills):
+Each block shows generated bullet points, then initials line, then a Don't Forget section at the bottom showing all three MISC items. MISC items appear in RED if unchecked in checklist, WHITE if checked. Copy button excludes the Don't Forget section so pasted text is clean contract language only.
 
-LANGUAGE RULES:
+WILL LANGUAGE:
+- Inspection Ports: "Groundworks will install inspection ports along drain system for inspection purposes." -> CONTRACTOR wills
 - AirSystem WITHOUT condensate: "Groundworks will install an AirSystem. The system will drain by gravity into the existing waterproofing system."
-- AirSystem WITH condensate: expands to include condensate pump language.
-- Drywall Customer 1/2 Wall: "lower 10 inches of studs" (NOT 18 inches)
-- Cut Through GW and HO both end with liquid nails + warranty language.
-- Drywall GW bullets both end with liquid nails + warranty language.
-- Liquid nails text: "If/when any base plate(s) are reinstalled, nails MUST NOT be used to secure the base plate(s) to the concrete floor, as the drainage system is located beneath and will be damaged. This will also void your warranty. A construction adhesive such as Liquid Nails or comparable must be used instead."
-- Plural language throughout: base plate(s), wall(s), section(s)
+- AirSystem WITH condensate: "Groundworks will install an AirSystem in the utility room. A condensate pump will also be installed to remove moisture collected by the AirSystem, as gravity drainage is not sufficient in this installation."
+- Drywall Customer 1/2 Wall uses "lower 10 inches of studs" (NOT 18 inches)
+- Cut Through GW and HO and both Drywall GW options all end with liquid nails + warranty language: "If/when any base plate(s) are reinstalled, nails MUST NOT be used to secure the base plate(s) to the concrete floor, as the drainage system is located beneath and will be damaged. This will also void your warranty. A construction adhesive such as Liquid Nails or comparable must be used instead."
+- Plural language: base plate(s), wall(s), section(s) throughout
 
 ALWAYS-PRESENT CONTRACTOR footer: Homeowner has reviewed and understands contractor wills. Customer Initials: X______________
 ALWAYS-PRESENT CUSTOMER header: Homeowner to provide parking. Homeowner to remove personal effects.
@@ -283,6 +279,7 @@ function airBullet(c){
     :'Groundworks will install an AirSystem. The system will drain by gravity into the existing waterproofing system.';
 }
 var LN=' If/when any base plate(s) are reinstalled, nails MUST NOT be used to secure the base plate(s) to the concrete floor, as the drainage system is located beneath and will be damaged. This will also void your warranty. A construction adhesive such as Liquid Nails or comparable must be used instead.';
+
 var CB={
   wallliner:'Groundworks will install wall liner from sill plate to gutter on any wall containing a perimeter drain system.',
   aquagrate:'Groundworks will install AquaGrate, which IS NOT positioned on a footing; however, the design is meant to accommodate obstructions, which would otherwise need to be temporarily moved (noted on diagram in orange). The homeowner is aware that the cold joint in this area is still susceptible to groundwater seepage and could get wet, but the AquaGrate will connect to the larger drain system and catch water that passes over the floor until it reaches the drain.',
@@ -305,9 +302,11 @@ var CHEADER=['Homeowner to provide parking for Groundworks truck and crew.','Hom
 var CFOOTER=['Homeowner is responsible for repair and replacement of all materials removed, altered, or affected as a result of demolition and installation work performed by Groundworks. This includes, but is not limited to, drywall, insulation (including spray foam), framing, flooring, tile, bathroom fixtures, stairs, and any other finished or structural components.','Homeowner has reviewed and understands customer wills.'];
 var CONTFOOTER=['Homeowner has reviewed and understands contractor wills.'];
 var INITIALS='Customer Initials: X______________';
-var MISC_LABELS=['Utilities Protection','Permit B','5 yr MSP'];
-var MISC_IDS=['wp-utilities','wp-permit','wp-msp'];
-var MISC_LABEL_IDS=['lbl-utilities','lbl-permit','lbl-msp'];
+var MISC=[
+  {id:'wp-utilities',label:'Utilities Protection',lblId:'lbl-utilities'},
+  {id:'wp-permit',label:'Permit B',lblId:'lbl-permit'},
+  {id:'wp-msp',label:'5 yr MSP',lblId:'lbl-msp'}
+];
 
 function onPumpChange(s){
   var t=document.getElementById('wp-pump-triple'),sg=document.getElementById('wp-pump-single');
@@ -319,7 +318,8 @@ function onAirSystemChange(){
   var on=document.getElementById('wp-airsystem').checked;
   var row=document.getElementById('condensate-row');
   var chk=document.getElementById('wp-condensate');
-  row.style.opacity=on?'1':'0.35';row.style.pointerEvents=on?'auto':'none';
+  row.style.opacity=on?'1':'0.35';
+  row.style.pointerEvents=on?'auto':'none';
   if(!on)chk.checked=false;
   update();
 }
@@ -338,89 +338,92 @@ function wpHasSelections(){
     .some(function(id){var el=document.getElementById(id);return el&&el.checked;});
 }
 
+function get(id){var el=document.getElementById(id);return el?el.checked:false;}
+
 function update(){
   document.getElementById('tab-wp').classList.toggle('has-selections',wpHasSelections());
 
-  // Update MISC label colors
-  MISC_IDS.forEach(function(id,i){
-    var chk=document.getElementById(id);
-    var lbl=document.getElementById(MISC_LABEL_IDS[i]);
-    if(chk&&lbl){
-      lbl.className=chk.checked?'check-label dont-forget-done':'check-label misc-unchecked';
-    }
+  // Update MISC label colors in checklist
+  MISC.forEach(function(m){
+    var lbl=document.getElementById(m.lblId);
+    if(lbl) lbl.className=get(m.id)?'misc-label-white':'misc-label-red';
   });
 
-  var get=function(id){var el=document.getElementById(id);return el?el.checked:false;};
   var pump=get('wp-pump-triple')?'triple':get('wp-pump-single')?'single':null;
   var cond=get('wp-airsystem')&&get('wp-condensate');
 
-  // CONTRACTOR bullets
+  // CONTRACTOR
   var cL=[];
-  if(get('wp-gutter')||pump)cL.push(gutterBullet(pump));
-  if(get('wp-wallliner'))cL.push(CB.wallliner);
-  if(get('wp-aquagrate'))cL.push(CB.aquagrate);
-  if(get('wp-ports'))cL.push(CB.ports);
-  if(get('wp-airsystem'))cL.push(airBullet(cond));
-  if(get('wp-elec-gw'))cL.push(CB.elecGW);
-  if(get('wp-drywall-gw-half'))cL.push(CB.drywallGWhalf);
-  if(get('wp-drywall-gw-full'))cL.push(CB.drywallGWfull);
-  if(get('wp-stairs'))cL.push(CB.stairs);
-  if(get('wp-cut-gw'))cL.push(CB.cutGW);
+  if(get('wp-gutter')||pump) cL.push(gutterBullet(pump));
+  if(get('wp-wallliner'))    cL.push(CB.wallliner);
+  if(get('wp-aquagrate'))    cL.push(CB.aquagrate);
+  if(get('wp-ports'))        cL.push(CB.ports);
+  if(get('wp-airsystem'))    cL.push(airBullet(cond));
+  if(get('wp-elec-gw'))      cL.push(CB.elecGW);
+  if(get('wp-drywall-gw-half')) cL.push(CB.drywallGWhalf);
+  if(get('wp-drywall-gw-full')) cL.push(CB.drywallGWfull);
+  if(get('wp-stairs'))       cL.push(CB.stairs);
+  if(get('wp-cut-gw'))       cL.push(CB.cutGW);
   CONTFOOTER.forEach(function(l){cL.push(l);});
 
-  // CUSTOMER bullets
+  // CUSTOMER
   var hL=CHEADER.slice();
-  if(get('wp-digsafe'))hL.push(HB.digsafe);
-  if(get('wp-elec-ho'))hL.push(HB.elecHO);
-  if(get('wp-drywall-ho-half'))hL.push(HB.drywallHOhalf);
-  if(get('wp-drywall-ho-full'))hL.push(HB.drywallHOfull);
-  if(get('wp-cut-ho'))hL.push(HB.cutHO);
-  if(get('wp-baseboard'))hL.push(HB.baseboard);
+  if(get('wp-digsafe'))         hL.push(HB.digsafe);
+  if(get('wp-elec-ho'))         hL.push(HB.elecHO);
+  if(get('wp-drywall-ho-half')) hL.push(HB.drywallHOhalf);
+  if(get('wp-drywall-ho-full')) hL.push(HB.drywallHOfull);
+  if(get('wp-cut-ho'))          hL.push(HB.cutHO);
+  if(get('wp-baseboard'))       hL.push(HB.baseboard);
   CFOOTER.forEach(function(l){hL.push(l);});
 
-  renderWills(cL,'contractor-output',get);
-  renderWills(hL,'customer-output',get);
+  renderOutput(cL,'contractor-output');
+  renderOutput(hL,'customer-output');
 }
 
-function renderWills(lines,elId,get){
+function renderOutput(lines,elId){
   var el=document.getElementById(elId);
-  var parts=lines.map(function(l){
-    return '<span>* '+l.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')+'</span>';
-  });
-  parts.push('<span class="initials-text">*\n* '+INITIALS+'</span>');
 
-  // Don't forget block
-  parts.push('<span style="display:block;margin-top:12px;padding-top:10px;border-top:1px solid #1e2435;font-family:\'IBM Plex Mono\',monospace;font-size:.65rem;letter-spacing:1px;color:#555;text-transform:uppercase;">Don\'t Forget</span>');
-  MISC_IDS.forEach(function(id,i){
-    var checked=get(id);
-    var cls=checked?'dont-forget-done':'dont-forget';
+  // Main bullets
+  var html='';
+  lines.forEach(function(l){
+    var escaped=l.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    html+='<span data-copyable="true">* '+escaped+'</span>\n\n';
+  });
+  // Initials
+  html+='<span class="initials-text" data-copyable="true">*\n* '+INITIALS+'</span>\n';
+
+  // Don't Forget block
+  html+='<span class="dont-forget-header">Don\'t Forget</span>\n';
+  MISC.forEach(function(m){
+    var checked=get(m.id);
+    var cls=checked?'dont-forget-white':'dont-forget-red';
     var icon=checked?'v':'!';
-    parts.push('<span class="'+cls+'">'+icon+' '+MISC_LABELS[i]+'</span>');
+    html+='<span class="'+cls+'">'+icon+' '+m.label+'</span>\n';
   });
 
-  el.innerHTML=parts.join('\n');
+  el.innerHTML=html;
 }
 
 function copyText(which){
   var el=document.getElementById(which+'-output');
-  var btn=document.getElementById('copy-'+which);
-  // Copy plain text only (without don't forget section for pasting into contract)
-  var spans=el.querySelectorAll('span');
+  var spans=el.querySelectorAll('[data-copyable="true"]');
   var lines=[];
-  for(var i=0;i<spans.length;i++){
-    var txt=spans[i].innerText;
-    if(txt&&!spans[i].classList.contains('dont-forget')&&!spans[i].classList.contains('dont-forget-done')&&txt.indexOf("Don't Forget")===-1){
-      lines.push(txt);
-    }
-  }
+  spans.forEach(function(s){lines.push(s.innerText);});
   navigator.clipboard.writeText(lines.join('\n\n')).then(function(){
+    var btn=document.getElementById('copy-'+which);
     btn.textContent='Copied!';btn.classList.add('copied');
-    setTimeout(function(){btn.textContent=which==='contractor'?'Copy Contractor Wills':'Copy Customer Wills';btn.classList.remove('copied');},2000);
+    setTimeout(function(){
+      btn.textContent=which==='contractor'?'Copy Contractor Wills':'Copy Customer Wills';
+      btn.classList.remove('copied');
+    },2000);
   });
 }
 
 function resetWP(){
-  ['wp-gutter','wp-pump-triple','wp-pump-single','wp-aquagrate','wp-ports','wp-airsystem','wp-condensate','wp-wallliner','wp-elec-gw','wp-elec-ho','wp-utilities','wp-drywall-gw-half','wp-drywall-gw-full','wp-drywall-ho-half','wp-drywall-ho-full','wp-stairs','wp-cut-gw','wp-cut-ho','wp-baseboard','wp-digsafe','wp-permit','wp-msp']
+  ['wp-gutter','wp-pump-triple','wp-pump-single','wp-aquagrate','wp-ports','wp-airsystem','wp-condensate',
+   'wp-wallliner','wp-elec-gw','wp-elec-ho','wp-utilities','wp-drywall-gw-half','wp-drywall-gw-full',
+   'wp-drywall-ho-half','wp-drywall-ho-full','wp-stairs','wp-cut-gw','wp-cut-ho','wp-baseboard',
+   'wp-digsafe','wp-permit','wp-msp']
     .forEach(function(id){var el=document.getElementById(id);if(el)el.checked=false;});
   document.getElementById('condensate-row').style.opacity='0.35';
   document.getElementById('condensate-row').style.pointerEvents='none';
@@ -438,6 +441,7 @@ function copyRebuildPrompt(){
     setTimeout(function(){btn.textContent='Copy Prompt';btn.classList.remove('copied');},2000);
   });
 }
+
 update();
 </script>
 
