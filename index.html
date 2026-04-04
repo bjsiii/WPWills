@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,262 +7,735 @@
 <title>Wills Builder</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-  *{box-sizing:border-box;margin:0;padding:0;}
-  body{background:#0f1117;color:#e8e8e8;font-family:'IBM Plex Sans',sans-serif;min-height:100vh;padding:24px 16px;}
-  h1{font-family:'Bebas Neue',sans-serif;font-size:2.2rem;letter-spacing:3px;color:#4fc3f7;margin-bottom:4px;}
-  .subtitle{font-size:.78rem;color:#666;letter-spacing:2px;text-transform:uppercase;margin-bottom:20px;font-family:'IBM Plex Mono',monospace;}
-  .tabs{display:flex;gap:6px;margin-bottom:0;flex-wrap:wrap;max-width:1150px;}
-  .tab{font-family:'IBM Plex Mono',monospace;font-size:.72rem;letter-spacing:1px;text-transform:uppercase;padding:8px 16px;border-radius:5px 5px 0 0;cursor:pointer;border:1px solid #2a2f3f;border-bottom:none;background:#0f1117;color:#555;transition:all .15s;}
-  .tab:hover{color:#aaa;background:#141820;}
-  .tab.active{background:#181c27;color:#fff;border-color:#2a2f3f;}
-  .tab.active.wp{border-top:3px solid #4fc3f7;color:#4fc3f7;}
-  .tab.active.fr{border-top:3px solid #f97316;color:#f97316;}
-  .tab.active.cs{border-top:3px solid #a78bfa;color:#a78bfa;}
-  .tab.active.cl{border-top:3px solid #34d399;color:#34d399;}
-  .tab .dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:6px;vertical-align:middle;opacity:0;transition:opacity .2s;}
-  .tab.has-selections .dot{opacity:1;}
-  .tab.wp .dot{background:#4fc3f7;}
-  .tab.fr .dot{background:#f97316;}
-  .tab.cs .dot{background:#a78bfa;}
-  .tab.cl .dot{background:#34d399;}
-  .tab-border{max-width:1150px;border-bottom:1px solid #2a2f3f;margin-bottom:20px;}
-  .layout{display:grid;grid-template-columns:270px 1fr;gap:20px;max-width:1150px;}
-  @media(max-width:700px){.layout{grid-template-columns:1fr;}}
-  .checklist-panel{background:#181c27;border:1px solid #2a2f3f;border-radius:8px;padding:16px;align-self:start;}
-  .panel-label{font-family:'IBM Plex Mono',monospace;font-size:.65rem;letter-spacing:2px;text-transform:uppercase;color:#4fc3f7;margin-bottom:14px;border-bottom:1px solid #2a2f3f;padding-bottom:8px;}
-  .section-divider{font-family:'IBM Plex Mono',monospace;font-size:.6rem;letter-spacing:1.5px;text-transform:uppercase;color:#ffffff;margin:10px 0 6px 0;padding-top:8px;border-top:1px solid #1e2435;}
-  .sub-section{font-family:'IBM Plex Mono',monospace;font-size:.58rem;letter-spacing:1px;text-transform:uppercase;margin:8px 0 4px 0;padding:4px 8px;border-radius:4px;}
-  .sub-section.contractor{background:#f9731618;color:#f97316;border-left:2px solid #f97316;}
-  .sub-section.customer{background:#4fc3f718;color:#4fc3f7;border-left:2px solid #4fc3f7;}
-  .check-item{display:flex;align-items:center;gap:10px;padding:6px;border-radius:5px;cursor:pointer;transition:background .15s;margin-bottom:2px;}
-  .check-item:hover{background:#1e2435;}
-  .check-item input[type=checkbox]{appearance:none;-webkit-appearance:none;width:16px;height:16px;border:1.5px solid #3a3f55;border-radius:3px;cursor:pointer;transition:all .15s;flex-shrink:0;position:relative;}
-  .check-item input[type=checkbox]:checked{background:#4fc3f7;border-color:#4fc3f7;}
-  .check-item input[type=checkbox]:checked::after{content:'v';position:absolute;top:-2px;left:2px;font-size:11px;color:#0f1117;font-weight:bold;}
-  .pump-item input[type=checkbox]:checked{background:#f97316!important;border-color:#f97316!important;}
-  .drywall-item input[type=checkbox]:checked{background:#a78bfa!important;border-color:#a78bfa!important;}
-  .elec-item input[type=checkbox]:checked{background:#34d399!important;border-color:#34d399!important;}
-  .check-label{font-size:.82rem;color:#c8ccd8;font-family:'IBM Plex Mono',monospace;user-select:none;line-height:1.3;}
-  .check-label small{display:block;font-size:.65rem;color:#555;margin-top:1px;}
-  .tag{font-size:.55rem;letter-spacing:1px;text-transform:uppercase;padding:1px 5px;border-radius:3px;margin-left:4px;font-family:'IBM Plex Mono',monospace;vertical-align:middle;}
-  .tag-c{background:#f9731622;color:#f97316;border:1px solid #f9731644;}
-  .tag-h{background:#4fc3f722;color:#4fc3f7;border:1px solid #4fc3f744;}
-  .tag-t{background:#f9731622;color:#f97316;border:1px solid #f9731444;}
-  .tag-s{background:#fbbf2422;color:#fbbf24;border:1px solid #fbbf2444;}
-  .sub-group{background:#0f1117;border:1px solid #1e2435;border-radius:6px;padding:8px 8px 6px;margin-bottom:4px;}
-  .sub-group-label{font-family:'IBM Plex Mono',monospace;font-size:.6rem;letter-spacing:1px;text-transform:uppercase;margin-bottom:6px;color:#f97316;}
-  .child-item{margin-left:14px;border-left:2px solid #1e2435;padding-left:8px;}
-  .child-item input[type=checkbox]:checked{background:#2dd4bf!important;border-color:#2dd4bf!important;}
-  .misc-label-red{font-size:.82rem;color:#f87171;font-family:'IBM Plex Mono',monospace;user-select:none;line-height:1.3;}
-  .misc-label-white{font-size:.82rem;color:#c8ccd8;font-family:'IBM Plex Mono',monospace;user-select:none;line-height:1.3;}
-  .placeholder-panel{padding:40px 20px;text-align:center;color:#3a3f55;font-family:'IBM Plex Mono',monospace;font-size:.8rem;line-height:2;}
-  .placeholder-panel .icon{font-size:2rem;margin-bottom:8px;}
-  .output-panel{display:flex;flex-direction:column;gap:16px;}
-  .will-block{background:#181c27;border:1px solid #2a2f3f;border-radius:8px;padding:16px 18px;}
-  .will-block.contractor{border-top:3px solid #f97316;}
-  .will-block.customer{border-top:3px solid #4fc3f7;}
-  .will-title{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:2px;margin-bottom:12px;}
-  .contractor .will-title{color:#f97316;}
-  .customer .will-title{color:#4fc3f7;}
-  .will-content{font-family:'IBM Plex Mono',monospace;font-size:.78rem;line-height:1.8;color:#c8ccd8;white-space:pre-wrap;background:#0f1117;border:1px solid #1e2435;border-radius:5px;padding:14px;min-height:60px;}
-  .empty-state{color:#3a3f55;font-style:italic;font-size:.75rem;}
-  .initials-text{color:#f97316;}
-  .dont-forget-header{display:block;margin-top:12px;padding-top:10px;border-top:1px solid #1e2435;font-family:'IBM Plex Mono',monospace;font-size:.6rem;letter-spacing:2px;color:#3a3f55;text-transform:uppercase;}
-  .dont-forget-red{color:#f87171;}
-  .dont-forget-white{color:#c8ccd8;}
-  .copy-btn{font-family:'IBM Plex Mono',monospace;font-size:.78rem;font-weight:500;letter-spacing:1px;text-transform:uppercase;border:none;color:#fff;padding:13px 0;border-radius:5px;cursor:pointer;transition:all .15s;width:100%;margin-top:12px;display:block;}
-  .contractor .copy-btn{background:#f97316;}
-  .contractor .copy-btn:hover{background:#ea6a0a;}
-  .customer .copy-btn{background:#0e7faa;}
-  .customer .copy-btn:hover{background:#0a6a8f;}
-  .copy-btn.copied{background:#16a34a!important;}
-  .reset-btn{font-family:'IBM Plex Mono',monospace;font-size:.65rem;letter-spacing:2px;text-transform:uppercase;background:transparent;border:1px solid #3a3f55;color:#666;padding:5px 12px;border-radius:4px;cursor:pointer;width:100%;margin-top:12px;transition:all .15s;}
-  .reset-btn:hover{border-color:#f87171;color:#f87171;}
-  .rebuild-section{max-width:1150px;margin-top:48px;border-top:1px dashed #2a2f3f;padding-top:24px;}
-  .rebuild-toggle{font-family:'IBM Plex Mono',monospace;font-size:.65rem;letter-spacing:2px;text-transform:uppercase;color:#3a3f55;cursor:pointer;background:none;border:1px dashed #2a2f3f;padding:6px 14px;border-radius:4px;transition:all .15s;}
-  .rebuild-toggle:hover{color:#666;border-color:#3a3f55;}
-  .rebuild-box{display:none;margin-top:16px;background:#181c27;border:1px solid #2a2f3f;border-radius:8px;padding:20px;}
-  .rebuild-box.visible{display:block;}
-  .rebuild-label{font-family:'IBM Plex Mono',monospace;font-size:.65rem;letter-spacing:2px;text-transform:uppercase;color:#4fc3f7;margin-bottom:4px;}
-  .rebuild-sublabel{font-family:'IBM Plex Mono',monospace;font-size:.62rem;color:#3a3f55;margin-bottom:12px;}
-  .rebuild-text{font-family:'IBM Plex Mono',monospace;font-size:.75rem;line-height:1.7;color:#8892a4;white-space:pre-wrap;background:#0f1117;border:1px solid #1e2435;border-radius:5px;padding:14px;user-select:all;}
-  .rebuild-copy-btn{font-family:'IBM Plex Mono',monospace;font-size:.65rem;font-weight:500;letter-spacing:1px;text-transform:uppercase;background:#1e2435;border:1px solid #3a3f55;color:#fff;padding:8px 16px;border-radius:4px;cursor:pointer;margin-top:12px;transition:all .15s;}
-  .rebuild-copy-btn:hover{background:#2a3450;border-color:#4fc3f7;}
-  .rebuild-copy-btn.copied{background:#16a34a;border-color:#16a34a;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:#0f1117;color:#e8e8e8;font-family:'IBM Plex Sans',sans-serif;height:100vh;display:flex;flex-direction:column;overflow:hidden;}
+.shell{display:flex;flex:1;min-height:0;}
+
+.nav-fp,.nav-wills{display:flex;flex-direction:column;flex-shrink:0;overflow:hidden;transition:width .22s cubic-bezier(.4,0,.2,1);}
+.nav-fp{width:272px;background:#0b0d13;border-right:1px solid #1e2435;}
+.nav-wills{width:248px;background:#0d0f18;border-right:1px solid #1e2435;}
+.nav-fp.collapsed{width:38px;}
+.nav-wills.collapsed{width:38px;}
+.nav-inner{flex:1;overflow-y:auto;overflow-x:hidden;}
+.nav-fp.collapsed .nav-inner,.nav-wills.collapsed .nav-inner{opacity:0;pointer-events:none;}
+
+.nav-toggle{display:flex;align-items:center;gap:9px;padding:16px 11px 13px;border-bottom:1px solid #1e2435;cursor:pointer;user-select:none;flex-shrink:0;}
+.nav-toggle-icon{font-size:.7rem;flex-shrink:0;transition:transform .22s;line-height:1;}
+.nav-fp .nav-toggle-icon{color:#4fc3f7;}
+.nav-wills .nav-toggle-icon{color:#a78bfa;}
+.nav-fp.collapsed .nav-toggle-icon{transform:rotate(180deg);}
+.nav-wills.collapsed .nav-toggle-icon{transform:rotate(180deg);}
+.nav-toggle-label{font-family:'Bebas Neue',sans-serif;font-size:1.15rem;letter-spacing:3px;white-space:nowrap;overflow:hidden;}
+.nav-fp .nav-toggle-label{color:#4fc3f7;}
+.nav-wills .nav-toggle-label{color:#a78bfa;}
+.nav-fp.collapsed .nav-toggle-label,.nav-wills.collapsed .nav-toggle-label{display:none;}
+
+.fp-customer{padding:10px 14px;border-bottom:1px solid #1e2435;}
+.fp-customer label{font-family:'IBM Plex Mono',monospace;font-size:.55rem;letter-spacing:1.5px;text-transform:uppercase;color:#8892a4;display:block;margin-bottom:4px;}
+.fp-customer input{width:100%;background:#181c27;border:1px solid #2a2f3f;border-radius:5px;padding:5px 8px;font-size:.76rem;color:#e8e8e8;font-family:'IBM Plex Mono',monospace;}
+.fp-customer input::placeholder{color:#2a3050;}
+.fp-customer input:focus{outline:none;border-color:#4fc3f7;}
+
+.sec-label{font-family:'IBM Plex Mono',monospace;font-size:.56rem;letter-spacing:2px;text-transform:uppercase;color:#ffffff;padding:10px 14px 4px;display:flex;align-items:center;justify-content:space-between;}
+
+.wall-settings{display:flex;gap:8px;flex-wrap:wrap;padding:6px 14px 8px;}
+.wall-settings label{font-family:'IBM Plex Mono',monospace;font-size:.6rem;color:#8892a4;display:flex;align-items:center;gap:4px;}
+.wall-settings input{width:42px;background:#181c27;border:1px solid #2a2f3f;border-radius:4px;padding:3px 4px;font-size:.68rem;color:#e8e8e8;font-family:'IBM Plex Mono',monospace;}
+.wall-settings input:focus{outline:none;border-color:#4fc3f7;}
+
+.wall-tbl-wrap{padding:0 14px;}
+.wtbl{width:100%;border-collapse:collapse;}
+.wtbl th{font-family:'IBM Plex Mono',monospace;font-size:.53rem;letter-spacing:1px;text-transform:uppercase;color:#8892a4;padding:0 4px 4px;text-align:left;border-bottom:1px solid #1e2435;}
+.wtbl th.center{text-align:center;}
+.wtbl td{padding:3px 4px;border-bottom:1px solid #0f1117;vertical-align:middle;}
+.wtbl tr:last-child td{border-bottom:none;}
+.wtbl input[type=number]{background:#181c27;border:1px solid #2a2f3f;border-radius:4px;padding:3px 5px;font-size:.7rem;color:#e8e8e8;font-family:'IBM Plex Mono',monospace;width:46px;}
+.wtbl input[type=number]:focus{outline:none;border-color:#4fc3f7;}
+.wnum{font-family:'IBM Plex Mono',monospace;font-size:.58rem;color:#8892a4;text-align:right;padding-right:4px!important;white-space:nowrap;}
+.wall-chk{appearance:none;-webkit-appearance:none;width:14px;height:14px;border:1.5px solid #2a2f3f;border-radius:3px;cursor:pointer;display:block;margin:0 auto;position:relative;flex-shrink:0;transition:all .14s;}
+.wall-chk.gutter-chk:checked{background:#4fc3f7;border-color:#4fc3f7;}
+.wall-chk.liner-chk:checked{background:#f97316;border-color:#f97316;}
+.wall-chk:checked::after{content:'v';position:absolute;top:-2px;left:1px;font-size:9px;color:#0f1117;font-weight:bold;}
+.wall-del{background:none;border:none;color:#1e2435;cursor:pointer;font-size:12px;padding:0 2px;line-height:1;transition:color .12s;}
+.wall-del:hover{color:#f87171;}
+
+.add-wall-btn{font-family:'IBM Plex Mono',monospace;font-size:.58rem;letter-spacing:1px;text-transform:uppercase;background:transparent;border:1px dashed #2a2f3f;color:#8892a4;padding:4px 10px;border-radius:4px;cursor:pointer;width:calc(100% - 28px);margin:6px 14px;transition:all .15s;display:block;}
+.add-wall-btn:hover{border-color:#4fc3f7;color:#4fc3f7;}
+
+.fp-item{display:flex;align-items:center;gap:9px;padding:6px 14px;cursor:pointer;transition:background .12s;}
+.fp-item:hover{background:#141820;}
+.fp-item input[type=checkbox]{appearance:none;-webkit-appearance:none;width:14px;height:14px;border:1.5px solid #3a3f55;border-radius:3px;cursor:pointer;flex-shrink:0;position:relative;transition:all .15s;}
+.fp-item input[type=checkbox]:checked{background:#4fc3f7;border-color:#4fc3f7;}
+.fp-item input[type=checkbox]:checked::after{content:'v';position:absolute;top:-2px;left:1px;font-size:9px;color:#0f1117;font-weight:bold;}
+.fp-item-label{font-family:monospace;font-size:.74rem;color:#c8ccd8;flex:1;user-select:none;line-height:1.3;}
+.fp-item-label small{display:block;font-size:.6rem;color:#8892a4;margin-top:1px;}
+.fp-qty{font-family:'IBM Plex Mono',monospace;font-size:.63rem;color:#4fc3f7;white-space:nowrap;}
+.fp-manual{background:#181c27;border:1px solid #2a2f3f;border-radius:4px;padding:3px 5px;font-size:.68rem;color:#e8e8e8;font-family:'IBM Plex Mono',monospace;width:46px;text-align:center;}
+.fp-manual:focus{outline:none;border-color:#4fc3f7;}
+.fp-unit{font-family:'IBM Plex Mono',monospace;font-size:.58rem;color:#8892a4;}
+
+.pump-row{display:flex;gap:4px;padding:3px 14px 4px 38px;}
+.pump-opt{font-family:'IBM Plex Mono',monospace;font-size:.6rem;padding:3px 9px;border:1px solid #2a2f3f;border-radius:12px;cursor:pointer;background:transparent;color:#8892a4;transition:all .12s;}
+.pump-opt.active{background:#4fc3f7;color:#0f1117;border-color:#4fc3f7;font-weight:500;}
+
+.fp-summary{padding:10px 14px;border-top:1px solid #1e2435;flex-shrink:0;}
+.fp-sum-grid{display:grid;grid-template-columns:1fr 1fr;gap:5px;}
+.fp-stat{background:#181c27;border-radius:5px;padding:5px 8px;}
+.fp-stat-label{font-family:'IBM Plex Mono',monospace;font-size:.52rem;letter-spacing:1px;color:#8892a4;text-transform:uppercase;}
+.fp-stat-val{font-family:'IBM Plex Mono',monospace;font-size:.82rem;font-weight:500;color:#4fc3f7;margin-top:1px;}
+
+.wills-section{font-family:'IBM Plex Mono',monospace;font-size:.56rem;letter-spacing:2px;text-transform:uppercase;color:#ffffff;padding:10px 14px 4px;border-top:1px solid #1e2435;margin-top:4px;}
+.wills-section:first-of-type{margin-top:0;}
+.wills-item{display:flex;align-items:center;gap:8px;padding:5px 14px;cursor:pointer;transition:background .12s;}
+.wills-item:hover{background:#141820;}
+.wills-item input[type=checkbox]{appearance:none;-webkit-appearance:none;width:13px;height:13px;border:1.5px solid #3a3f55;border-radius:3px;cursor:pointer;flex-shrink:0;position:relative;transition:all .15s;}
+.wills-item.wp-item input:checked{background:#4fc3f7;border-color:#4fc3f7;}
+.wills-item.pump-item input:checked{background:#f97316;border-color:#f97316;}
+.wills-item.dw-item input:checked{background:#a78bfa;border-color:#a78bfa;}
+.wills-item.elec-item input:checked{background:#34d399;border-color:#34d399;}
+.wills-item.misc-item input:checked{background:#f87171;border-color:#f87171;}
+.wills-item input:checked::after{content:'v';position:absolute;top:-2px;left:1px;font-size:8px;color:#0f1117;font-weight:bold;}
+.wills-label{font-family:'IBM Plex Mono',monospace;font-size:.7rem;color:#c8ccd8;flex:1;user-select:none;line-height:1.3;}
+.wills-label small{display:block;font-size:.58rem;color:#8892a4;margin-top:1px;}
+.wills-label.misc-red{color:#f87171;}
+.wills-tag{font-size:.48rem;letter-spacing:1px;text-transform:uppercase;padding:1px 4px;border-radius:3px;font-family:'IBM Plex Mono',monospace;}
+.tag-c{background:#f9731622;color:#f97316;border:1px solid #f9731644;}
+.tag-h{background:#4fc3f722;color:#4fc3f7;border:1px solid #4fc3f744;}
+.wills-sub{padding-left:6px;margin:0 8px;border-left:2px solid #1e2435;}
+.wills-child{opacity:.35;pointer-events:none;transition:opacity .15s;}
+.wills-child.enabled{opacity:1;pointer-events:auto;}
+.auto-badge{font-family:'IBM Plex Mono',monospace;font-size:.48rem;padding:1px 4px;border-radius:3px;background:#4fc3f711;color:#4fc3f7;border:1px solid #4fc3f733;white-space:nowrap;}
+.sub-group-label{font-family:'IBM Plex Mono',monospace;font-size:.56rem;letter-spacing:1px;text-transform:uppercase;padding:4px 8px 2px;}
+.sub-group-label.contractor{color:#f97316;background:#f9731610;border-left:2px solid #f97316;margin:4px 8px 2px;}
+.sub-group-label.customer{color:#4fc3f7;background:#4fc3f710;border-left:2px solid #4fc3f7;margin:4px 8px 2px;}
+.sub-group-label.neutral{color:#555;padding-left:14px;}
+.wills-reset{font-family:'IBM Plex Mono',monospace;font-size:.58rem;letter-spacing:1px;text-transform:uppercase;background:transparent;border:1px solid #2a2f3f;color:#555;padding:5px 10px;border-radius:4px;cursor:pointer;margin:10px 14px;width:calc(100% - 28px);transition:all .15s;}
+.wills-reset:hover{border-color:#f87171;color:#f87171;}
+
+.main{flex:1;display:flex;flex-direction:column;min-width:0;overflow:hidden;}
+.main-header{display:flex;align-items:baseline;gap:10px;padding:12px 20px 0;}
+.main-header h1{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:2px;color:#4fc3f7;}
+.main-sub{font-family:'IBM Plex Mono',monospace;font-size:.62rem;letter-spacing:1px;color:#3a3f55;}
+
+.will-block{background:#181c27;border:1px solid #2a2f3f;border-radius:8px;padding:15px 17px;}
+.will-block.fp-out{border-top:3px solid #4fc3f7;}
+.will-block.contractor{border-top:3px solid #f97316;}
+.will-block.customer{border-top:3px solid #4fc3f7;}
+.will-title{font-family:'Bebas Neue',sans-serif;font-size:1.05rem;letter-spacing:2px;margin-bottom:11px;}
+.fp-out .will-title{color:#4fc3f7;}
+.contractor .will-title{color:#f97316;}
+.customer .will-title{color:#4fc3f7;}
+.will-content{font-family:'IBM Plex Mono',monospace;font-size:.75rem;line-height:1.8;color:#c8ccd8;white-space:pre-wrap;background:#0f1117;border:1px solid #1e2435;border-radius:5px;padding:13px;min-height:70px;}
+.will-block.collapsed .will-content{display:none;}
+.will-block.collapsed .main-copy-btn{display:none!important;}
+.will-collapse-toggle{font-family:'IBM Plex Mono',monospace;font-size:.58rem;letter-spacing:1px;text-transform:uppercase;background:transparent;border:none;color:#3a3f55;cursor:pointer;padding:0;transition:color .15s;}
+.will-collapse-toggle:hover{color:#8892a4;}
+.empty-state{color:#3a3f55;font-style:italic;font-size:.73rem;}
+.initials-text{color:#f97316;}
+
+.fp-plan-row{display:flex;justify-content:space-between;align-items:baseline;padding:5px 0;border-bottom:1px solid #1e2435;font-family:'IBM Plex Mono',monospace;font-size:.75rem;}
+.fp-plan-row:last-child{border-bottom:none;}
+.fp-plan-qty{color:#4fc3f7;}
+.fp-empty{font-family:'IBM Plex Mono',monospace;font-size:.73rem;color:#3a3f55;font-style:italic;}
+
+.main-copy-btn{font-family:'IBM Plex Mono',monospace;font-size:.74rem;font-weight:500;letter-spacing:1px;text-transform:uppercase;border:none;color:#fff;padding:11px 0;border-radius:5px;cursor:pointer;transition:all .15s;width:100%;margin-top:11px;display:block;}
+.fp-out .main-copy-btn{background:#1a3a4a;border:1px solid #4fc3f744;color:#4fc3f7;}
+.fp-out .main-copy-btn:hover{background:#1e4a5e;}
+.contractor .main-copy-btn{background:#f97316;}
+.contractor .main-copy-btn:hover{background:#ea6a0a;}
+.customer .main-copy-btn{background:#0e7faa;}
+.customer .main-copy-btn:hover{background:#0a6a8f;}
+.main-copy-btn.copied{background:#16a34a!important;color:#fff!important;border-color:#16a34a!important;}
+
+.inline-copy{font-family:'IBM Plex Mono',monospace;font-size:.6rem;letter-spacing:1px;text-transform:uppercase;background:transparent;border:1px solid #3a3f55;color:#8892a4;padding:3px 10px;border-radius:4px;cursor:pointer;transition:all .15s;white-space:nowrap;}
+.inline-copy:hover{border-color:#c8ccd8;color:#c8ccd8;}
+.inline-copy.copied{border-color:#34d399;color:#34d399;}
+
+.tab-bar{display:flex;padding:0 20px;border-bottom:1px solid #1e2435;flex-shrink:0;}
+.tab-btn{font-family:'IBM Plex Mono',monospace;font-size:.66rem;letter-spacing:1.5px;text-transform:uppercase;padding:9px 16px 8px;cursor:pointer;border:none;background:transparent;color:#555;border-bottom:2px solid transparent;transition:all .15s;}
+.tab-btn:hover{color:#aaa;}
+.tab-btn.active{color:#4fc3f7;border-bottom-color:#4fc3f7;}
+.tab-panels{flex:1;overflow-y:auto;}
+.tab-panel{padding:16px 20px;display:flex;flex-direction:column;gap:14px;}
+.tab-panel.hidden{display:none!important;}
+.summary-section-title{font-family:'IBM Plex Mono',monospace;font-size:.56rem;letter-spacing:2px;text-transform:uppercase;color:#8892a4;margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid #1e2435;}
+
+/* REBUILD SECTION */
+.rebuild-section{padding:0 20px 20px;}
+.rebuild-toggle{font-family:'IBM Plex Mono',monospace;font-size:.58rem;letter-spacing:2px;text-transform:uppercase;color:#2a3050;cursor:pointer;background:none;border:1px dashed #1e2435;padding:5px 12px;border-radius:4px;transition:all .15s;}
+.rebuild-toggle:hover{color:#555;border-color:#3a3f55;}
+.rebuild-box{display:none;margin-top:12px;background:#181c27;border:1px solid #2a2f3f;border-radius:8px;padding:16px;}
+.rebuild-box.visible{display:block;}
+.rebuild-label{font-family:'IBM Plex Mono',monospace;font-size:.6rem;letter-spacing:2px;text-transform:uppercase;color:#4fc3f7;margin-bottom:4px;}
+.rebuild-sublabel{font-family:'IBM Plex Mono',monospace;font-size:.58rem;color:#3a3f55;margin-bottom:10px;}
+.rebuild-text{font-family:'IBM Plex Mono',monospace;font-size:.68rem;line-height:1.7;color:#8892a4;white-space:pre-wrap;background:#0f1117;border:1px solid #1e2435;border-radius:5px;padding:12px;user-select:all;}
+.rebuild-copy-btn{font-family:'IBM Plex Mono',monospace;font-size:.6rem;font-weight:500;letter-spacing:1px;text-transform:uppercase;background:#1e2435;border:1px solid #3a3f55;color:#fff;padding:7px 14px;border-radius:4px;cursor:pointer;margin-top:10px;transition:all .15s;}
+.rebuild-copy-btn:hover{background:#2a3450;border-color:#4fc3f7;}
+.rebuild-copy-btn.copied{background:#16a34a;border-color:#16a34a;}
 </style>
 </head>
 <body>
+<div class="shell">
 
-<h1>Wills Builder</h1>
-<div class="subtitle">Contract Generator</div>
-
-<div class="tabs">
-  <div class="tab wp active" onclick="switchTab('wp')" id="tab-wp"><span class="dot"></span>Waterproofing</div>
-  <div class="tab fr" onclick="switchTab('fr')" id="tab-fr"><span class="dot"></span>Foundation Repair</div>
-  <div class="tab cs" onclick="switchTab('cs')" id="tab-cs"><span class="dot"></span>Crawlspace</div>
-  <div class="tab cl" onclick="switchTab('cl')" id="tab-cl"><span class="dot"></span>Concrete Lifting</div>
-</div>
-<div class="tab-border"></div>
-
-<div class="layout">
-
-  <div id="panel-wp" class="checklist-panel">
-    <div class="panel-label">Waterproofing</div>
-
-    <div class="section-divider">System</div>
-    <div class="check-item"><input type="checkbox" id="wp-gutter" onchange="update()"><label class="check-label" for="wp-gutter">Gutter / Perimeter Drain</label></div>
-    <div class="sub-group">
-      <div class="sub-group-label">Pump Type</div>
-      <div class="check-item pump-item"><input type="checkbox" id="wp-pump-triple" onchange="onPumpChange('triple')"><label class="check-label" for="wp-pump-triple">Triple Pump <span class="tag tag-t">w/ Battery Backup</span></label></div>
-      <div class="check-item pump-item"><input type="checkbox" id="wp-pump-single" onchange="onPumpChange('single')"><label class="check-label" for="wp-pump-single">Single Pump <span class="tag tag-s">w/ Battery Backup</span></label></div>
+<!-- FLIGHT PLAN NAV -->
+<nav class="nav-fp" id="nav-fp">
+  <div class="nav-toggle" onclick="toggleNav('fp')">
+    <span class="nav-toggle-icon">&#9664;</span>
+    <span class="nav-toggle-label">FlightPlan</span>
+  </div>
+  <div class="nav-inner" id="fp-inner">
+    <div class="fp-customer">
+      <label>Customer</label>
+      <input type="text" id="fp-customer" placeholder="Name / address" oninput="renderMain()">
     </div>
-    <div class="check-item"><input type="checkbox" id="wp-aquagrate" onchange="update()"><label class="check-label" for="wp-aquagrate">AquaGrate</label></div>
-    <div class="check-item"><input type="checkbox" id="wp-ports" onchange="update()"><label class="check-label" for="wp-ports">Inspection Ports</label></div>
-    <div class="check-item"><input type="checkbox" id="wp-airsystem" onchange="onAirSystemChange()"><label class="check-label" for="wp-airsystem">AirSystem</label></div>
-    <div class="child-item">
-      <div class="check-item" id="condensate-row" style="opacity:0.35;pointer-events:none;">
-        <input type="checkbox" id="wp-condensate" onchange="update()">
-        <label class="check-label" for="wp-condensate">+ Condensate Pump<small>gravity cannot drain</small></label>
+    <div class="sec-label">Walls <span style="font-family:'IBM Plex Mono',monospace;font-size:.5rem;color:#8892a4;">LF | G | WL | W</span></div>
+    <div class="wall-settings">
+      <label>Height <input type="number" id="fp-height" value="8" min="1" step="0.5" oninput="calcFP()"> ft</label>
+      <label>Waste <input type="number" id="fp-waste" value="5" min="0" max="50" oninput="calcFP()"> %</label>
+    </div>
+    <div class="wall-tbl-wrap">
+      <table class="wtbl">
+        <thead><tr>
+          <th style="width:18px;"></th>
+          <th>Length</th>
+          <th class="center" title="Gutter">G</th>
+          <th class="center" title="Wall Liner">WL</th>
+          <th>Width</th>
+          <th></th>
+        </tr></thead>
+        <tbody id="wall-tbody"></tbody>
+      </table>
+    </div>
+    <button class="add-wall-btn" onclick="addWall()">+ add wall</button>
+
+    <div class="sec-label">System</div>
+    <div class="fp-item" style="cursor:default;">
+      <span style="width:14px;flex-shrink:0;"></span>
+      <span class="fp-item-label">Gutter<small>set per wall (G column)</small></span>
+      <span class="fp-qty" id="fq-gutter">&#8212;</span>
+    </div>
+    <div class="fp-item" onclick="toggleFP('pump',event)">
+      <input type="checkbox" id="fp-pump" onchange="syncFromFP('pump');calcFP()">
+      <span class="fp-item-label">Primary sump pump</span>
+    </div>
+    <div class="pump-row">
+      <button class="pump-opt active" id="fpo-single" onclick="setPumpFP('single')">Single</button>
+      <button class="pump-opt" id="fpo-triple" onclick="setPumpFP('triple')">Triple</button>
+    </div>
+    <div class="fp-item" onclick="toggleFP('pump2',event)">
+      <input type="checkbox" id="fp-pump2" onchange="calcFP()">
+      <span class="fp-item-label">Secondary sump pump</span>
+    </div>
+    <div class="pump-row">
+      <button class="pump-opt" id="fpo2-single" onclick="setPump2FP('single')">Single</button>
+      <button class="pump-opt" id="fpo2-triple" onclick="setPump2FP('triple')">Triple</button>
+    </div>
+    <div class="fp-item" style="cursor:default;">
+      <span style="width:14px;flex-shrink:0;"></span>
+      <span class="fp-item-label">Wall liner<small>set per wall (WL column)</small></span>
+      <span class="fp-qty" id="fq-wallliner">&#8212;</span>
+    </div>
+    <div class="fp-item" onclick="toggleFP('aquagrate',event)">
+      <input type="checkbox" id="fp-aquagrate" onchange="syncFromFP('aquagrate');calcFP()">
+      <span class="fp-item-label">AquaGrate<small>manual LF</small></span>
+      <input class="fp-manual" type="number" id="fv-aquagrate" value="0" min="0" onclick="event.stopPropagation()" oninput="calcFP()">
+      <span class="fp-unit">lf</span>
+    </div>
+    <div class="fp-item" onclick="toggleFP('ports',event)">
+      <input type="checkbox" id="fp-ports" onchange="syncFromFP('ports');calcFP()">
+      <span class="fp-item-label">Inspection ports<small>auto: 1 per gutter wall</small></span>
+      <span class="fp-qty" id="fq-ports">&#8212;</span>
+    </div>
+    <div class="fp-item" onclick="toggleFP('airsystem',event)">
+      <input type="checkbox" id="fp-airsystem" onchange="syncFromFP('airsystem');calcFP()">
+      <span class="fp-item-label">Air system</span>
+      <input class="fp-manual" type="number" id="fv-airsystem" value="1" min="1" onclick="event.stopPropagation()" oninput="calcFP()">
+    </div>
+    <div class="fp-item" style="padding-left:28px;" onclick="toggleFP('condensation',event)">
+      <input type="checkbox" id="fp-condensation" onchange="syncFromFP('condensation');calcFP()">
+      <span class="fp-item-label" style="font-size:.68rem;">+ Condensation pump<small>gravity cannot drain</small></span>
+    </div>
+
+    <div class="sec-label">Misc</div>
+    <div class="fp-item" onclick="toggleFP('discharge-buried',event)">
+      <input type="checkbox" id="fp-discharge-buried" onchange="calcFP()">
+      <span class="fp-item-label">Additional discharge<small>manual LF</small></span>
+      <input class="fp-manual" type="number" id="fv-discharge-buried" value="0" min="0" onclick="event.stopPropagation()" oninput="calcFP()">
+      <span class="fp-unit">lf</span>
+    </div>
+    <div class="fp-item" onclick="toggleFP('discharge-internal',event)">
+      <input type="checkbox" id="fp-discharge-internal" onchange="calcFP()">
+      <span class="fp-item-label">Side discharge<small>manual LF</small></span>
+      <input class="fp-manual" type="number" id="fv-discharge-internal" value="0" min="0" onclick="event.stopPropagation()" oninput="calcFP()">
+      <span class="fp-unit">lf</span>
+    </div>
+    <div class="fp-item" onclick="toggleFP('windowwell',event)">
+      <input type="checkbox" id="fp-windowwell" onchange="syncFromFP('windowwell');calcFP()">
+      <span class="fp-item-label">Window well tap</span>
+      <input class="fp-manual" type="number" id="fv-windowwell" value="1" min="0" onclick="event.stopPropagation()" oninput="calcFP()">
+    </div>
+
+    <div class="fp-summary">
+      <div class="fp-sum-grid">
+        <div class="fp-stat"><div class="fp-stat-label">Walls</div><div class="fp-stat-val" id="fs-walls">0</div></div>
+        <div class="fp-stat"><div class="fp-stat-label">Full perim.</div><div class="fp-stat-val" id="fs-lf">0 lf</div></div>
+        <div class="fp-stat"><div class="fp-stat-label">Gutter LF</div><div class="fp-stat-val" id="fs-gutter">0 lf</div></div>
+        <div class="fp-stat"><div class="fp-stat-label">Floor est.</div><div class="fp-stat-val" id="fs-floor">&#8212;</div></div>
       </div>
     </div>
-    <div class="check-item"><input type="checkbox" id="wp-wallliner" onchange="update()"><label class="check-label" for="wp-wallliner">Wall Liner</label></div>
-
-    <div class="section-divider">Electrical</div>
-    <div class="sub-section contractor">Contractor</div>
-    <div class="check-item elec-item"><input type="checkbox" id="wp-elec-gw" onchange="update()"><label class="check-label" for="wp-elec-gw">Electrician <span class="tag tag-c">Contractor</span></label></div>
-    <div class="sub-section customer">Customer</div>
-    <div class="check-item elec-item"><input type="checkbox" id="wp-elec-ho" onchange="update()"><label class="check-label" for="wp-elec-ho">Electrician <span class="tag tag-h">Customer</span></label></div>
-
-    <div class="section-divider">Demolition</div>
-    <div class="sub-section contractor">Contractor</div>
-    <div class="check-item drywall-item"><input type="checkbox" id="wp-drywall-gw-half" onchange="onDrywallChange('gw-half')"><label class="check-label" for="wp-drywall-gw-half">Drywall 1/2 Wall <span class="tag tag-c">Contractor</span></label></div>
-    <div class="check-item drywall-item"><input type="checkbox" id="wp-drywall-gw-full" onchange="onDrywallChange('gw-full')"><label class="check-label" for="wp-drywall-gw-full">Drywall Full Wall <span class="tag tag-c">Contractor</span></label></div>
-    <div class="check-item drywall-item"><input type="checkbox" id="wp-cut-gw" onchange="update()"><label class="check-label" for="wp-cut-gw">Cut Through <span class="tag tag-c">Contractor</span></label></div>
-    <div class="check-item"><input type="checkbox" id="wp-stairs" onchange="update()"><label class="check-label" for="wp-stairs">Stairs <span class="tag tag-c">Contractor</span></label></div>
-    <div class="sub-section customer">Customer</div>
-    <div class="check-item drywall-item"><input type="checkbox" id="wp-drywall-ho-half" onchange="onDrywallChange('ho-half')"><label class="check-label" for="wp-drywall-ho-half">Drywall 1/2 Wall <span class="tag tag-h">Customer</span></label></div>
-    <div class="check-item drywall-item"><input type="checkbox" id="wp-drywall-ho-full" onchange="onDrywallChange('ho-full')"><label class="check-label" for="wp-drywall-ho-full">Drywall Full Wall <span class="tag tag-h">Customer</span></label></div>
-    <div class="check-item drywall-item"><input type="checkbox" id="wp-cut-ho" onchange="update()"><label class="check-label" for="wp-cut-ho">Cut Through <span class="tag tag-h">Customer</span></label></div>
-    <div class="check-item"><input type="checkbox" id="wp-baseboard" onchange="update()"><label class="check-label" for="wp-baseboard">Baseboard Heater <span class="tag tag-h">Customer</span></label></div>
-
-    <div class="section-divider">Site</div>
-    <div class="check-item"><input type="checkbox" id="wp-digsafe" onchange="update()"><label class="check-label" for="wp-digsafe">DigSafe Flags</label></div>
-
-    <div class="section-divider">Misc</div>
-    <div class="check-item"><input type="checkbox" id="wp-utilities" onchange="update()"><label class="misc-label-red" id="lbl-utilities" for="wp-utilities">Utilities Protection</label></div>
-    <div class="check-item"><input type="checkbox" id="wp-permit" onchange="update()"><label class="misc-label-red" id="lbl-permit" for="wp-permit">Permit B</label></div>
-    <div class="check-item"><input type="checkbox" id="wp-msp" onchange="update()"><label class="misc-label-red" id="lbl-msp" for="wp-msp">5 yr MSP</label></div>
-
-    <button class="reset-btn" onclick="resetWP()">Reset Waterproofing</button>
   </div>
+</nav>
 
-  <div id="panel-fr" class="checklist-panel" style="display:none;">
-    <div class="placeholder-panel">
-      <div class="icon">🏗</div>Foundation Repair<br>checklist coming soon.<br><br>
-      <span style="font-size:.65rem;color:#2a3450;">Provide checklist items and<br>will language to activate this tab.</span>
+<!-- WILLS NAV -->
+<nav class="nav-wills" id="nav-wills">
+  <div class="nav-toggle" onclick="toggleNav('wills')">
+    <span class="nav-toggle-icon">&#9664;</span>
+    <span class="nav-toggle-label">Wills</span>
+  </div>
+  <div class="nav-inner" id="wills-inner">
+
+    <div class="wills-section" style="border-top:none;margin-top:0;">System</div>
+    <div class="wills-item wp-item" onclick="toggleWill('wp-gutter',event)">
+      <input type="checkbox" id="wp-gutter" onchange="willsUpdate()">
+      <span class="wills-label">Gutter / Perimeter Drain</span>
+      <span class="auto-badge" id="ab-gutter" style="display:none;">auto</span>
+    </div>
+    <div class="pump-row" style="padding-left:36px;">
+      <button class="pump-opt" id="wpo-single" onclick="setWillPump('single')">Single</button>
+      <button class="pump-opt" id="wpo-triple" onclick="setWillPump('triple')">Triple</button>
+    </div>
+    <div class="wills-item wp-item" onclick="toggleWill('wp-wallliner',event)">
+      <input type="checkbox" id="wp-wallliner" onchange="willsUpdate()">
+      <span class="wills-label">Wall Liner</span>
+      <span class="auto-badge" id="ab-wallliner" style="display:none;">auto</span>
+    </div>
+    <div class="wills-item wp-item" onclick="toggleWill('wp-aquagrate',event)">
+      <input type="checkbox" id="wp-aquagrate" onchange="willsUpdate()">
+      <span class="wills-label">AquaGrate</span>
+      <span class="auto-badge" id="ab-aquagrate" style="display:none;">auto</span>
+    </div>
+    <div class="wills-item wp-item" onclick="toggleWill('wp-ports',event)">
+      <input type="checkbox" id="wp-ports" onchange="willsUpdate()">
+      <span class="wills-label">Inspection Ports</span>
+      <span class="auto-badge" id="ab-ports" style="display:none;">auto</span>
+    </div>
+    <div class="wills-item wp-item" onclick="toggleWill('wp-airsystem',event)">
+      <input type="checkbox" id="wp-airsystem" onchange="onAirChange()">
+      <span class="wills-label">AirSystem</span>
+      <span class="auto-badge" id="ab-airsystem" style="display:none;">auto</span>
+    </div>
+    <div class="wills-sub">
+      <div class="wills-item wp-item wills-child" id="condensate-row" onclick="toggleWill('wp-condensate',event)">
+        <input type="checkbox" id="wp-condensate" onchange="willsUpdate()">
+        <span class="wills-label">+ Condensate pump<small>gravity cannot drain</small></span>
+        <span class="auto-badge" id="ab-condensate" style="display:none;">auto</span>
+      </div>
+    </div>
+    <div class="wills-item wp-item" onclick="toggleWill('wp-windowwell',event)">
+      <input type="checkbox" id="wp-windowwell" onchange="willsUpdate()">
+      <span class="wills-label">Window Well Tap</span>
+      <span class="auto-badge" id="ab-windowwell" style="display:none;">auto</span>
+    </div>
+
+    <div class="wills-section">Electrical</div>
+    <div class="sub-group-label contractor">Contractor</div>
+    <div class="wills-item elec-item" onclick="toggleWill('wp-elec-gw',event)">
+      <input type="checkbox" id="wp-elec-gw" onchange="willsUpdate()">
+      <span class="wills-label">Electrician <span class="wills-tag tag-c">Contractor</span></span>
+    </div>
+    <div class="sub-group-label customer">Customer</div>
+    <div class="wills-item elec-item" onclick="toggleWill('wp-elec-ho',event)">
+      <input type="checkbox" id="wp-elec-ho" onchange="willsUpdate()">
+      <span class="wills-label">Electrician <span class="wills-tag tag-h">Customer</span></span>
+    </div>
+
+    <div class="wills-section">Demolition</div>
+    <div class="sub-group-label contractor">Contractor</div>
+    <div class="wills-item dw-item" onclick="toggleWill('wp-drywall-gw-half',event)">
+      <input type="checkbox" id="wp-drywall-gw-half" onchange="onDwChange('gw-half')">
+      <span class="wills-label">Drywall 1/2 Wall <span class="wills-tag tag-c">Contractor</span></span>
+    </div>
+    <div class="wills-item dw-item" onclick="toggleWill('wp-drywall-gw-full',event)">
+      <input type="checkbox" id="wp-drywall-gw-full" onchange="onDwChange('gw-full')">
+      <span class="wills-label">Drywall Full Wall <span class="wills-tag tag-c">Contractor</span></span>
+    </div>
+    <div class="wills-item dw-item" onclick="toggleWill('wp-cut-gw',event)">
+      <input type="checkbox" id="wp-cut-gw" onchange="willsUpdate()">
+      <span class="wills-label">Cut Through <span class="wills-tag tag-c">Contractor</span></span>
+    </div>
+    <div class="wills-item wp-item" onclick="toggleWill('wp-stairs',event)">
+      <input type="checkbox" id="wp-stairs" onchange="willsUpdate()">
+      <span class="wills-label">Stairs <span class="wills-tag tag-c">Contractor</span></span>
+    </div>
+    <div class="sub-group-label customer">Customer</div>
+    <div class="wills-item dw-item" onclick="toggleWill('wp-drywall-ho-half',event)">
+      <input type="checkbox" id="wp-drywall-ho-half" onchange="onDwChange('ho-half')">
+      <span class="wills-label">Drywall 1/2 Wall <span class="wills-tag tag-h">Customer</span></span>
+    </div>
+    <div class="wills-item dw-item" onclick="toggleWill('wp-drywall-ho-full',event)">
+      <input type="checkbox" id="wp-drywall-ho-full" onchange="onDwChange('ho-full')">
+      <span class="wills-label">Drywall Full Wall <span class="wills-tag tag-h">Customer</span></span>
+    </div>
+    <div class="wills-item dw-item" onclick="toggleWill('wp-cut-ho',event)">
+      <input type="checkbox" id="wp-cut-ho" onchange="willsUpdate()">
+      <span class="wills-label">Cut Through <span class="wills-tag tag-h">Customer</span></span>
+    </div>
+    <div class="wills-item wp-item" onclick="toggleWill('wp-baseboard',event)">
+      <input type="checkbox" id="wp-baseboard" onchange="willsUpdate()">
+      <span class="wills-label">Baseboard Heater <span class="wills-tag tag-h">Customer</span></span>
+    </div>
+
+    <div class="wills-section">Site</div>
+    <div class="wills-item wp-item" onclick="toggleWill('wp-digsafe',event)">
+      <input type="checkbox" id="wp-digsafe" onchange="willsUpdate()">
+      <span class="wills-label">DigSafe Flags</span>
+    </div>
+
+    <div class="wills-section">Misc</div>
+    <div class="wills-item misc-item" onclick="toggleWill('wp-utilities',event)">
+      <input type="checkbox" id="wp-utilities" onchange="willsUpdate()">
+      <span class="wills-label misc-red" id="lbl-utilities">Utilities Protection</span>
+    </div>
+    <div class="wills-item misc-item" onclick="toggleWill('wp-permit',event)">
+      <input type="checkbox" id="wp-permit" onchange="willsUpdate()">
+      <span class="wills-label misc-red" id="lbl-permit">Permit B</span>
+    </div>
+    <div class="wills-item misc-item" onclick="toggleWill('wp-msp',event)">
+      <input type="checkbox" id="wp-msp" onchange="willsUpdate()">
+      <span class="wills-label misc-red" id="lbl-msp">5 yr MSP</span>
+    </div>
+
+    <button class="wills-reset" onclick="resetWills()">Reset wills</button>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<main class="main">
+  <div class="main-header">
+    <h1>Wills Builder</h1>
+    <span class="main-sub">Contract Generator</span>
+    <span class="main-sub" id="main-cust"></span>
+  </div>
+  <div class="tab-bar">
+    <button class="tab-btn active" id="tab-output" onclick="switchTab('output')">Output</button>
+    <button class="tab-btn" id="tab-summary" onclick="switchTab('summary')">Summary</button>
+  </div>
+  <div class="tab-panels">
+    <div class="tab-panel" id="panel-output">
+      <div class="will-block fp-out">
+        <div class="will-title">Flight Plan &#8212; Material List</div>
+        <div id="fp-plan-rows"><div class="fp-empty">Add walls and select materials in the left panel.</div></div>
+        <button class="main-copy-btn" id="fp-copy-btn" onclick="copyFP()" style="display:none;">Copy material list</button>
+      </div>
+      <div class="will-block contractor collapsed" id="block-contractor">
+        <div class="will-title" style="display:flex;align-items:center;justify-content:space-between;">
+          <span>Contractor Wills</span>
+          <span style="display:flex;gap:8px;align-items:center;">
+            <button class="inline-copy" id="copy-contractor-inline" onclick="copyWill('contractor')">Copy</button>
+            <button class="will-collapse-toggle" onclick="toggleBlock('contractor')">&#9658; expand</button>
+          </span>
+        </div>
+        <div class="will-content" id="contractor-output"><span class="empty-state">Select items in the Wills panel to generate contractor wills...</span></div>
+        <button class="main-copy-btn" id="copy-contractor" onclick="copyWill('contractor')">Copy Contractor Wills</button>
+      </div>
+      <div class="will-block customer collapsed" id="block-customer">
+        <div class="will-title" style="display:flex;align-items:center;justify-content:space-between;">
+          <span>Customer Wills</span>
+          <span style="display:flex;gap:8px;align-items:center;">
+            <button class="inline-copy" id="copy-customer-inline" onclick="copyWill('customer')">Copy</button>
+            <button class="will-collapse-toggle" onclick="toggleBlock('customer')">&#9658; expand</button>
+          </span>
+        </div>
+        <div class="will-content" id="customer-output"><span class="empty-state">Select items in the Wills panel to generate customer wills...</span></div>
+        <button class="main-copy-btn" id="copy-customer" onclick="copyWill('customer')">Copy Customer Wills</button>
+      </div>
+    </div>
+    <div class="tab-panel hidden" id="panel-summary">
+      <div class="will-block" style="border-top:3px solid #34d399;">
+        <div class="will-title" style="color:#34d399;">Summary</div>
+        <div id="summary-content"><div class="fp-empty">Complete the flight plan to generate a summary.</div></div>
+      </div>
     </div>
   </div>
-  <div id="panel-cs" class="checklist-panel" style="display:none;">
-    <div class="placeholder-panel">
-      <div class="icon">🕳</div>Crawlspace Encapsulation<br>checklist coming soon.<br><br>
-      <span style="font-size:.65rem;color:#2a3450;">Provide checklist items and<br>will language to activate this tab.</span>
-    </div>
-  </div>
-  <div id="panel-cl" class="checklist-panel" style="display:none;">
-    <div class="placeholder-panel">
-      <div class="icon">🪨</div>Concrete Lifting<br>checklist coming soon.<br><br>
-      <span style="font-size:.65rem;color:#2a3450;">Provide checklist items and<br>will language to activate this tab.</span>
-    </div>
-  </div>
+  <div class="rebuild-section">
+    <button class="rebuild-toggle" onclick="toggleRebuild()">&#9881; Show Claude Rebuild Prompt</button>
+    <div class="rebuild-box" id="rebuild-box">
+      <div class="rebuild-label">Claude Rebuild Prompt</div>
+      <div class="rebuild-sublabel">Paste into claude.ai to recreate this tool from scratch</div>
+      <div class="rebuild-text" id="rebuild-text">I work for Groundworks as a sales rep. Please rebuild my FlightPlan + Wills Builder app as a single HTML file.
 
-  <div class="output-panel">
-    <div class="will-block contractor">
-      <div class="will-title">Contractor Wills</div>
-      <div class="will-content" id="contractor-output"><span class="empty-state">Select items from the checklist to generate contractor wills...</span></div>
-      <button class="copy-btn" id="copy-contractor" onclick="copyText('contractor')">Copy Contractor Wills</button>
-    </div>
-    <div class="will-block customer">
-      <div class="will-title">Customer Wills</div>
-      <div class="will-content" id="customer-output"><span class="empty-state">Select items from the checklist to generate customer wills...</span></div>
-      <button class="copy-btn" id="copy-customer" onclick="copyText('customer')">Copy Customer Wills</button>
-    </div>
-  </div>
-</div>
+LAYOUT: Three-column layout filling the full viewport height.
+- LEFT panel (collapsible, labeled FlightPlan in blue Bebas Neue): Flight plan material calculator
+- MIDDLE panel (collapsible, labeled Wills in purple Bebas Neue): Legal will language checklist
+- RIGHT area (main): Output and Summary tabs
 
-<div class="rebuild-section">
-  <button class="rebuild-toggle" onclick="toggleRebuild()">Show Claude Rebuild Prompt</button>
-  <div class="rebuild-box" id="rebuild-box">
-    <div class="rebuild-label">Claude Rebuild Prompt</div>
-    <div class="rebuild-sublabel">Paste this into claude.ai to recreate this exact tool from scratch</div>
-    <div class="rebuild-text" id="rebuild-text">I work for Groundworks as a sales rep. I need you to rebuild a Wills Builder app as an interactive HTML widget, and also provide a copyable HTML page so I can paste the code into GitHub Pages.
+FLIGHTPLAN PANEL:
+- Customer name text input at top
+- Wall table with columns: wall number, Length (ft), G (gutter checkbox, blue when checked), WL (wall liner checkbox, orange when checked), Width (ft), delete button
+- Height and Waste % inputs above the table
+- Add wall button
+- System items: Gutter (auto from wall G column, shows LF with waste), Primary sump pump (Single/Triple toggle buttons), Secondary sump pump (Single/Triple toggle buttons), Wall liner (auto from wall WL column), AquaGrate (manual LF input), Inspection ports (auto: 1 per gutter wall), Air system (quantity input), Condensate pump (child of air system)
+- Misc items: Additional discharge (LF), Side discharge (LF), Window well tap (quantity)
+- Summary stats grid at bottom: Walls count, Full perimeter LF, Gutter LF, Floor estimate SF
+- Checking FlightPlan items auto-syncs to Wills panel (AquaGrate, ports, airsystem, condensation, windowwell)
+- Pump type selected in FlightPlan also sets pump type in Wills
 
-BACKGROUND:
-We use a contract system where two freeform text fields called Contractor Wills and Customer Wills are filled in based on what services are sold. I need a checklist-driven tool that auto-generates the correct will language. Browser tab title and page title are both just "Wills Builder". Subtitle is "Contract Generator" with no Groundworks prefix.
+WILLS PANEL sections (section labels WHITE):
+- System: Gutter/Perimeter Drain (with Single/Triple pump toggle), Wall Liner, AquaGrate, Inspection Ports, AirSystem (with child Condensate pump grayed until AirSystem checked), Window Well Tap. Auto-badge shown when item was auto-synced from FlightPlan.
+- Electrical: Contractor sub-bar (orange) with Electrician [Contractor] tag; Customer sub-bar (blue) with Electrician [Customer] tag
+- Demolition: Contractor sub-bar with Drywall 1/2 Wall [Contractor], Drywall Full Wall [Contractor], Cut Through [Contractor], Stairs [Contractor]; Customer sub-bar with Drywall 1/2 Wall [Customer], Drywall Full Wall [Customer], Cut Through [Customer], Baseboard Heater [Customer]. All four drywall options mutually exclusive.
+- Site: DigSafe Flags
+- Misc: Utilities Protection, Permit B, 5yr MSP - labels RED until checked, then white
 
-OVERALL STRUCTURE:
-Four project tabs: Waterproofing, Foundation Repair, Crawlspace, Concrete Lifting. Each tab independent. Tabs have colored dot when items checked. Only Waterproofing active - others show placeholders. Section divider labels WHITE. Tab colors: Waterproofing #4fc3f7, Foundation Repair #f97316, Crawlspace #a78bfa, Concrete Lifting #34d399.
+OUTPUT TAB:
+- Flight Plan Material List block (blue top border): shows all selected materials with quantities. At bottom always shows Don't Forget section with Utilities Protection, Permit B, 5yr MSP - red if unchecked in Wills Misc, white if checked.
+- Contractor Wills block (orange top border, collapsed by default, expand toggle): shows generated legal bullets + initials line
+- Customer Wills block (blue top border, collapsed by default): shows generated legal bullets + initials line
+- Each wills block has inline Copy button (always visible) and full-width Copy button (visible when expanded)
+- Copy buttons only copy the legal text, not the Don't Forget section
 
-WATERPROOFING CHECKLIST:
+SUMMARY TAB: Shows scope (customer, walls, perimeter, height, floor), materials list, Don't Forget items (red/white based on checked state), contractor wills, customer wills.
 
-SYSTEM: Gutter/Perimeter Drain, Pump Type (Triple or Single mutually exclusive, orange when checked), AquaGrate, Inspection Ports, AirSystem (child Condensate Pump grayed until AirSystem checked, teal when checked), Wall Liner.
-
-ELECTRICAL section with two colored sub-section bars:
-- Contractor sub-section (orange bar): Electrician with orange [Contractor] tag
-- Customer sub-section (blue bar): Electrician with blue [Customer] tag
-
-DEMOLITION section with two colored sub-section bars:
-- Contractor sub-section (orange bar): Drywall 1/2 Wall [Contractor], Drywall Full Wall [Contractor], Cut Through [Contractor], Stairs [Contractor]
-- Customer sub-section (blue bar): Drywall 1/2 Wall [Customer], Drywall Full Wall [Customer], Cut Through [Customer], Baseboard Heater [Customer]
-- All four drywall options mutually exclusive across both sections.
-
-SITE: DigSafe Flags (optional)
-
-MISC section - always visible, labels RED until checked then WHITE:
-- Utilities Protection
-- Permit B
-- 5 yr MSP
-
-OUTPUT PANEL - two blocks (Contractor Wills, Customer Wills):
-Each block shows generated bullet points, then initials line, then a Don't Forget section at the bottom showing all three MISC items. MISC items appear in RED if unchecked in checklist, WHITE if checked. Copy button excludes the Don't Forget section so pasted text is clean contract language only.
-
-WILL LANGUAGE:
-- Inspection Ports: "Groundworks will install inspection ports along drain system for inspection purposes." -> CONTRACTOR wills
+WILL LANGUAGE - CONTRACTOR:
+- Gutter: dynamic based on pump type (single or triple sump pump with battery backup)
+- Wall liner, AquaGrate, Inspection Ports, AirSystem (gravity or condensate version), Electrician GW, Drywall GW half, Drywall GW full, Stairs, Cut Through GW, Window Well Tap
 - AirSystem WITHOUT condensate: "Groundworks will install an AirSystem. The system will drain by gravity into the existing waterproofing system."
-- AirSystem WITH condensate: "Groundworks will install an AirSystem in the utility room. A condensate pump will also be installed to remove moisture collected by the AirSystem, as gravity drainage is not sufficient in this installation."
-- Drywall Customer 1/2 Wall uses "lower 10 inches of studs" (NOT 18 inches)
-- Cut Through GW and HO and both Drywall GW options all end with liquid nails + warranty language: "If/when any base plate(s) are reinstalled, nails MUST NOT be used to secure the base plate(s) to the concrete floor, as the drainage system is located beneath and will be damaged. This will also void your warranty. A construction adhesive such as Liquid Nails or comparable must be used instead."
-- Plural language: base plate(s), wall(s), section(s) throughout
+- AirSystem WITH condensate: "Groundworks will install an AirSystem in the utility room. A condensate pump will also be installed..."
+- All Drywall GW and Cut Through GW bullets end with liquid nails + warranty language: "If/when any base plate(s) are reinstalled, nails MUST NOT be used to secure the base plate(s) to the concrete floor, as the drainage system is located beneath and will be damaged. This will also void your warranty. A construction adhesive such as Liquid Nails or comparable must be used instead."
+- Footer: Homeowner has reviewed and understands contractor wills. Customer Initials: X______________
 
-ALWAYS-PRESENT CONTRACTOR footer: Homeowner has reviewed and understands contractor wills. Customer Initials: X______________
-ALWAYS-PRESENT CUSTOMER header: Homeowner to provide parking. Homeowner to remove personal effects.
-ALWAYS-PRESENT CUSTOMER footer: Full demolition responsibility language. Homeowner has reviewed. Customer Initials: X______________
+WILL LANGUAGE - CUSTOMER:
+- Header: Homeowner to provide parking. Homeowner to remove personal effects.
+- DigSafe Flags, Electrician HO, Drywall HO 1/2 Wall (10 inches NOT 18), Drywall HO Full Wall, Cut Through HO (ends with liquid nails + warranty language), Baseboard Heater
+- Footer: Full demolition responsibility language. Homeowner has reviewed. Customer Initials: X______________
 
-DESIGN: Dark #0f1117, panels #181c27, borders #2a2f3f. Bebas Neue headings, IBM Plex Mono everywhere else. Orange #f97316 contractor copy button, blue #0e7faa customer copy button, white text. Copy buttons full-width at BOTTOM. Rebuild prompt collapsed at bottom.</div>
-    <button class="rebuild-copy-btn" id="rebuild-copy-btn" onclick="copyRebuildPrompt()">Copy Prompt</button>
+DESIGN: Dark theme #0f1117. Panels slightly darker (#0b0d13 FlightPlan, #0d0f18 Wills). Bebas Neue headings, IBM Plex Mono throughout. FlightPlan accent blue #4fc3f7, Wills accent purple #a78bfa. Copy buttons: orange #f97316 contractor, blue #0e7faa customer. Rebuild prompt collapsed at very bottom of main area.</div>
+      <button class="rebuild-copy-btn" id="rebuild-copy-btn" onclick="copyRebuildPrompt()">Copy Prompt</button>
+    </div>
   </div>
+</main>
 </div>
 
 <script>
-function switchTab(tab){
-  ['wp','fr','cs','cl'].forEach(function(t){
-    document.getElementById('tab-'+t).classList.remove('active');
-    var p=document.getElementById('panel-'+t);if(p)p.style.display='none';
+var wallId=0,walls=[],fpPump='single',fp2Pump='single',willPump='single';
+
+function toggleNav(w){document.getElementById('nav-'+w).classList.toggle('collapsed');}
+
+function addWall(len,width,gutter,liner){
+  var id=++wallId;
+  walls.push({id:id,len:len||0,width:width||0,gutter:!!gutter,liner:liner!==undefined?liner:!!gutter});
+  renderWalls();calcFP();
+}
+function removeWall(id){walls=walls.filter(function(w){return w.id!==id;});renderWalls();calcFP();}
+function setWallNum(id,field,v){var w=walls.find(function(w){return w.id===id;});if(w){w[field]=parseFloat(v)||0;calcFP();}}
+function setWallChk(id,field,v){var w=walls.find(function(w){return w.id===id;});if(w){w[field]=v;calcFP();autoSyncWills();}}
+
+function renderWalls(){
+  document.getElementById('wall-tbody').innerHTML=walls.map(function(w,i){
+    return '<tr><td class="wnum">'+(i+1)+'</td>'
+      +'<td><input type="number" value="'+(w.len||'')+'" placeholder="ft" min="0" step="0.5" oninput="setWallNum('+w.id+',\'len\',this.value)"></td>'
+      +'<td style="text-align:center;"><input type="checkbox" class="wall-chk gutter-chk" '+(w.gutter?'checked':'')+' onchange="setWallChk('+w.id+',\'gutter\',this.checked)"></td>'
+      +'<td style="text-align:center;"><input type="checkbox" class="wall-chk liner-chk" '+(w.liner?'checked':'')+' onchange="setWallChk('+w.id+',\'liner\',this.checked)"></td>'
+      +'<td><input type="number" value="'+(w.width||'')+'" placeholder="w" min="0" step="0.5" oninput="setWallNum('+w.id+',\'width\',this.value)"></td>'
+      +'<td><button class="wall-del" onclick="removeWall('+w.id+')">&#x2715;</button></td></tr>';
+  }).join('');
+}
+
+function getStats(){
+  var h=parseFloat(document.getElementById('fp-height').value)||8;
+  var wp=(parseFloat(document.getElementById('fp-waste').value)||5)/100;
+  var totalLF=walls.reduce(function(s,w){return s+w.len;},0);
+  var gutterLF=walls.filter(function(w){return w.gutter;}).reduce(function(s,w){return s+w.len;},0);
+  var linerLF=walls.filter(function(w){return w.liner;}).reduce(function(s,w){return s+w.len;},0);
+  var floor=walls.filter(function(w){return w.len>0&&w.width>0;}).reduce(function(s,w){return s+w.len*w.width;},0);
+  return{count:walls.length,totalLF:totalLF,gutterLF:gutterLF,gutterWaste:gutterLF*(1+wp),linerLF:linerLF,linerWaste:linerLF*(1+wp),floor:floor,h:h,wp:wp,hasGutter:gutterLF>0,hasLiner:linerLF>0};
+}
+function ov(id){var el=document.getElementById(id);return el?(parseFloat(el.value)||0):0;}
+function chkFP(id){var el=document.getElementById('fp-'+id);return el&&el.checked;}
+function getW(id){var el=document.getElementById(id);return el?el.checked:false;}
+
+function setPumpFP(t){fpPump=t;document.getElementById('fpo-single').classList.toggle('active',t==='single');document.getElementById('fpo-triple').classList.toggle('active',t==='triple');setWillPump(t);calcFP();}
+function setPump2FP(t){fp2Pump=t;document.getElementById('fpo2-single').classList.toggle('active',t==='single');document.getElementById('fpo2-triple').classList.toggle('active',t==='triple');calcFP();}
+function setWillPump(t){willPump=t;document.getElementById('wpo-single').classList.toggle('active',t==='single');document.getElementById('wpo-triple').classList.toggle('active',t==='triple');willsUpdate();}
+
+function toggleFP(id,e){
+  if(e&&(e.target.tagName==='INPUT'||e.target.tagName==='BUTTON'))return;
+  var el=document.getElementById('fp-'+id);
+  if(el&&el.type==='checkbox'){el.checked=!el.checked;syncFromFP(id);calcFP();}
+}
+
+var FP_TO_WILLS={'aquagrate':['wp-aquagrate'],'ports':['wp-ports'],'airsystem':['wp-airsystem'],'condensation':['wp-condensate'],'windowwell':['wp-windowwell']};
+function syncFromFP(fpId){
+  var targets=FP_TO_WILLS[fpId];if(!targets)return;
+  var fpEl=document.getElementById('fp-'+fpId);if(!fpEl)return;
+  var on=fpEl.checked;
+  targets.forEach(function(wid){var wel=document.getElementById(wid);if(wel)wel.checked=on;});
+  if(fpId==='airsystem')onAirChange();
+  var ab=document.getElementById('ab-'+fpId);if(ab)ab.style.display=on?'inline':'none';
+  willsUpdate();
+}
+
+function autoSyncWills(){
+  var s=getStats();
+  var wg=document.getElementById('wp-gutter');
+  if(wg){wg.checked=s.hasGutter;var ab=document.getElementById('ab-gutter');if(ab)ab.style.display=s.hasGutter?'inline':'none';}
+  var wl=document.getElementById('wp-wallliner');
+  if(wl){wl.checked=s.hasLiner;var abl=document.getElementById('ab-wallliner');if(abl)abl.style.display=s.hasLiner?'inline':'none';}
+  willsUpdate();
+}
+
+function calcFP(){
+  var s=getStats();
+  document.getElementById('fs-walls').textContent=s.count;
+  document.getElementById('fs-lf').textContent=s.totalLF.toFixed(1)+' lf';
+  document.getElementById('fs-gutter').textContent=s.gutterLF.toFixed(1)+' lf';
+  document.getElementById('fs-floor').textContent=s.floor>0?Math.round(s.floor)+' sf':'&#8212;';
+  document.getElementById('fq-gutter').textContent=s.hasGutter?s.gutterWaste.toFixed(1)+' lf':'&#8212;';
+  document.getElementById('fq-wallliner').textContent=s.hasLiner?s.linerWaste.toFixed(1)+' lf':'&#8212;';
+  var gwc=walls.filter(function(w){return w.gutter;}).length;
+  document.getElementById('fq-ports').textContent=gwc>0?gwc+' ea (auto)':'&#8212;';
+  autoSyncWills();
+  renderMain();
+}
+
+var MISC=[
+  {id:'wp-utilities',label:'Utilities Protection',lblId:'lbl-utilities'},
+  {id:'wp-permit',label:'Permit B',lblId:'lbl-permit'},
+  {id:'wp-msp',label:'5 yr MSP',lblId:'lbl-msp'}
+];
+
+function getFPItems(s){
+  var items=[];
+  if(s.hasGutter)items.push({name:'Gutter',qty:s.gutterWaste.toFixed(1)+' lf'});
+  if(chkFP('aquagrate')&&ov('fv-aquagrate')>0)items.push({name:'AquaGrate',qty:ov('fv-aquagrate')+' lf'});
+  if(chkFP('discharge-buried')&&ov('fv-discharge-buried')>0)items.push({name:'Buried discharge',qty:ov('fv-discharge-buried')+' lf'});
+  if(chkFP('discharge-internal')&&ov('fv-discharge-internal')>0)items.push({name:'Side discharge',qty:ov('fv-discharge-internal')+' lf'});
+  if(chkFP('pump'))items.push({name:'Primary sump pump ('+fpPump+')',qty:'1 unit'});
+  if(chkFP('pump2'))items.push({name:'Secondary sump pump ('+fp2Pump+')',qty:'1 unit'});
+  if(s.hasLiner)items.push({name:'Wall liner',qty:s.linerWaste.toFixed(1)+' lf'});
+  if(chkFP('ports')){var gwc=walls.filter(function(w){return w.gutter;}).length;if(gwc>0)items.push({name:'Inspection ports',qty:gwc+' ea'});}
+  if(chkFP('airsystem'))items.push({name:'Air system',qty:ov('fv-airsystem')+' unit'});
+  if(chkFP('condensation'))items.push({name:'+ Condensation pump',qty:'1 unit'});
+  if(chkFP('windowwell'))items.push({name:'Window well tap',qty:ov('fv-windowwell')+' ea'});
+  return items;
+}
+
+function escHtml(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+function renderMain(){
+  var cust=document.getElementById('fp-customer').value||'';
+  var custEl=document.getElementById('main-cust');
+  if(custEl)custEl.textContent=cust?' \u2014 '+cust:'';
+  var s=getStats();
+  var items=getFPItems(s);
+  var el=document.getElementById('fp-plan-rows');
+  var btn=document.getElementById('fp-copy-btn');
+
+  // Update MISC label colors
+  MISC.forEach(function(m){
+    var lbl=document.getElementById(m.lblId);
+    if(lbl)lbl.className=getW(m.id)?'wills-label':'wills-label misc-red';
   });
-  document.getElementById('tab-'+tab).classList.add('active');
-  var p=document.getElementById('panel-'+tab);if(p)p.style.display='block';
+
+  if(!items.length){
+    el.innerHTML='<div class="fp-empty">Add walls and select materials in the left panel.</div>';
+    btn.style.display='none';
+    return;
+  }
+  btn.style.display='block';
+  var html=items.map(function(it){
+    return '<div class="fp-plan-row"><span>'+escHtml(it.name)+'</span><span class="fp-plan-qty">'+escHtml(it.qty)+'</span></div>';
+  }).join('');
+  html+='<div style="margin-top:10px;padding-top:10px;border-top:1px solid #1e2435;">';
+  html+='<div style="font-family:\'IBM Plex Mono\',monospace;font-size:.58rem;letter-spacing:2px;color:#555;text-transform:uppercase;margin-bottom:6px;">Don\'t Forget</div>';
+  MISC.forEach(function(m){
+    var checked=getW(m.id);
+    var col=checked?'#c8ccd8':'#f87171';
+    html+='<div class="fp-plan-row"><span style="color:'+col+';">'+(checked?'v':'!')+'  '+escHtml(m.label)+'</span><span class="fp-plan-qty" style="color:'+col+';">'+(checked?'confirmed':'check off')+'</span></div>';
+  });
+  html+='</div>';
+  el.innerHTML=html;
 }
 
-function gutterBullet(p){
-  var d=p==='triple'?'a triple sump pump with battery backup':p==='single'?'a single sump pump with battery backup':'a sump pump';
-  return 'Groundworks will install a perimeter drain system to terminate into a sump pump basin containing '+d+'. Groundworks always recommends a full perimeter drain for maximum protection against groundwater seepage.';
+function copyFP(){
+  var el=document.getElementById('fp-plan-rows');
+  var rows=el.querySelectorAll('.fp-plan-row');
+  var lines=[];
+  rows.forEach(function(r){
+    var cells=r.querySelectorAll('span');
+    if(cells.length>=2)lines.push(cells[0].innerText+': '+cells[1].innerText);
+  });
+  navigator.clipboard.writeText(lines.join('\n')).then(function(){
+    var btn=document.getElementById('fp-copy-btn');
+    btn.textContent='Copied!';btn.classList.add('copied');
+    setTimeout(function(){btn.textContent='Copy material list';btn.classList.remove('copied');},2000);
+  });
 }
-function airBullet(c){
-  return c
-    ?'Groundworks will install an AirSystem in the utility room. A condensate pump will also be installed to remove moisture collected by the AirSystem, as gravity drainage is not sufficient in this installation.'
-    :'Groundworks will install an AirSystem. The system will drain by gravity into the existing waterproofing system.';
+
+function switchTab(t){
+  ['output','summary'].forEach(function(id){
+    document.getElementById('tab-'+id).classList.toggle('active',id===t);
+    document.getElementById('panel-'+id).classList.toggle('hidden',id!==t);
+  });
+  if(t==='summary')renderSummary();
 }
+
+function renderSummary(){
+  var s=getStats();
+  var cust=document.getElementById('fp-customer').value||'(no customer)';
+  var items=getFPItems(s);
+  var html='<div style="margin-bottom:12px;"><div class="summary-section-title">Scope</div>';
+  html+='<div style="font-family:monospace;font-size:.74rem;line-height:1.8;color:#c8ccd8;">';
+  html+='<div><span style="color:#8892a4;">Customer: </span>'+escHtml(cust)+'</div>';
+  html+='<div><span style="color:#8892a4;">Walls: </span>'+s.count+' &nbsp;|&nbsp; Perimeter: '+s.totalLF.toFixed(1)+' lf &nbsp;|&nbsp; Height: '+s.h+' ft</div>';
+  if(s.floor>0)html+='<div><span style="color:#8892a4;">Est. floor: </span>'+Math.round(s.floor)+' sf</div>';
+  html+='</div></div>';
+  if(items.length){
+    html+='<div style="margin-bottom:12px;"><div class="summary-section-title">Materials</div>';
+    html+=items.map(function(it){return '<div class="fp-plan-row"><span>'+escHtml(it.name)+'</span><span class="fp-plan-qty">'+escHtml(it.qty)+'</span></div>';}).join('');
+    html+='</div>';
+  }
+  html+='<div style="margin-bottom:12px;"><div class="summary-section-title" style="color:#f87171;">Don\'t Forget</div>';
+  MISC.forEach(function(m){
+    var checked=getW(m.id);
+    var col=checked?'#c8ccd8':'#f87171';
+    html+='<div class="fp-plan-row"><span style="color:'+col+';">'+(checked?'v':'!')+'  '+escHtml(m.label)+'</span><span class="fp-plan-qty" style="color:'+col+';">'+(checked?'confirmed':'pending')+'</span></div>';
+  });
+  html+='</div>';
+  var contEl=document.getElementById('contractor-output');
+  if(contEl&&contEl.innerText.indexOf('Select items')===-1){
+    html+='<div style="margin-bottom:12px;"><div class="summary-section-title" style="color:#f97316;">Contractor Wills</div><div class="will-content" style="font-size:.7rem;">'+contEl.innerHTML+'</div></div>';
+  }
+  var custEl=document.getElementById('customer-output');
+  if(custEl&&custEl.innerText.indexOf('Select items')===-1){
+    html+='<div><div class="summary-section-title" style="color:#4fc3f7;">Customer Wills</div><div class="will-content" style="font-size:.7rem;">'+custEl.innerHTML+'</div></div>';
+  }
+  document.getElementById('summary-content').innerHTML=html;
+}
+
+function toggleWill(id,e){
+  if(e&&e.target.tagName==='BUTTON')return;
+  var el=document.getElementById(id);if(!el)return;
+  if(!(e&&e.target===el))el.checked=!el.checked;
+  if(id==='wp-airsystem')onAirChange();
+  else if(id.indexOf('wp-drywall')===0)onDwChange(id.replace('wp-drywall-',''));
+  else willsUpdate();
+}
+function onAirChange(){
+  var on=document.getElementById('wp-airsystem').checked;
+  var row=document.getElementById('condensate-row');
+  row.classList.toggle('enabled',on);
+  if(!on)document.getElementById('wp-condensate').checked=false;
+  willsUpdate();
+}
+function onDwChange(sel){
+  ['gw-half','gw-full','ho-half','ho-full'].forEach(function(s){
+    if(s!==sel){var el=document.getElementById('wp-drywall-'+s);if(el)el.checked=false;}
+  });
+  willsUpdate();
+}
+
 var LN=' If/when any base plate(s) are reinstalled, nails MUST NOT be used to secure the base plate(s) to the concrete floor, as the drainage system is located beneath and will be damaged. This will also void your warranty. A construction adhesive such as Liquid Nails or comparable must be used instead.';
-
 var CB={
   wallliner:'Groundworks will install wall liner from sill plate to gutter on any wall containing a perimeter drain system.',
   aquagrate:'Groundworks will install AquaGrate, which IS NOT positioned on a footing; however, the design is meant to accommodate obstructions, which would otherwise need to be temporarily moved (noted on diagram in orange). The homeowner is aware that the cold joint in this area is still susceptible to groundwater seepage and could get wet, but the AquaGrate will connect to the larger drain system and catch water that passes over the floor until it reaches the drain.',
@@ -271,6 +745,7 @@ var CB={
   drywallGWfull:'Groundworks will remove the entire wall, including drywall, insulation, and wall studs, but only as necessary as determined by the foreman to properly perform the requested waterproofing work. Materials will be set aside or disposed of at the customer\'s request. Customer is responsible for replacement.'+LN,
   stairs:'Groundworks will remove and set aside any landings or stair treads to gain access to the working area. Groundworks cannot guarantee the condition of any wood once removed. Groundworks will attempt to reinstall stair treads upon completion of work, provided they are in good condition and safe to reuse. Homeowner is responsible for replacement of any stair components that cannot be safely reinstalled.',
   cutGW:'Groundworks will remove section(s) of perpendicular wall(s), approximately 10" x 10" each, as necessary to allow the waterproofing system to pass through. Homeowner is responsible for replacement and repair of any materials removed.'+LN,
+  windowwell:'Groundworks will install a window well tap to direct any water from the window well into the perimeter drain system.',
 };
 var HB={
   elecHO:'Homeowner will install dedicated electrical outlets as required by the scope of work. Groundworks always recommends dedicated outlet(s) for sump pumps to ensure circuits are not tripped causing the pump to be inoperable.',
@@ -284,134 +759,90 @@ var CHEADER=['Homeowner to provide parking for Groundworks truck and crew.','Hom
 var CFOOTER=['Homeowner is responsible for repair and replacement of all materials removed, altered, or affected as a result of demolition and installation work performed by Groundworks. This includes, but is not limited to, drywall, insulation (including spray foam), framing, flooring, tile, bathroom fixtures, stairs, and any other finished or structural components.','Homeowner has reviewed and understands customer wills.'];
 var CONTFOOTER=['Homeowner has reviewed and understands contractor wills.'];
 var INITIALS='Customer Initials: X______________';
-var MISC=[
-  {id:'wp-utilities',label:'Utilities Protection',lblId:'lbl-utilities'},
-  {id:'wp-permit',label:'Permit B',lblId:'lbl-permit'},
-  {id:'wp-msp',label:'5 yr MSP',lblId:'lbl-msp'}
-];
 
-function onPumpChange(s){
-  var t=document.getElementById('wp-pump-triple'),sg=document.getElementById('wp-pump-single');
-  if(s==='triple'&&t.checked)sg.checked=false;
-  if(s==='single'&&sg.checked)t.checked=false;
-  update();
+function gutterBullet(){
+  var d=willPump==='triple'?'a triple sump pump with battery backup':'a single sump pump with battery backup';
+  return 'Groundworks will install a perimeter drain system to terminate into a sump pump basin containing '+d+'. Groundworks always recommends a full perimeter drain for maximum protection against groundwater seepage.';
 }
-function onAirSystemChange(){
-  var on=document.getElementById('wp-airsystem').checked;
-  var row=document.getElementById('condensate-row');
-  var chk=document.getElementById('wp-condensate');
-  row.style.opacity=on?'1':'0.35';
-  row.style.pointerEvents=on?'auto':'none';
-  if(!on)chk.checked=false;
-  update();
-}
-function onDrywallChange(selected){
-  var gwh=document.getElementById('wp-drywall-gw-half'),gwf=document.getElementById('wp-drywall-gw-full');
-  var hoh=document.getElementById('wp-drywall-ho-half'),hof=document.getElementById('wp-drywall-ho-full');
-  if(selected==='gw-half'&&gwh.checked){gwf.checked=false;hoh.checked=false;hof.checked=false;}
-  if(selected==='gw-full'&&gwf.checked){gwh.checked=false;hoh.checked=false;hof.checked=false;}
-  if(selected==='ho-half'&&hoh.checked){hof.checked=false;gwh.checked=false;gwf.checked=false;}
-  if(selected==='ho-full'&&hof.checked){hoh.checked=false;gwh.checked=false;gwf.checked=false;}
-  update();
+function airBullet(){
+  return getW('wp-condensate')
+    ?'Groundworks will install an AirSystem in the utility room. A condensate pump will also be installed to remove moisture collected by the AirSystem, as gravity drainage is not sufficient in this installation.'
+    :'Groundworks will install an AirSystem. The system will drain by gravity into the existing waterproofing system.';
 }
 
-function wpHasSelections(){
-  return ['wp-gutter','wp-pump-triple','wp-pump-single','wp-aquagrate','wp-ports','wp-airsystem','wp-condensate','wp-wallliner','wp-elec-gw','wp-elec-ho','wp-drywall-gw-half','wp-drywall-gw-full','wp-drywall-ho-half','wp-drywall-ho-full','wp-stairs','wp-cut-gw','wp-cut-ho','wp-baseboard','wp-digsafe']
-    .some(function(id){var el=document.getElementById(id);return el&&el.checked;});
-}
-
-function get(id){var el=document.getElementById(id);return el?el.checked:false;}
-
-function update(){
-  document.getElementById('tab-wp').classList.toggle('has-selections',wpHasSelections());
-
-  // Update MISC label colors in checklist
+function willsUpdate(){
   MISC.forEach(function(m){
     var lbl=document.getElementById(m.lblId);
-    if(lbl) lbl.className=get(m.id)?'misc-label-white':'misc-label-red';
+    if(lbl)lbl.className=getW(m.id)?'wills-label':'wills-label misc-red';
   });
-
-  var pump=get('wp-pump-triple')?'triple':get('wp-pump-single')?'single':null;
-  var cond=get('wp-airsystem')&&get('wp-condensate');
-
-  // CONTRACTOR
   var cL=[];
-  if(get('wp-gutter')||pump) cL.push(gutterBullet(pump));
-  if(get('wp-wallliner'))    cL.push(CB.wallliner);
-  if(get('wp-aquagrate'))    cL.push(CB.aquagrate);
-  if(get('wp-ports'))        cL.push(CB.ports);
-  if(get('wp-airsystem'))    cL.push(airBullet(cond));
-  if(get('wp-elec-gw'))      cL.push(CB.elecGW);
-  if(get('wp-drywall-gw-half')) cL.push(CB.drywallGWhalf);
-  if(get('wp-drywall-gw-full')) cL.push(CB.drywallGWfull);
-  if(get('wp-stairs'))       cL.push(CB.stairs);
-  if(get('wp-cut-gw'))       cL.push(CB.cutGW);
+  if(getW('wp-gutter'))          cL.push(gutterBullet());
+  if(getW('wp-wallliner'))       cL.push(CB.wallliner);
+  if(getW('wp-aquagrate'))       cL.push(CB.aquagrate);
+  if(getW('wp-ports'))           cL.push(CB.ports);
+  if(getW('wp-airsystem'))       cL.push(airBullet());
+  if(getW('wp-elec-gw'))         cL.push(CB.elecGW);
+  if(getW('wp-drywall-gw-half')) cL.push(CB.drywallGWhalf);
+  if(getW('wp-drywall-gw-full')) cL.push(CB.drywallGWfull);
+  if(getW('wp-stairs'))          cL.push(CB.stairs);
+  if(getW('wp-cut-gw'))          cL.push(CB.cutGW);
+  if(getW('wp-windowwell'))      cL.push(CB.windowwell);
   CONTFOOTER.forEach(function(l){cL.push(l);});
-
-  // CUSTOMER
   var hL=CHEADER.slice();
-  if(get('wp-digsafe'))         hL.push(HB.digsafe);
-  if(get('wp-elec-ho'))         hL.push(HB.elecHO);
-  if(get('wp-drywall-ho-half')) hL.push(HB.drywallHOhalf);
-  if(get('wp-drywall-ho-full')) hL.push(HB.drywallHOfull);
-  if(get('wp-cut-ho'))          hL.push(HB.cutHO);
-  if(get('wp-baseboard'))       hL.push(HB.baseboard);
+  if(getW('wp-digsafe'))         hL.push(HB.digsafe);
+  if(getW('wp-elec-ho'))         hL.push(HB.elecHO);
+  if(getW('wp-drywall-ho-half')) hL.push(HB.drywallHOhalf);
+  if(getW('wp-drywall-ho-full')) hL.push(HB.drywallHOfull);
+  if(getW('wp-cut-ho'))          hL.push(HB.cutHO);
+  if(getW('wp-baseboard'))       hL.push(HB.baseboard);
   CFOOTER.forEach(function(l){hL.push(l);});
-
-  renderOutput(cL,'contractor-output');
-  renderOutput(hL,'customer-output');
+  renderWill(cL,'contractor-output');
+  renderWill(hL,'customer-output');
+  renderMain();
 }
 
-function renderOutput(lines,elId){
+function renderWill(lines,elId){
   var el=document.getElementById(elId);
-
-  // Main bullets
-  var html='';
-  lines.forEach(function(l){
-    var escaped=l.replace(/&/g,'&').replace(/</g,'<').replace(/>/g,'>');
-    html+='<span data-copyable="true">* '+escaped+'</span>\n\n';
+  var parts=lines.map(function(l){
+    return '<span data-copyable="true">* '+l.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')+'</span>';
   });
-  // Initials
-  html+='<span class="initials-text" data-copyable="true">*\n* '+INITIALS+'</span>\n';
-
-  // Don't Forget block
-  html+='<span class="dont-forget-header">Don\'t Forget</span>\n';
-  MISC.forEach(function(m){
-    var checked=get(m.id);
-    var cls=checked?'dont-forget-white':'dont-forget-red';
-    var icon=checked?'v':'!';
-    html+='<span class="'+cls+'">'+icon+' '+m.label+'</span>\n';
-  });
-
-  el.innerHTML=html;
+  parts.push('<span class="initials-text" data-copyable="true">*\n* '+INITIALS+'</span>');
+  el.innerHTML=parts.join('\n\n');
 }
 
-function copyText(which){
+function copyWill(which){
   var el=document.getElementById(which+'-output');
   var spans=el.querySelectorAll('[data-copyable="true"]');
   var lines=[];
   spans.forEach(function(s){lines.push(s.innerText);});
   navigator.clipboard.writeText(lines.join('\n\n')).then(function(){
-    var btn=document.getElementById('copy-'+which);
-    btn.textContent='Copied!';btn.classList.add('copied');
-    setTimeout(function(){
-      btn.textContent=which==='contractor'?'Copy Contractor Wills':'Copy Customer Wills';
-      btn.classList.remove('copied');
-    },2000);
+    ['copy-'+which,'copy-'+which+'-inline'].forEach(function(btnId){
+      var btn=document.getElementById(btnId);if(!btn)return;
+      var orig=btn.textContent;
+      btn.textContent='Copied!';btn.classList.add('copied');
+      setTimeout(function(){btn.textContent=orig;btn.classList.remove('copied');},2000);
+    });
   });
 }
 
-function resetWP(){
-  ['wp-gutter','wp-pump-triple','wp-pump-single','wp-aquagrate','wp-ports','wp-airsystem','wp-condensate',
-   'wp-wallliner','wp-elec-gw','wp-elec-ho','wp-utilities','wp-drywall-gw-half','wp-drywall-gw-full',
-   'wp-drywall-ho-half','wp-drywall-ho-full','wp-stairs','wp-cut-gw','wp-cut-ho','wp-baseboard',
-   'wp-digsafe','wp-permit','wp-msp']
+function resetWills(){
+  ['wp-gutter','wp-aquagrate','wp-ports','wp-airsystem','wp-condensate','wp-wallliner',
+   'wp-elec-gw','wp-elec-ho','wp-drywall-gw-half','wp-drywall-gw-full',
+   'wp-drywall-ho-half','wp-drywall-ho-full','wp-stairs','wp-cut-gw','wp-cut-ho',
+   'wp-baseboard','wp-digsafe','wp-permit','wp-msp','wp-utilities','wp-windowwell']
     .forEach(function(id){var el=document.getElementById(id);if(el)el.checked=false;});
-  document.getElementById('condensate-row').style.opacity='0.35';
-  document.getElementById('condensate-row').style.pointerEvents='none';
-  document.getElementById('contractor-output').innerHTML='<span class="empty-state">Select items from the checklist to generate contractor wills...</span>';
-  document.getElementById('customer-output').innerHTML='<span class="empty-state">Select items from the checklist to generate customer wills...</span>';
-  update();
+  document.getElementById('condensate-row').classList.remove('enabled');
+  ['gutter','aquagrate','ports','wallliner','airsystem','condensate','windowwell']
+    .forEach(function(id){var ab=document.getElementById('ab-'+id);if(ab)ab.style.display='none';});
+  willsUpdate();
+}
+
+function toggleBlock(which){
+  var block=document.getElementById('block-'+which);
+  var btn=block.querySelector('.will-collapse-toggle');
+  if(!block||!btn)return;
+  var collapsed=block.classList.toggle('collapsed');
+  btn.textContent=collapsed?'&#9658; expand':'&#9660; collapse';
 }
 
 function toggleRebuild(){document.getElementById('rebuild-box').classList.toggle('visible');}
@@ -424,8 +855,8 @@ function copyRebuildPrompt(){
   });
 }
 
-update();
+for(var i=0;i<4;i++)addWall();
+willsUpdate();renderMain();
 </script>
-
 </body>
 </html>
