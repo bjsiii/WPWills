@@ -12,25 +12,20 @@ body{background:#0f1117;color:#e8e8e8;font-family:'IBM Plex Sans',sans-serif;hei
 .nav-fp,.nav-wills{display:flex;flex-direction:column;flex-shrink:0;overflow:hidden;transition:width .22s cubic-bezier(.4,0,.2,1);}
 .nav-fp{width:260px;background:#0b0d13;border-right:1px solid #1e2435;}
 .nav-wills{width:248px;background:#0d0f18;border-right:1px solid #1e2435;}
-.nav-fp.collapsed{width:38px;}
-.nav-wills.collapsed{width:38px;}
+.nav-fp.collapsed{width:38px;}.nav-wills.collapsed{width:38px;}
 .nav-inner{flex:1;overflow-y:auto;overflow-x:hidden;}
 .nav-fp.collapsed .nav-inner,.nav-wills.collapsed .nav-inner{opacity:0;pointer-events:none;}
 .nav-toggle{display:flex;align-items:center;gap:9px;padding:16px 11px 13px;border-bottom:1px solid #1e2435;cursor:pointer;user-select:none;flex-shrink:0;}
 .nav-toggle-icon{font-size:.7rem;flex-shrink:0;transition:transform .22s;line-height:1;}
-.nav-fp .nav-toggle-icon{color:#4fc3f7;}
-.nav-wills .nav-toggle-icon{color:#a78bfa;}
-.nav-fp.collapsed .nav-toggle-icon{transform:rotate(180deg);}
-.nav-wills.collapsed .nav-toggle-icon{transform:rotate(180deg);}
+.nav-fp .nav-toggle-icon{color:#4fc3f7;}.nav-wills .nav-toggle-icon{color:#a78bfa;}
+.nav-fp.collapsed .nav-toggle-icon,.nav-wills.collapsed .nav-toggle-icon{transform:rotate(180deg);}
 .nav-toggle-label{font-family:'Bebas Neue',sans-serif;font-size:1.15rem;letter-spacing:3px;white-space:nowrap;overflow:hidden;}
-.nav-fp .nav-toggle-label{color:#4fc3f7;}
-.nav-wills .nav-toggle-label{color:#a78bfa;}
+.nav-fp .nav-toggle-label{color:#4fc3f7;}.nav-wills .nav-toggle-label{color:#a78bfa;}
 .nav-fp.collapsed .nav-toggle-label,.nav-wills.collapsed .nav-toggle-label{display:none;}
 .fp-customer{padding:10px 14px;border-bottom:1px solid #1e2435;}
 .fp-customer label{font-family:'IBM Plex Mono',monospace;font-size:.55rem;letter-spacing:1.5px;text-transform:uppercase;color:#8892a4;display:block;margin-bottom:4px;}
 .fp-customer input{width:100%;background:#181c27;border:1px solid #2a2f3f;border-radius:5px;padding:5px 8px;font-size:.76rem;color:#e8e8e8;font-family:'IBM Plex Mono',monospace;}
-.fp-customer input::placeholder{color:#2a3050;}
-.fp-customer input:focus{outline:none;border-color:#4fc3f7;}
+.fp-customer input::placeholder{color:#2a3050;}.fp-customer input:focus{outline:none;border-color:#4fc3f7;}
 .sec-label{font-family:'IBM Plex Mono',monospace;font-size:.56rem;letter-spacing:2px;text-transform:uppercase;color:#ffffff;padding:10px 14px 4px;display:flex;align-items:center;justify-content:space-between;}
 .wall-settings{display:flex;gap:8px;flex-wrap:wrap;padding:6px 14px 8px;}
 .wall-settings label{font-family:'IBM Plex Mono',monospace;font-size:.6rem;color:#8892a4;display:flex;align-items:center;gap:4px;}
@@ -105,10 +100,9 @@ body{background:#0f1117;color:#e8e8e8;font-family:'IBM Plex Sans',sans-serif;hei
 .will-block.fp-out{border-top:3px solid #4fc3f7;}
 .will-block.contractor{border-top:3px solid #f97316;}
 .will-block.customer{border-top:3px solid #4fc3f7;}
+.will-block.cm-block{border-top:3px solid #34d399;}
 .will-title{font-family:'Bebas Neue',sans-serif;font-size:1.05rem;letter-spacing:2px;margin-bottom:11px;}
-.fp-out .will-title{color:#4fc3f7;}
-.contractor .will-title{color:#f97316;}
-.customer .will-title{color:#4fc3f7;}
+.fp-out .will-title{color:#4fc3f7;}.contractor .will-title{color:#f97316;}.customer .will-title{color:#4fc3f7;}.cm-block .will-title{color:#34d399;}
 .will-content{font-family:'IBM Plex Mono',monospace;font-size:.75rem;line-height:1.8;color:#c8ccd8;white-space:pre-wrap;background:#0f1117;border:1px solid #1e2435;border-radius:5px;padding:13px;min-height:70px;}
 .will-block.collapsed .will-content{display:none;}
 .will-block.collapsed .main-copy-btn{display:none!important;}
@@ -122,24 +116,39 @@ body{background:#0f1117;color:#e8e8e8;font-family:'IBM Plex Sans',sans-serif;hei
 .fp-plan-qty{color:#4fc3f7;}
 .fp-empty{font-family:'IBM Plex Mono',monospace;font-size:.73rem;color:#3a3f55;font-style:italic;}
 .main-copy-btn{font-family:'IBM Plex Mono',monospace;font-size:.74rem;font-weight:500;letter-spacing:1px;text-transform:uppercase;border:none;color:#fff;padding:11px 0;border-radius:5px;cursor:pointer;transition:all .15s;width:100%;margin-top:11px;display:block;}
-.fp-out .main-copy-btn{background:#1a3a4a;border:1px solid #4fc3f744;color:#4fc3f7;}
-.fp-out .main-copy-btn:hover{background:#1e4a5e;}
-.contractor .main-copy-btn{background:#f97316;}
-.contractor .main-copy-btn:hover{background:#ea6a0a;}
-.customer .main-copy-btn{background:#0e7faa;}
-.customer .main-copy-btn:hover{background:#0a6a8f;}
+.fp-out .main-copy-btn{background:#1a3a4a;border:1px solid #4fc3f744;color:#4fc3f7;}.fp-out .main-copy-btn:hover{background:#1e4a5e;}
+.contractor .main-copy-btn{background:#f97316;}.contractor .main-copy-btn:hover{background:#ea6a0a;}
+.customer .main-copy-btn{background:#0e7faa;}.customer .main-copy-btn:hover{background:#0a6a8f;}
 .main-copy-btn.copied{background:#16a34a!important;color:#fff!important;border-color:#16a34a!important;}
 .inline-copy{font-family:'IBM Plex Mono',monospace;font-size:.6rem;letter-spacing:1px;text-transform:uppercase;background:transparent;border:1px solid #3a3f55;color:#8892a4;padding:3px 10px;border-radius:4px;cursor:pointer;transition:all .15s;white-space:nowrap;}
-.inline-copy:hover{border-color:#c8ccd8;color:#c8ccd8;}
-.inline-copy.copied{border-color:#34d399;color:#34d399;}
+.inline-copy:hover{border-color:#c8ccd8;color:#c8ccd8;}.inline-copy.copied{border-color:#34d399;color:#34d399;}
 .tab-bar{display:flex;padding:0 20px;border-bottom:1px solid #1e2435;flex-shrink:0;}
 .tab-btn{font-family:'IBM Plex Mono',monospace;font-size:.66rem;letter-spacing:1.5px;text-transform:uppercase;padding:9px 16px 8px;cursor:pointer;border:none;background:transparent;color:#555;border-bottom:2px solid transparent;transition:all .15s;}
-.tab-btn:hover{color:#aaa;}
-.tab-btn.active{color:#4fc3f7;border-bottom-color:#4fc3f7;}
+.tab-btn:hover{color:#aaa;}.tab-btn.active{color:#4fc3f7;border-bottom-color:#4fc3f7;}
 .tab-panels{flex:1;overflow-y:auto;}
 .tab-panel{padding:16px 20px;display:flex;flex-direction:column;gap:14px;}
 .tab-panel.hidden{display:none!important;}
 .summary-section-title{font-family:'IBM Plex Mono',monospace;font-size:.56rem;letter-spacing:2px;text-transform:uppercase;color:#8892a4;margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid #1e2435;}
+.cm-field-group{display:flex;flex-direction:column;gap:4px;margin-bottom:12px;}
+.cm-label{font-family:'IBM Plex Mono',monospace;font-size:.58rem;letter-spacing:1.5px;text-transform:uppercase;color:#8892a4;margin-bottom:2px;}
+.cm-sublabel{font-family:'IBM Plex Mono',monospace;font-size:.53rem;color:#3a3f55;margin-bottom:3px;}
+.cm-input{width:100%;background:#0f1117;border:1px solid #2a2f3f;border-radius:5px;padding:8px 10px;font-size:.76rem;color:#e8e8e8;font-family:'IBM Plex Mono',monospace;resize:vertical;}
+.cm-input:focus{outline:none;border-color:#34d399;}
+.cm-input.auto-filled{border-color:#2a4a3a;color:#8892a4;background:#080f0c;}
+.cm-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:12px;}
+.cm-payment-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px;}
+.cm-payment-group-label{font-family:'IBM Plex Mono',monospace;font-size:.58rem;letter-spacing:1.5px;text-transform:uppercase;color:#8892a4;margin-bottom:6px;}
+.cm-chk-row{display:flex;flex-wrap:wrap;gap:8px;}
+.cm-chk-label{font-family:'IBM Plex Mono',monospace;font-size:.68rem;color:#c8ccd8;display:flex;align-items:center;gap:5px;cursor:pointer;}
+.cm-chk-label input[type=checkbox]{appearance:none;-webkit-appearance:none;width:13px;height:13px;border:1.5px solid #3a3f55;border-radius:3px;cursor:pointer;position:relative;transition:all .15s;flex-shrink:0;}
+.cm-chk-label input[type=checkbox]:checked{background:#34d399;border-color:#34d399;}
+.cm-chk-label input[type=checkbox]:checked::after{content:'v';position:absolute;top:-2px;left:1px;font-size:8px;color:#0f1117;font-weight:bold;}
+.cm-divider{font-family:'IBM Plex Mono',monospace;font-size:.58rem;letter-spacing:2px;text-transform:uppercase;color:#ffffff;padding:6px 0 8px;border-top:1px solid #1e2435;margin-top:4px;margin-bottom:8px;}
+.cm-download-btn{font-family:'IBM Plex Mono',monospace;font-size:.74rem;font-weight:500;letter-spacing:1px;text-transform:uppercase;border:none;color:#0f1117;background:#34d399;padding:13px 0;border-radius:5px;cursor:pointer;transition:all .15s;width:100%;margin-top:8px;display:block;}
+.cm-download-btn:hover{background:#2ab87e;}
+.cm-download-btn.working{background:#4fc3f7;}
+.cm-download-btn.done{background:#16a34a;color:#fff;}
+.cm-status{font-family:'IBM Plex Mono',monospace;font-size:.65rem;color:#34d399;margin-top:8px;min-height:16px;}
 .rebuild-section{padding:0 20px 20px;}
 .rebuild-toggle{font-family:'IBM Plex Mono',monospace;font-size:.58rem;letter-spacing:2px;text-transform:uppercase;color:#2a3050;cursor:pointer;background:none;border:1px dashed #1e2435;padding:5px 12px;border-radius:4px;transition:all .15s;}
 .rebuild-toggle:hover{color:#555;border-color:#3a3f55;}
@@ -165,7 +174,7 @@ body{background:#0f1117;color:#e8e8e8;font-family:'IBM Plex Sans',sans-serif;hei
   <div class="nav-inner">
     <div class="fp-customer">
       <label>Customer</label>
-      <input type="text" id="fp-customer" placeholder="Name / address" oninput="renderMain()">
+      <input type="text" id="fp-customer" placeholder="Name / address" oninput="renderMain();syncCMFields()">
     </div>
     <div class="sec-label">Walls <span style="font-family:'IBM Plex Mono',monospace;font-size:.5rem;color:#8892a4;">LF | G | WL</span></div>
     <div class="wall-settings">
@@ -175,8 +184,7 @@ body{background:#0f1117;color:#e8e8e8;font-family:'IBM Plex Sans',sans-serif;hei
     <div class="wall-tbl-wrap">
       <table class="wtbl">
         <thead><tr>
-          <th style="width:18px;"></th>
-          <th>Length</th>
+          <th style="width:18px;"></th><th>Length</th>
           <th class="center" title="Gutter">G</th>
           <th class="center" title="Wall Liner">WL</th>
           <th></th>
@@ -185,7 +193,6 @@ body{background:#0f1117;color:#e8e8e8;font-family:'IBM Plex Sans',sans-serif;hei
       </table>
     </div>
     <button class="add-wall-btn" onclick="addWall()">+ add wall</button>
-
     <div class="sec-label">System</div>
     <div class="fp-item" style="cursor:default;">
       <span style="width:14px;flex-shrink:0;"></span>
@@ -233,7 +240,6 @@ body{background:#0f1117;color:#e8e8e8;font-family:'IBM Plex Sans',sans-serif;hei
       <input type="checkbox" id="fp-condensation" onchange="syncFromFP('condensation');calcFP()">
       <span class="fp-item-label" style="font-size:.68rem;">+ Condensation pump<small>gravity cannot drain</small></span>
     </div>
-
     <div class="sec-label">Misc</div>
     <div class="fp-item" onclick="toggleFP('discharge-buried',event)">
       <input type="checkbox" id="fp-discharge-buried" onchange="calcFP()">
@@ -252,7 +258,6 @@ body{background:#0f1117;color:#e8e8e8;font-family:'IBM Plex Sans',sans-serif;hei
       <span class="fp-item-label">Window well tap</span>
       <input class="fp-manual" type="number" id="fv-windowwell" value="1" min="0" onclick="event.stopPropagation()" oninput="calcFP()">
     </div>
-
     <div class="fp-summary">
       <div class="fp-sum-grid">
         <div class="fp-stat"><div class="fp-stat-label">Walls</div><div class="fp-stat-val" id="fs-walls">0</div></div>
@@ -312,7 +317,6 @@ body{background:#0f1117;color:#e8e8e8;font-family:'IBM Plex Sans',sans-serif;hei
       <span class="wills-label">Window Well Tap</span>
       <span class="auto-badge" id="ab-windowwell" style="display:none;">auto</span>
     </div>
-
     <div class="wills-section">Electrical</div>
     <div class="sub-group-label contractor">Contractor</div>
     <div class="wills-item elec-item" onclick="toggleWill('wp-elec-gw',event)">
@@ -324,7 +328,6 @@ body{background:#0f1117;color:#e8e8e8;font-family:'IBM Plex Sans',sans-serif;hei
       <input type="checkbox" id="wp-elec-ho" onchange="willsUpdate()">
       <span class="wills-label">Electrician <span class="wills-tag tag-h">Customer</span></span>
     </div>
-
     <div class="wills-section">Demolition</div>
     <div class="sub-group-label contractor">Contractor</div>
     <div class="wills-item dw-item" onclick="toggleWill('wp-drywall-gw-half',event)">
@@ -360,13 +363,11 @@ body{background:#0f1117;color:#e8e8e8;font-family:'IBM Plex Sans',sans-serif;hei
       <input type="checkbox" id="wp-baseboard" onchange="willsUpdate()">
       <span class="wills-label">Baseboard Heater <span class="wills-tag tag-h">Customer</span></span>
     </div>
-
     <div class="wills-section">Site</div>
     <div class="wills-item wp-item" onclick="toggleWill('wp-digsafe',event)">
       <input type="checkbox" id="wp-digsafe" onchange="willsUpdate()">
       <span class="wills-label">DigSafe Flags</span>
     </div>
-
     <div class="wills-section">Misc</div>
     <div class="wills-item misc-item" onclick="toggleWill('wp-utilities',event)">
       <input type="checkbox" id="wp-utilities" onchange="willsUpdate()">
@@ -394,8 +395,11 @@ body{background:#0f1117;color:#e8e8e8;font-family:'IBM Plex Sans',sans-serif;hei
   <div class="tab-bar">
     <button class="tab-btn active" id="tab-output" onclick="switchTab('output')">Output</button>
     <button class="tab-btn" id="tab-summary" onclick="switchTab('summary')">Flight Plan &mdash; FINAL</button>
+    <button class="tab-btn" id="tab-cm" onclick="switchTab('cm')">Cover &amp; Move</button>
   </div>
   <div class="tab-panels">
+
+    <!-- OUTPUT TAB -->
     <div class="tab-panel" id="panel-output">
       <div class="will-block fp-out">
         <div class="will-title">Flight Plan &mdash; Material List</div>
@@ -425,12 +429,88 @@ body{background:#0f1117;color:#e8e8e8;font-family:'IBM Plex Sans',sans-serif;hei
         <button class="main-copy-btn" id="copy-customer" onclick="copyWill('customer')">Copy Customer Wills</button>
       </div>
     </div>
+
+    <!-- FLIGHT PLAN FINAL TAB -->
     <div class="tab-panel hidden" id="panel-summary">
       <div class="will-block" style="border-top:3px solid #34d399;">
         <div class="will-title" style="color:#34d399;">Flight Plan &mdash; FINAL</div>
         <div id="summary-content"><div class="fp-empty">Complete the flight plan to generate a summary.</div></div>
       </div>
     </div>
+
+    <!-- COVER & MOVE TAB -->
+    <div class="tab-panel hidden" id="panel-cm">
+      <div class="will-block cm-block">
+        <div class="will-title">Cover &amp; Move Sheet</div>
+        <div class="cm-row">
+          <div class="cm-field-group" style="margin-bottom:0;">
+            <div class="cm-label">Customer Name</div>
+            <div class="cm-sublabel">Auto-filled from FlightPlan panel</div>
+            <input class="cm-input auto-filled" type="text" id="cm-customer" readonly>
+          </div>
+          <div class="cm-field-group" style="margin-bottom:0;">
+            <div class="cm-label">Customer Phone</div>
+            <input class="cm-input" type="text" id="cm-phone" placeholder="(555) 555-5555">
+          </div>
+        </div>
+        <div class="cm-row">
+          <div class="cm-field-group" style="margin-bottom:0;">
+            <div class="cm-label">Date</div>
+            <input class="cm-input auto-filled" type="text" id="cm-date" readonly>
+          </div>
+          <div></div>
+        </div>
+        <div class="cm-field-group">
+          <div class="cm-label">Installation Overview</div>
+          <div class="cm-sublabel">Auto-generated from your selections. Edit as needed.</div>
+          <textarea class="cm-input auto-filled" id="cm-overview" rows="4"></textarea>
+        </div>
+        <div class="cm-field-group">
+          <div class="cm-label">Customer Why</div>
+          <div class="cm-sublabel">What is the customer's intrinsic reason for doing this project?</div>
+          <textarea class="cm-input" id="cm-why" rows="3" placeholder="e.g. Selling the home, recent flooding, peace of mind..."></textarea>
+        </div>
+        <div class="cm-field-group">
+          <div class="cm-label">Customer Expectations &amp; General Notes</div>
+          <div class="cm-sublabel">What is the specific end-result the customer is looking for?</div>
+          <textarea class="cm-input" id="cm-expectations" rows="3" placeholder="e.g. Dry basement by spring, minimal disruption to finished areas..."></textarea>
+        </div>
+        <div class="cm-field-group">
+          <div class="cm-label">Potential Hazards / Threats</div>
+          <div class="cm-sublabel">What potential hazards does the crew need to look out for?</div>
+          <textarea class="cm-input" id="cm-hazards" rows="3" placeholder="e.g. Low-hanging pipes, active electrical panel near work area..."></textarea>
+        </div>
+        <div class="cm-field-group">
+          <div class="cm-label">Foreman Questions or Concerns</div>
+          <div class="cm-sublabel">What does the foreman need to know? Is anything missing?</div>
+          <textarea class="cm-input" id="cm-questions" rows="3" placeholder="e.g. Drawing attached, confirm access to utility room..."></textarea>
+        </div>
+        <div class="cm-divider">Payment Method</div>
+        <div class="cm-payment-grid">
+          <div>
+            <div class="cm-payment-group-label">Deposit</div>
+            <div class="cm-chk-row">
+              <label class="cm-chk-label"><input type="checkbox" id="dep-check"> Check</label>
+              <label class="cm-chk-label"><input type="checkbox" id="dep-card"> Card</label>
+              <label class="cm-chk-label"><input type="checkbox" id="dep-24mo"> 24-mo Financing</label>
+              <label class="cm-chk-label"><input type="checkbox" id="dep-other"> Other Financing</label>
+            </div>
+          </div>
+          <div>
+            <div class="cm-payment-group-label">Final Payment</div>
+            <div class="cm-chk-row">
+              <label class="cm-chk-label"><input type="checkbox" id="fin-check"> Check</label>
+              <label class="cm-chk-label"><input type="checkbox" id="fin-card"> Card</label>
+              <label class="cm-chk-label"><input type="checkbox" id="fin-24mo"> 24-mo Financing</label>
+              <label class="cm-chk-label"><input type="checkbox" id="fin-other"> Other Financing</label>
+            </div>
+          </div>
+        </div>
+        <button class="cm-download-btn" id="cm-download-btn" onclick="downloadCoverMove()">&#8595; Download Cover &amp; Move (.docx)</button>
+        <div class="cm-status" id="cm-status"></div>
+      </div>
+    </div>
+
   </div>
   <div class="rebuild-section">
     <button class="rebuild-toggle" onclick="toggleRebuild()">&#9881; Show Claude Rebuild Prompt</button>
@@ -439,58 +519,67 @@ body{background:#0f1117;color:#e8e8e8;font-family:'IBM Plex Sans',sans-serif;hei
       <div class="rebuild-sublabel">Paste into claude.ai to recreate this tool from scratch</div>
       <div class="rebuild-text" id="rebuild-text">I work for Groundworks as a sales rep. Please rebuild my FlightPlan + Wills Builder app as a single HTML file.
 
-LAYOUT: Three-column layout filling the full viewport height.
-- LEFT panel (collapsible, labeled FlightPlan in blue Bebas Neue): Flight plan material calculator
-- MIDDLE panel (collapsible, labeled Wills in purple Bebas Neue): Legal will language checklist
-- RIGHT area (main): Output and Flight Plan FINAL tabs
+LAYOUT: Three-column layout filling full viewport height.
+- LEFT panel (collapsible, FlightPlan label blue Bebas Neue): material calculator
+- MIDDLE panel (collapsible, Wills label purple Bebas Neue): legal will checklist
+- RIGHT area (main): three tabs - Output, Flight Plan FINAL, Cover and Move
 
 FLIGHTPLAN PANEL:
-- Customer name text input at top
-- Wall table with columns: wall number, Length (ft), G (gutter checkbox blue when checked), WL (wall liner checkbox orange when checked), delete button. NO width column.
-- Height and Waste % inputs above the table
+- Customer name input (syncs to Cover and Move and main header)
+- Wall table: number, Length ft, G gutter checkbox (blue), WL liner checkbox (orange), delete. NO width column.
+- Height ft and Waste % inputs
 - Add wall button
-- System items: Gutter (auto from wall G column, shows LF with waste), Primary sump pump (Single/Triple toggle), Secondary sump pump (Single/Triple toggle), Wall liner (auto from wall WL column), AquaGrate (manual LF), Inspection ports (auto: 1 per gutter wall), Air system (quantity), Condensate pump child of air system
-- Misc items: Additional discharge (LF), Side discharge (LF), Window well tap (quantity)
-- Summary stats at bottom (3 columns, NO floor estimate): Walls count, Full perimeter LF, Gutter LF
-- All placeholder dashes use &mdash; HTML entity rendered via innerHTML (NOT textContent)
-- Checking FlightPlan items auto-syncs to Wills panel (AquaGrate, ports, airsystem, condensation, windowwell)
-- Pump type in FlightPlan also sets pump type in Wills
+- System: Gutter (auto from G), Primary pump (Single/Triple), Secondary pump (Single/Triple), Wall liner (auto from WL), AquaGrate (manual LF), Inspection ports (auto 1 per gutter wall), Air system (qty), Condensate pump child
+- Misc: Additional discharge LF, Side discharge LF, Window well tap qty
+- Summary 3 cols: Walls, Full perimeter LF, Gutter LF. NO floor estimate.
+- All dashes use innerHTML with &mdash; NOT textContent
+- Auto-syncs to Wills: aquagrate, ports, airsystem, condensation, windowwell
+- Pump type syncs to Wills
 
-WILLS PANEL sections (section labels WHITE):
-- System: Gutter/Perimeter Drain (Single/Triple pump toggle), Wall Liner, AquaGrate, Inspection Ports, AirSystem (child Condensate pump grayed until AirSystem checked), Window Well Tap. Auto-badge shown when auto-synced from FlightPlan.
-- Electrical: Contractor sub-bar (orange) with Electrician [Contractor]; Customer sub-bar (blue) with Electrician [Customer]
-- Demolition: Contractor sub-bar: Drywall 1/2 Wall [Contractor], Drywall Full Wall [Contractor], Cut Through [Contractor], Stairs [Contractor]; Customer sub-bar: Drywall 1/2 Wall [Customer], Drywall Full Wall [Customer], Cut Through [Customer], Baseboard Heater [Customer]. All four drywall options mutually exclusive.
+WILLS PANEL (section labels WHITE):
+- System: Gutter/Perimeter Drain with pump toggle, Wall Liner, AquaGrate, Inspection Ports, AirSystem with child Condensate (grayed until AirSystem), Window Well Tap. Auto-badges.
+- Electrical: Contractor sub-bar orange: Electrician [Contractor]. Customer sub-bar blue: Electrician [Customer].
+- Demolition: Contractor sub-bar: Drywall 1/2 [Contractor], Drywall Full [Contractor], Cut Through [Contractor], Stairs [Contractor]. Customer sub-bar: Drywall 1/2 [Customer], Drywall Full [Customer], Cut Through [Customer], Baseboard Heater [Customer]. All four drywall mutually exclusive.
 - Site: DigSafe Flags
-- Misc: Utilities Protection, Permit B, 5yr MSP - labels RED until checked then white
+- Misc: Utilities Protection, Permit B, 5yr MSP RED until checked then white
 
 OUTPUT TAB:
-- Flight Plan Material List block (blue top border): materials with quantities, Don't Forget section at bottom with MISC items red if unchecked white if checked
-- Contractor Wills block (orange, collapsed by default): expand/collapse toggle using arrow characters (NOT HTML entities in button text - use actual arrow characters or simple text like '> expand' and 'v collapse')
-- Customer Wills block (blue, collapsed by default): same
-- Inline Copy button always visible, full-width Copy button visible when expanded
-- Copy only copies legal text not Don't Forget section
+- Flight Plan Material List (blue border): materials + quantities + Don't Forget section (MISC red/white)
+- Contractor Wills (orange, collapsed): inline Copy, expand toggle plain text not html entities, full Copy
+- Customer Wills (blue, collapsed): same
+- Copy uses data-copyable attribute to exclude Don't Forget
 
-FLIGHT PLAN FINAL TAB (formerly Summary): Shows scope, materials, Don't Forget items, contractor wills, customer wills. Tab label and block title both read "Flight Plan - FINAL"
+FLIGHT PLAN FINAL TAB: scope, materials, Don't Forget, contractor wills, customer wills
 
-WILL BULLET LABELS: Every bullet prefixed with bold all-caps label and colon.
-CONTRACTOR labels: SYSTEM, WALL LINER, AQUAGRATE, INSPECTION PORTS, AIR SYSTEM, ELECTRICIAN, CONTRACTOR DEMOLITION - DRYWALL, CONTRACTOR DEMOLITION - STAIRS, CONTRACTOR DEMOLITION - CUT THROUGH, WINDOW WELL, ACKNOWLEDGEMENT
-CUSTOMER labels: PARKING, PERSONAL EFFECTS, DIGSAFE, ELECTRICIAN, CUSTOMER DEMOLITION - DRYWALL, CUSTOMER DEMOLITION - CUT THROUGH, BASEBOARD HEATER, RESPONSIBILITY, ACKNOWLEDGEMENT
+COVER AND MOVE TAB (green #34d399 border):
+- Auto-filled readonly (dark green bg): Customer Name from FlightPlan, today's date, Installation Overview auto-generated from materials + wills selections. Overview is editable.
+- Manual fields: Customer Phone, Customer Why, Customer Expectations and General Notes, Potential Hazards/Threats, Foreman Questions or Concerns
+- Payment checkboxes 2-col: Deposit (Check, Card, 24-mo Financing, Other Financing), Final Payment (same)
+- Download button (green): generates .docx using pure JavaScript ZIP construction with NO external CDN libraries. The docx is built by manually constructing the XML files and zipping them using the JSZip algorithm implemented inline. This is required because the file runs locally (file://) and CDN scripts are blocked. The docx must work completely offline.
+- File named CoverMove_CustomerName_Date.docx
 
-WILL LANGUAGE:
-- SYSTEM: dynamic pump type (single or triple sump pump with battery backup)
-- AIR SYSTEM without condensate: "Groundworks will install an AirSystem. The system will drain by gravity into the existing waterproofing system."
-- AIR SYSTEM with condensate: "Groundworks will install an AirSystem in the utility room. A condensate pump will also be installed..."
-- Liquid nails + warranty language appended to: Contractor Demolition Drywall (both versions), Contractor Demolition Cut Through, Customer Demolition Drywall 1/2 Wall, Customer Demolition Drywall Full Wall, Customer Demolition Cut Through. Text: "If/when any base plate(s) are reinstalled, nails MUST NOT be used to secure the base plate(s) to the concrete floor, as the drainage system is located beneath and will be damaged. This will also void your warranty. A construction adhesive such as Liquid Nails or comparable must be used instead."
-- Customer Demolition Drywall 1/2 Wall: "lower 10 inches of studs" (NOT 18 inches)
-- ACKNOWLEDGEMENT on both contractor and customer wills
-- RESPONSIBILITY: full demolition liability language on customer wills
-- PARKING and PERSONAL EFFECTS: always-present header items on customer wills
-- Contractor footer: Homeowner has reviewed and understands contractor wills. Customer Initials: X______________
-- Customer footer: Homeowner has reviewed and understands customer wills. Customer Initials: X______________
+DOCX GENERATION - CRITICAL: Must use pure inline JavaScript to build the ZIP/docx without any CDN. Build the docx XML manually:
+- [Content_Types].xml, _rels/.rels, word/_rels/document.xml.rels, word/document.xml, word/styles.xml
+- Use a CRC32 + DEFLATE-free ZIP builder (store method, no compression) to assemble the file
+- Download via Blob URL
 
-MISC items (Utilities Protection, Permit B, 5yr MSP): always shown in Wills panel in RED until checked then white. Appear in Don't Forget section of output in red if unchecked white if checked.
+WILL BULLET LABELS (bold all-caps):
+CONTRACTOR: SYSTEM, WALL LINER, AQUAGRATE, INSPECTION PORTS, AIR SYSTEM, ELECTRICIAN, CONTRACTOR DEMOLITION - DRYWALL, CONTRACTOR DEMOLITION - STAIRS, CONTRACTOR DEMOLITION - CUT THROUGH, WINDOW WELL, ACKNOWLEDGEMENT
+CUSTOMER: PARKING, PERSONAL EFFECTS, DIGSAFE, ELECTRICIAN, CUSTOMER DEMOLITION - DRYWALL, CUSTOMER DEMOLITION - CUT THROUGH, BASEBOARD HEATER, RESPONSIBILITY, ACKNOWLEDGEMENT
 
-DESIGN: Dark #0f1117. FlightPlan panel #0b0d13, Wills panel #0d0f18. Bebas Neue headings, IBM Plex Mono everywhere. Blue #4fc3f7 FlightPlan accent, purple #a78bfa Wills accent. Orange #f97316 contractor, blue #0e7faa customer copy buttons white text. Expand/collapse toggles use plain text characters not HTML entities. All dynamic dash placeholders use innerHTML with &mdash; entity. Rebuild prompt collapsed at bottom of main area.</div>
+KEY LANGUAGE:
+- AIR SYSTEM no condensate: gravity drain language
+- AIR SYSTEM with condensate: utility room + condensate pump language
+- Liquid nails warning on: both GW drywall, GW cut through, both HO drywall, HO cut through
+- HO drywall 1/2 wall: 10 inches NOT 18
+- PARKING and PERSONAL EFFECTS always in customer wills header
+- RESPONSIBILITY and ACKNOWLEDGEMENT always in customer wills footer
+- ACKNOWLEDGEMENT always in contractor wills footer
+- Initials line: Customer Initials: X______________
+
+MISC: always RED until checked. Don't Forget section shows red/white status.
+
+DESIGN: #0f1117 body, #0b0d13 FlightPlan, #0d0f18 Wills. Bebas Neue headings, IBM Plex Mono everywhere. Blue #4fc3f7, purple #a78bfa, green #34d399. Orange #f97316 contractor, blue #0e7faa customer. Rebuild prompt collapsed at bottom.</div>
       <button class="rebuild-copy-btn" id="rebuild-copy-btn" onclick="copyRebuildPrompt()">Copy Prompt</button>
     </div>
   </div>
@@ -498,6 +587,229 @@ DESIGN: Dark #0f1117. FlightPlan panel #0b0d13, Wills panel #0d0f18. Bebas Neue 
 </div>
 
 <script>
+// ── PURE JS DOCX BUILDER (no CDN, works offline) ─────────────────────────────
+// Builds a valid .docx file using the ZIP STORED method (no compression needed)
+// A .docx is just a ZIP containing XML files.
+
+function strToUint8(str){
+  var buf=new Uint8Array(str.length);
+  for(var i=0;i<str.length;i++)buf[i]=str.charCodeAt(i)&0xff;
+  return buf;
+}
+function concatU8(arrays){
+  var len=0;for(var i=0;i<arrays.length;i++)len+=arrays[i].length;
+  var out=new Uint8Array(len);var off=0;
+  for(var i=0;i<arrays.length;i++){out.set(arrays[i],off);off+=arrays[i].length;}
+  return out;
+}
+function crc32(buf){
+  var table=[];
+  for(var i=0;i<256;i++){var c=i;for(var j=0;j<8;j++)c=c&1?(0xEDB88320^(c>>>1)):(c>>>1);table[i]=c;}
+  var crc=0xFFFFFFFF;
+  for(var i=0;i<buf.length;i++)crc=table[(crc^buf[i])&0xff]^(crc>>>8);
+  return(crc^0xFFFFFFFF)>>>0;
+}
+function u16le(n){return[n&0xff,(n>>8)&0xff];}
+function u32le(n){return[n&0xff,(n>>8)&0xff,(n>>16)&0xff,(n>>24)&0xff];}
+
+function buildDocx(files){
+  // files: array of {name, data (Uint8Array)}
+  var localHeaders=[];var centralDirs=[];var offset=0;
+  var now=new Date();
+  var dosDate=((now.getFullYear()-1980)<<9)|((now.getMonth()+1)<<5)|now.getDate();
+  var dosTime=(now.getHours()<<11)|(now.getMinutes()<<5)|(now.getSeconds()>>1);
+
+  for(var i=0;i<files.length;i++){
+    var f=files[i];
+    var nameBytes=strToUint8(f.name);
+    var crc=crc32(f.data);
+    var size=f.data.length;
+
+    var lh=new Uint8Array([
+      0x50,0x4B,0x03,0x04, // sig
+      0x14,0x00,           // version needed
+      0x00,0x00,           // flags
+      0x00,0x00,           // compression (STORE)
+    ].concat(u16le(dosTime),u16le(dosDate),u32le(crc),u32le(size),u32le(size),
+             u16le(nameBytes.length),[0x00,0x00]));
+
+    localHeaders.push({lh:lh,name:nameBytes,data:f.data,crc:crc,size:size,offset:offset});
+
+    var cdEntry=new Uint8Array([
+      0x50,0x4B,0x01,0x02, // sig
+      0x14,0x00,           // version made
+      0x14,0x00,           // version needed
+      0x00,0x00,           // flags
+      0x00,0x00,           // compression STORE
+    ].concat(u16le(dosTime),u16le(dosDate),u32le(crc),u32le(size),u32le(size),
+             u16le(nameBytes.length),[0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
+             0x00,0x00,0x00,0x00],u32le(offset)));
+    centralDirs.push({cd:cdEntry,name:nameBytes});
+
+    offset+=lh.length+nameBytes.length+size;
+  }
+
+  var parts=[];
+  for(var i=0;i<localHeaders.length;i++){
+    parts.push(localHeaders[i].lh);
+    parts.push(localHeaders[i].name);
+    parts.push(localHeaders[i].data);
+  }
+  var cdStart=offset;var cdSize=0;
+  for(var i=0;i<centralDirs.length;i++){
+    var cd=concatU8([centralDirs[i].cd,centralDirs[i].name]);
+    parts.push(cd);cdSize+=cd.length;
+  }
+  var eocd=new Uint8Array([
+    0x50,0x4B,0x05,0x06,0x00,0x00,0x00,0x00
+  ].concat(u16le(files.length),u16le(files.length),
+           u32le(cdSize),u32le(cdStart),[0x00,0x00]));
+  parts.push(eocd);
+  return concatU8(parts);
+}
+
+function xmlEsc(s){
+  return String(s||'')
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;')
+    .replace(/'/g,'&apos;');
+}
+
+function makeDocxXml(data){
+  // data: {customer, phone, date, overview, why, expectations, hazards, questions, deposit, finalPay}
+
+  function para(text,opts){
+    opts=opts||{};
+    var rpr='';
+    if(opts.bold)rpr+='<w:b/>';
+    if(opts.size)rpr+='<w:sz w:val="'+opts.size+'"/><w:szCs w:val="'+opts.size+'"/>';
+    if(opts.color)rpr+='<w:color w:val="'+opts.color+'"/>';
+    if(rpr)rpr='<w:rPr>'+rpr+'</w:rPr>';
+    var ppr='';
+    if(opts.spacing)ppr='<w:pPr><w:spacing w:after="'+opts.spacing+'"/></w:pPr>';
+    if(opts.shade)ppr='<w:pPr><w:shd w:val="clear" w:color="auto" w:fill="'+opts.shade+'"/><w:spacing w:after="'+(opts.spacing||60)+'"/></w:pPr>';
+
+    // Handle multiline text
+    var lines=text.split('\n');
+    var runs=lines.map(function(line,idx){
+      var br=idx<lines.length-1?'<w:br/>':'';
+      return '<w:r>'+rpr+'<w:t xml:space="preserve">'+xmlEsc(line)+'</w:t>'+br+'</w:r>';
+    }).join('');
+    return '<w:p>'+ppr+runs+'</w:p>';
+  }
+
+  function sectionHeader(title,subtitle){
+    var ppr='<w:pPr><w:shd w:val="clear" w:color="auto" w:fill="E3F2FD"/><w:spacing w:after="20"/></w:pPr>';
+    var rpr='<w:rPr><w:b/><w:color w:val="1565C0"/><w:sz w:val="19"/><w:szCs w:val="19"/></w:rPr>';
+    var srpr='<w:rPr><w:i/><w:color w:val="666666"/><w:sz w:val="16"/><w:szCs w:val="16"/></w:rPr>';
+    var sub=subtitle?'<w:p><w:pPr><w:shd w:val="clear" w:color="auto" w:fill="E3F2FD"/><w:spacing w:after="30"/></w:pPr><w:r>'+srpr+'<w:t>'+xmlEsc(subtitle)+'</w:t></w:r></w:p>':'';
+    return '<w:p>'+ppr+'<w:r>'+rpr+'<w:t>'+xmlEsc(title)+'</w:t></w:r></w:p>'+sub;
+  }
+
+  function contentBlock(text){
+    if(!text||text==='(not entered)')text='';
+    var lines=text.split('\n');
+    var rows=lines.map(function(l){return para(l||' ',{size:18,spacing:40});}).join('');
+    rows+=para(' ',{size:18,spacing:60});
+    return rows;
+  }
+
+  function row(left,right){
+    return '<w:tr>'
+      +'<w:tc><w:tcPr><w:tcW w:w="10260" w:type="dxa"/><w:tcBorders><w:top w:val="single" w:sz="4" w:color="CCCCCC"/><w:bottom w:val="single" w:sz="4" w:color="CCCCCC"/><w:left w:val="single" w:sz="4" w:color="CCCCCC"/><w:right w:val="single" w:sz="4" w:color="CCCCCC"/></w:tcBorders><w:tcMar><w:top w:w="60" w:type="dxa"/><w:bottom w:w="60" w:type="dxa"/><w:left w:w="100" w:type="dxa"/><w:right w:w="100" w:type="dxa"/></w:tcMar></w:tcPr>'+left+'</w:tc>'
+      +'<w:tc><w:tcPr><w:tcW w:w="1260" w:type="dxa"/><w:tcBorders><w:top w:val="single" w:sz="4" w:color="CCCCCC"/><w:bottom w:val="single" w:sz="4" w:color="CCCCCC"/><w:left w:val="single" w:sz="4" w:color="CCCCCC"/><w:right w:val="single" w:sz="4" w:color="CCCCCC"/></w:tcBorders><w:shd w:val="clear" w:color="auto" w:fill="F5F5F5"/><w:tcMar><w:top w:w="80" w:type="dxa"/><w:bottom w:w="80" w:type="dxa"/><w:left w:w="80" w:type="dxa"/><w:right w:w="80" w:type="dxa"/></w:tcMar></w:tcPr>'+right+'</w:tc>'
+      +'</w:tr>';
+  }
+
+  function initialsCell(){
+    return para('Initials',{size:16,color:'888888',spacing:40})+para('CFI / Foreman',{size:14,color:'AAAAAA'});
+  }
+
+  var body='';
+
+  // Title
+  body+=para('Cover and Move Sheet',{bold:true,size:32,color:'1565C0',spacing:60});
+
+  // Header info
+  body+='<w:p><w:pPr><w:spacing w:after="100"/></w:pPr>'
+    +'<w:r><w:rPr><w:b/><w:sz w:val="20"/><w:szCs w:val="20"/></w:rPr><w:t xml:space="preserve">Customer: </w:t></w:r>'
+    +'<w:r><w:rPr><w:sz w:val="20"/><w:szCs w:val="20"/></w:rPr><w:t xml:space="preserve">'+xmlEsc(data.customer)+'     </w:t></w:r>'
+    +'<w:r><w:rPr><w:b/><w:sz w:val="20"/><w:szCs w:val="20"/></w:rPr><w:t xml:space="preserve">Phone: </w:t></w:r>'
+    +'<w:r><w:rPr><w:sz w:val="20"/><w:szCs w:val="20"/></w:rPr><w:t xml:space="preserve">'+xmlEsc(data.phone)+'     </w:t></w:r>'
+    +'<w:r><w:rPr><w:b/><w:sz w:val="20"/><w:szCs w:val="20"/></w:rPr><w:t xml:space="preserve">Date: </w:t></w:r>'
+    +'<w:r><w:rPr><w:sz w:val="20"/><w:szCs w:val="20"/></w:rPr><w:t>'+xmlEsc(data.date)+'</w:t></w:r>'
+    +'</w:p>';
+
+  // Table
+  body+='<w:tbl><w:tblPr><w:tblW w:w="11520" w:type="dxa"/><w:tblBorders><w:insideH w:val="single" w:sz="4" w:color="CCCCCC"/><w:insideV w:val="single" w:sz="4" w:color="CCCCCC"/></w:tblBorders></w:tblPr><w:tblGrid><w:gridCol w:w="10260"/><w:gridCol w:w="1260"/></w:tblGrid>';
+
+  body+=row(sectionHeader('Customer Why:','What is the customer\'s intrinsic reason for doing this project?'),initialsCell());
+  body+=row(contentBlock(data.why),'<w:p><w:r><w:t> </w:t></w:r></w:p>');
+  body+=row(sectionHeader('Customer Expectations & General Notes:','What is the specific end-result the customer is looking for?'),initialsCell());
+  body+=row(contentBlock(data.expectations),'<w:p><w:r><w:t> </w:t></w:r></w:p>');
+  body+=row(sectionHeader('Installation Overview + Recommendations:','Materials list and scope of work'),initialsCell());
+  body+=row(contentBlock(data.overview),'<w:p><w:r><w:t> </w:t></w:r></w:p>');
+  body+=row(sectionHeader('Potential Hazards / Threats:','What potential hazards does the crew need to look out for?'),initialsCell());
+  body+=row(contentBlock(data.hazards),'<w:p><w:r><w:t> </w:t></w:r></w:p>');
+  body+=row(sectionHeader('Foreman Questions or Concerns:','What do you need from CFI to successfully install this job?'),initialsCell());
+  body+=row(contentBlock(data.questions),'<w:p><w:r><w:t> </w:t></w:r></w:p>');
+  body+=row(sectionHeader('Payment Method:',null),initialsCell());
+  body+=row(
+    para('Deposit: '+data.deposit,{size:20,spacing:80})+para('Final Payment: '+data.finalPay,{size:20,spacing:80}),
+    '<w:p><w:r><w:t> </w:t></w:r></w:p>'
+  );
+
+  body+='</w:tbl>';
+
+  // Signatures
+  body+='<w:p><w:pPr><w:spacing w:before="200" w:after="60"/></w:pPr>'
+    +'<w:r><w:rPr><w:b/><w:sz w:val="20"/><w:szCs w:val="20"/></w:rPr><w:t xml:space="preserve">Foreman Signature: </w:t></w:r>'
+    +'<w:r><w:rPr><w:sz w:val="20"/><w:szCs w:val="20"/></w:rPr><w:t xml:space="preserve">____________________     </w:t></w:r>'
+    +'<w:r><w:rPr><w:b/><w:sz w:val="20"/><w:szCs w:val="20"/></w:rPr><w:t xml:space="preserve">CFI Signature: </w:t></w:r>'
+    +'<w:r><w:rPr><w:sz w:val="20"/><w:szCs w:val="20"/></w:rPr><w:t xml:space="preserve">____________________     </w:t></w:r>'
+    +'<w:r><w:rPr><w:b/><w:sz w:val="20"/><w:szCs w:val="20"/></w:rPr><w:t xml:space="preserve">Date: </w:t></w:r>'
+    +'<w:r><w:rPr><w:sz w:val="20"/><w:szCs w:val="20"/></w:rPr><w:t>_______________</w:t></w:r>'
+    +'</w:p>';
+
+  var documentXml='<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
+    +'<w:document xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" '
+    +'xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" '
+    +'xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships">'
+    +'<w:body>'
+    +body
+    +'<w:sectPr>'
+    +'<w:pgSz w:w="12240" w:h="15840"/>'
+    +'<w:pgMar w:top="360" w:right="360" w:bottom="360" w:left="360"/>'
+    +'</w:sectPr>'
+    +'</w:body></w:document>';
+
+  var contentTypes='<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
+    +'<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">'
+    +'<Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/>'
+    +'<Default Extension="xml" ContentType="application/xml"/>'
+    +'<Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/>'
+    +'</Types>';
+
+  var rels='<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
+    +'<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">'
+    +'<Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/>'
+    +'</Relationships>';
+
+  var wordRels='<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
+    +'<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">'
+    +'</Relationships>';
+
+  return [
+    {name:'[Content_Types].xml', data:strToUint8(contentTypes)},
+    {name:'_rels/.rels',         data:strToUint8(rels)},
+    {name:'word/_rels/document.xml.rels', data:strToUint8(wordRels)},
+    {name:'word/document.xml',   data:strToUint8(documentXml)},
+  ];
+}
+// ── END DOCX BUILDER ──────────────────────────────────────────────────────────
+
 var wallId=0,walls=[],fpPump='single',fp2Pump='single',willPump='single';
 
 function toggleNav(w){document.getElementById('nav-'+w).classList.toggle('collapsed');}
@@ -527,7 +839,7 @@ function getStats(){
   var totalLF=walls.reduce(function(s,w){return s+w.len;},0);
   var gutterLF=walls.filter(function(w){return w.gutter;}).reduce(function(s,w){return s+w.len;},0);
   var linerLF=walls.filter(function(w){return w.liner;}).reduce(function(s,w){return s+w.len;},0);
-  return{count:walls.length,totalLF:totalLF,gutterLF:gutterLF,gutterWaste:gutterLF*(1+wp),linerLF:linerLF,linerWaste:linerLF*(1+wp),h:h,wp:wp,hasGutter:gutterLF>0,hasLiner:linerLF>0};
+  return{count:walls.length,totalLF:totalLF,gutterLF:gutterLF,gutterWaste:gutterLF*(1+wp),linerLF:linerLF,linerWaste:linerLF*(1+wp),h:h,hasGutter:gutterLF>0,hasLiner:linerLF>0};
 }
 function ov(id){var el=document.getElementById(id);return el?(parseFloat(el.value)||0):0;}
 function chkFP(id){var el=document.getElementById('fp-'+id);return el&&el.checked;}
@@ -572,8 +884,7 @@ function calcFP(){
   document.getElementById('fq-gutter').innerHTML=s.hasGutter?s.gutterWaste.toFixed(1)+' lf':'&mdash;';
   document.getElementById('fq-wallliner').innerHTML=s.hasLiner?s.linerWaste.toFixed(1)+' lf':'&mdash;';
   document.getElementById('fq-ports').innerHTML=gwc>0?gwc+' ea (auto)':'&mdash;';
-  autoSyncWills();
-  renderMain();
+  autoSyncWills();renderMain();syncCMFields();
 }
 
 var MISC=[
@@ -600,43 +911,53 @@ function getFPItems(s){
 
 function escHtml(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 
+function syncCMFields(){
+  var custEl=document.getElementById('fp-customer');
+  var cmCust=document.getElementById('cm-customer');
+  if(cmCust&&custEl)cmCust.value=custEl.value||'';
+  var dateEl=document.getElementById('cm-date');
+  if(dateEl&&!dateEl._set){
+    var now=new Date();
+    dateEl.value=(now.getMonth()+1)+'/'+now.getDate()+'/'+now.getFullYear();
+    dateEl._set=true;
+  }
+  var s=getStats();var items=getFPItems(s);
+  var overview='';
+  if(items.length)overview='MATERIALS:\n'+items.map(function(i){return '  '+i.name+': '+i.qty;}).join('\n')+'\n\n';
+  var scope=[];
+  if(getW('wp-gutter'))scope.push('Perimeter drain system with '+willPump+' sump pump');
+  if(getW('wp-wallliner'))scope.push('Wall liner');
+  if(getW('wp-airsystem'))scope.push('AirSystem'+(getW('wp-condensate')?' with condensate pump':''));
+  if(getW('wp-drywall-gw-half')||getW('wp-drywall-gw-full'))scope.push('Drywall removal by Groundworks');
+  if(getW('wp-drywall-ho-half')||getW('wp-drywall-ho-full'))scope.push('Drywall removal by homeowner');
+  if(getW('wp-stairs'))scope.push('Stair removal');
+  if(getW('wp-cut-gw'))scope.push('Cut through by Groundworks');
+  if(getW('wp-cut-ho'))scope.push('Cut through by homeowner');
+  if(scope.length)overview+='SCOPE:\n'+scope.map(function(s){return '  '+s;}).join('\n');
+  var overviewEl=document.getElementById('cm-overview');
+  if(overviewEl)overviewEl.value=overview||'Complete FlightPlan and Wills selections to auto-generate.';
+}
+
 function renderMain(){
   var cust=document.getElementById('fp-customer').value||'';
   var custEl=document.getElementById('main-cust');
   if(custEl)custEl.textContent=cust?' \u2014 '+cust:'';
-  var s=getStats();
-  var items=getFPItems(s);
+  var s=getStats();var items=getFPItems(s);
   var el=document.getElementById('fp-plan-rows');
   var btn=document.getElementById('fp-copy-btn');
-
-  MISC.forEach(function(m){
-    var lbl=document.getElementById(m.lblId);
-    if(lbl)lbl.className=getW(m.id)?'wills-label':'wills-label misc-red';
-  });
-
-  if(!items.length){
-    el.innerHTML='<div class="fp-empty">Add walls and select materials in the left panel.</div>';
-    btn.style.display='none';return;
-  }
+  MISC.forEach(function(m){var lbl=document.getElementById(m.lblId);if(lbl)lbl.className=getW(m.id)?'wills-label':'wills-label misc-red';});
+  if(!items.length){el.innerHTML='<div class="fp-empty">Add walls and select materials in the left panel.</div>';btn.style.display='none';return;}
   btn.style.display='block';
-  var html=items.map(function(it){
-    return '<div class="fp-plan-row"><span>'+escHtml(it.name)+'</span><span class="fp-plan-qty">'+escHtml(it.qty)+'</span></div>';
-  }).join('');
-  html+='<div style="margin-top:10px;padding-top:10px;border-top:1px solid #1e2435;">';
-  html+='<div style="font-family:\'IBM Plex Mono\',monospace;font-size:.58rem;letter-spacing:2px;color:#555;text-transform:uppercase;margin-bottom:6px;">Don\'t Forget</div>';
-  MISC.forEach(function(m){
-    var checked=getW(m.id);
-    var col=checked?'#c8ccd8':'#f87171';
-    html+='<div class="fp-plan-row"><span style="color:'+col+';">'+(checked?'v':'!')+'  '+escHtml(m.label)+'</span><span class="fp-plan-qty" style="color:'+col+';">'+(checked?'confirmed':'check off')+'</span></div>';
-  });
+  var html=items.map(function(it){return '<div class="fp-plan-row"><span>'+escHtml(it.name)+'</span><span class="fp-plan-qty">'+escHtml(it.qty)+'</span></div>';}).join('');
+  html+='<div style="margin-top:10px;padding-top:10px;border-top:1px solid #1e2435;"><div style="font-family:\'IBM Plex Mono\',monospace;font-size:.58rem;letter-spacing:2px;color:#555;text-transform:uppercase;margin-bottom:6px;">Don\'t Forget</div>';
+  MISC.forEach(function(m){var checked=getW(m.id);var col=checked?'#c8ccd8':'#f87171';html+='<div class="fp-plan-row"><span style="color:'+col+';">'+(checked?'v':'!')+'  '+escHtml(m.label)+'</span><span class="fp-plan-qty" style="color:'+col+';">'+(checked?'confirmed':'check off')+'</span></div>';});
   html+='</div>';
   el.innerHTML=html;
 }
 
 function copyFP(){
   var el=document.getElementById('fp-plan-rows');
-  var rows=el.querySelectorAll('.fp-plan-row');
-  var lines=[];
+  var rows=el.querySelectorAll('.fp-plan-row');var lines=[];
   rows.forEach(function(r){var c=r.querySelectorAll('span');if(c.length>=2)lines.push(c[0].innerText+': '+c[1].innerText);});
   navigator.clipboard.writeText(lines.join('\n')).then(function(){
     var btn=document.getElementById('fp-copy-btn');
@@ -646,42 +967,28 @@ function copyFP(){
 }
 
 function switchTab(t){
-  ['output','summary'].forEach(function(id){
+  ['output','summary','cm'].forEach(function(id){
     document.getElementById('tab-'+id).classList.toggle('active',id===t);
     document.getElementById('panel-'+id).classList.toggle('hidden',id!==t);
   });
   if(t==='summary')renderSummary();
+  if(t==='cm')syncCMFields();
 }
 
 function renderSummary(){
-  var s=getStats();
-  var cust=document.getElementById('fp-customer').value||'(no customer)';
-  var items=getFPItems(s);
-  var html='<div style="margin-bottom:12px;"><div class="summary-section-title">Scope</div>';
-  html+='<div style="font-family:monospace;font-size:.74rem;line-height:1.8;color:#c8ccd8;">';
+  var s=getStats();var cust=document.getElementById('fp-customer').value||'(no customer)';var items=getFPItems(s);
+  var html='<div style="margin-bottom:12px;"><div class="summary-section-title">Scope</div><div style="font-family:monospace;font-size:.74rem;line-height:1.8;color:#c8ccd8;">';
   html+='<div><span style="color:#8892a4;">Customer: </span>'+escHtml(cust)+'</div>';
-  html+='<div><span style="color:#8892a4;">Walls: </span>'+s.count+' &nbsp;|&nbsp; Perimeter: '+s.totalLF.toFixed(1)+' lf &nbsp;|&nbsp; Height: '+s.h+' ft</div>';
+  html+='<div><span style="color:#8892a4;">Walls: </span>'+s.count+' | Perimeter: '+s.totalLF.toFixed(1)+' lf | Height: '+s.h+' ft</div>';
   html+='</div></div>';
-  if(items.length){
-    html+='<div style="margin-bottom:12px;"><div class="summary-section-title">Materials</div>';
-    html+=items.map(function(it){return '<div class="fp-plan-row"><span>'+escHtml(it.name)+'</span><span class="fp-plan-qty">'+escHtml(it.qty)+'</span></div>';}).join('');
-    html+='</div>';
-  }
+  if(items.length){html+='<div style="margin-bottom:12px;"><div class="summary-section-title">Materials</div>';html+=items.map(function(it){return '<div class="fp-plan-row"><span>'+escHtml(it.name)+'</span><span class="fp-plan-qty">'+escHtml(it.qty)+'</span></div>';}).join('');html+='</div>';}
   html+='<div style="margin-bottom:12px;"><div class="summary-section-title" style="color:#f87171;">Don\'t Forget</div>';
-  MISC.forEach(function(m){
-    var checked=getW(m.id);
-    var col=checked?'#c8ccd8':'#f87171';
-    html+='<div class="fp-plan-row"><span style="color:'+col+';">'+(checked?'v':'!')+'  '+escHtml(m.label)+'</span><span class="fp-plan-qty" style="color:'+col+';">'+(checked?'confirmed':'pending')+'</span></div>';
-  });
+  MISC.forEach(function(m){var checked=getW(m.id);var col=checked?'#c8ccd8':'#f87171';html+='<div class="fp-plan-row"><span style="color:'+col+';">'+(checked?'v':'!')+'  '+escHtml(m.label)+'</span><span class="fp-plan-qty" style="color:'+col+';">'+(checked?'confirmed':'pending')+'</span></div>';});
   html+='</div>';
   var contEl=document.getElementById('contractor-output');
-  if(contEl&&contEl.innerText.indexOf('Select items')===-1){
-    html+='<div style="margin-bottom:12px;"><div class="summary-section-title" style="color:#f97316;">Contractor Wills</div><div class="will-content" style="font-size:.7rem;">'+contEl.innerHTML+'</div></div>';
-  }
+  if(contEl&&contEl.innerText.indexOf('Select items')===-1){html+='<div style="margin-bottom:12px;"><div class="summary-section-title" style="color:#f97316;">Contractor Wills</div><div class="will-content" style="font-size:.7rem;">'+contEl.innerHTML+'</div></div>';}
   var custEl=document.getElementById('customer-output');
-  if(custEl&&custEl.innerText.indexOf('Select items')===-1){
-    html+='<div><div class="summary-section-title" style="color:#4fc3f7;">Customer Wills</div><div class="will-content" style="font-size:.7rem;">'+custEl.innerHTML+'</div></div>';
-  }
+  if(custEl&&custEl.innerText.indexOf('Select items')===-1){html+='<div><div class="summary-section-title" style="color:#4fc3f7;">Customer Wills</div><div class="will-content" style="font-size:.7rem;">'+custEl.innerHTML+'</div></div>';}
   document.getElementById('summary-content').innerHTML=html;
 }
 
@@ -695,20 +1002,16 @@ function toggleWill(id,e){
 }
 function onAirChange(){
   var on=document.getElementById('wp-airsystem').checked;
-  var row=document.getElementById('condensate-row');
-  row.classList.toggle('enabled',on);
+  document.getElementById('condensate-row').classList.toggle('enabled',on);
   if(!on)document.getElementById('wp-condensate').checked=false;
   willsUpdate();
 }
 function onDwChange(sel){
-  ['gw-half','gw-full','ho-half','ho-full'].forEach(function(s){
-    if(s!==sel){var el=document.getElementById('wp-drywall-'+s);if(el)el.checked=false;}
-  });
+  ['gw-half','gw-full','ho-half','ho-full'].forEach(function(s){if(s!==sel){var el=document.getElementById('wp-drywall-'+s);if(el)el.checked=false;}});
   willsUpdate();
 }
 
 var LN=' If/when any base plate(s) are reinstalled, nails MUST NOT be used to secure the base plate(s) to the concrete floor, as the drainage system is located beneath and will be damaged. This will also void your warranty. A construction adhesive such as Liquid Nails or comparable must be used instead.';
-
 function lbl(tag,text){return '<span class="bullet-label">'+tag+':</span> '+text;}
 
 var CB={
@@ -725,7 +1028,6 @@ var CB={
   windowwell:lbl('WINDOW WELL','Groundworks will install a window well tap to direct any water from the window well into the perimeter drain system.'),
   ack:lbl('ACKNOWLEDGEMENT','Homeowner has reviewed and understands contractor wills.'),
 };
-
 var HB={
   parking:lbl('PARKING','Homeowner to provide parking for Groundworks truck and crew.'),
   effects:lbl('PERSONAL EFFECTS','Homeowner to remove personal effects from working area.'),
@@ -738,63 +1040,51 @@ var HB={
   responsibility:lbl('RESPONSIBILITY','Homeowner is responsible for repair and replacement of all materials removed, altered, or affected as a result of demolition and installation work performed by Groundworks. This includes, but is not limited to, drywall, insulation (including spray foam), framing, flooring, tile, bathroom fixtures, stairs, and any other finished or structural components.'),
   ack:lbl('ACKNOWLEDGEMENT','Homeowner has reviewed and understands customer wills.'),
 };
-
 var INITIALS='Customer Initials: X______________';
 
 function willsUpdate(){
-  MISC.forEach(function(m){
-    var lbl2=document.getElementById(m.lblId);
-    if(lbl2)lbl2.className=getW(m.id)?'wills-label':'wills-label misc-red';
-  });
+  MISC.forEach(function(m){var l=document.getElementById(m.lblId);if(l)l.className=getW(m.id)?'wills-label':'wills-label misc-red';});
   var cond=getW('wp-airsystem')&&getW('wp-condensate');
   var cL=[];
-  if(getW('wp-gutter'))          cL.push(CB.gutter());
-  if(getW('wp-wallliner'))       cL.push(CB.wallliner);
-  if(getW('wp-aquagrate'))       cL.push(CB.aquagrate);
-  if(getW('wp-ports'))           cL.push(CB.ports);
-  if(getW('wp-airsystem'))       cL.push(CB.airsystem(cond));
-  if(getW('wp-elec-gw'))         cL.push(CB.elecGW);
-  if(getW('wp-drywall-gw-half')) cL.push(CB.drywallGWhalf);
-  if(getW('wp-drywall-gw-full')) cL.push(CB.drywallGWfull);
-  if(getW('wp-stairs'))          cL.push(CB.stairs);
-  if(getW('wp-cut-gw'))          cL.push(CB.cutGW);
-  if(getW('wp-windowwell'))      cL.push(CB.windowwell);
+  if(getW('wp-gutter'))cL.push(CB.gutter());
+  if(getW('wp-wallliner'))cL.push(CB.wallliner);
+  if(getW('wp-aquagrate'))cL.push(CB.aquagrate);
+  if(getW('wp-ports'))cL.push(CB.ports);
+  if(getW('wp-airsystem'))cL.push(CB.airsystem(cond));
+  if(getW('wp-elec-gw'))cL.push(CB.elecGW);
+  if(getW('wp-drywall-gw-half'))cL.push(CB.drywallGWhalf);
+  if(getW('wp-drywall-gw-full'))cL.push(CB.drywallGWfull);
+  if(getW('wp-stairs'))cL.push(CB.stairs);
+  if(getW('wp-cut-gw'))cL.push(CB.cutGW);
+  if(getW('wp-windowwell'))cL.push(CB.windowwell);
   cL.push(CB.ack);
-
   var hL=[HB.parking,HB.effects];
-  if(getW('wp-digsafe'))         hL.push(HB.digsafe);
-  if(getW('wp-elec-ho'))         hL.push(HB.elecHO);
-  if(getW('wp-drywall-ho-half')) hL.push(HB.drywallHOhalf);
-  if(getW('wp-drywall-ho-full')) hL.push(HB.drywallHOfull);
-  if(getW('wp-cut-ho'))          hL.push(HB.cutHO);
-  if(getW('wp-baseboard'))       hL.push(HB.baseboard);
-  hL.push(HB.responsibility);
-  hL.push(HB.ack);
-
-  renderWill(cL,'contractor-output');
-  renderWill(hL,'customer-output');
-  renderMain();
+  if(getW('wp-digsafe'))hL.push(HB.digsafe);
+  if(getW('wp-elec-ho'))hL.push(HB.elecHO);
+  if(getW('wp-drywall-ho-half'))hL.push(HB.drywallHOhalf);
+  if(getW('wp-drywall-ho-full'))hL.push(HB.drywallHOfull);
+  if(getW('wp-cut-ho'))hL.push(HB.cutHO);
+  if(getW('wp-baseboard'))hL.push(HB.baseboard);
+  hL.push(HB.responsibility);hL.push(HB.ack);
+  renderWill(cL,'contractor-output');renderWill(hL,'customer-output');
+  renderMain();syncCMFields();
 }
 
 function renderWill(lines,elId){
   var el=document.getElementById(elId);
-  var parts=lines.map(function(l){
-    return '<span data-copyable="true">* '+l+'</span>';
-  });
+  var parts=lines.map(function(l){return '<span data-copyable="true">* '+l+'</span>';});
   parts.push('<span class="initials-text" data-copyable="true">*\n* '+INITIALS+'</span>');
   el.innerHTML=parts.join('\n\n');
 }
 
 function copyWill(which){
   var el=document.getElementById(which+'-output');
-  var spans=el.querySelectorAll('[data-copyable="true"]');
-  var lines=[];
+  var spans=el.querySelectorAll('[data-copyable="true"]');var lines=[];
   spans.forEach(function(s){lines.push(s.innerText);});
   navigator.clipboard.writeText(lines.join('\n\n')).then(function(){
     ['copy-'+which,'copy-'+which+'-inline'].forEach(function(btnId){
       var btn=document.getElementById(btnId);if(!btn)return;
-      var orig=btn.textContent;
-      btn.textContent='Copied!';btn.classList.add('copied');
+      var orig=btn.textContent;btn.textContent='Copied!';btn.classList.add('copied');
       setTimeout(function(){btn.textContent=orig;btn.classList.remove('copied');},2000);
     });
   });
@@ -820,6 +1110,49 @@ function toggleBlock(which){
   btn.textContent=collapsed?'> expand':'v collapse';
 }
 
+function getPaymentStr(prefix){
+  var opts=[];
+  if(document.getElementById(prefix+'-check').checked)opts.push('Check');
+  if(document.getElementById(prefix+'-card').checked)opts.push('Card');
+  if(document.getElementById(prefix+'-24mo').checked)opts.push('24-mo Financing');
+  if(document.getElementById(prefix+'-other').checked)opts.push('Other Financing');
+  return opts.length?opts.join(', '):'(not specified)';
+}
+
+function downloadCoverMove(){
+  var btn=document.getElementById('cm-download-btn');
+  var status=document.getElementById('cm-status');
+  btn.textContent='Generating...';btn.classList.add('working');status.textContent='';
+  try{
+    var customer=document.getElementById('cm-customer').value||'(not entered)';
+    var phone=document.getElementById('cm-phone').value||'(not entered)';
+    var date=document.getElementById('cm-date').value||new Date().toLocaleDateString();
+    var overview=document.getElementById('cm-overview').value||'(not entered)';
+    var why=document.getElementById('cm-why').value||'(not entered)';
+    var expectations=document.getElementById('cm-expectations').value||'(not entered)';
+    var hazards=document.getElementById('cm-hazards').value||'(not entered)';
+    var questions=document.getElementById('cm-questions').value||'(not entered)';
+    var dep=getPaymentStr('dep');
+    var fin=getPaymentStr('fin');
+
+    var files=makeDocxXml({customer:customer,phone:phone,date:date,overview:overview,why:why,expectations:expectations,hazards:hazards,questions:questions,deposit:dep,finalPay:fin});
+    var zipBytes=buildDocx(files);
+    var blob=new Blob([zipBytes],{type:'application/vnd.openxmlformats-officedocument.wordprocessingml.document'});
+    var url=URL.createObjectURL(blob);
+    var a=document.createElement('a');
+    var safeName=(customer||'Customer').replace(/[^a-z0-9]/gi,'_').substring(0,30);
+    var safeDate=date.replace(/\//g,'-');
+    a.href=url;a.download='CoverMove_'+safeName+'_'+safeDate+'.docx';
+    document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(url);
+    btn.textContent='Downloaded!';btn.classList.remove('working');btn.classList.add('done');
+    status.textContent='File saved to your Downloads folder.';
+    setTimeout(function(){btn.textContent='Download Cover & Move (.docx)';btn.classList.remove('done');status.textContent='';},4000);
+  }catch(err){
+    btn.textContent='Download Cover & Move (.docx)';btn.classList.remove('working');
+    status.textContent='Error: '+err.message;status.style.color='#f87171';
+  }
+}
+
 function toggleRebuild(){document.getElementById('rebuild-box').classList.toggle('visible');}
 function copyRebuildPrompt(){
   var text=document.getElementById('rebuild-text').innerText;
@@ -831,7 +1164,7 @@ function copyRebuildPrompt(){
 }
 
 for(var i=0;i<4;i++)addWall();
-willsUpdate();renderMain();
+willsUpdate();renderMain();syncCMFields();
 </script>
 </body>
 </html>
