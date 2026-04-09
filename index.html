@@ -451,9 +451,14 @@ body{background:#0f1117;color:#e8e8e8;font-family:'IBM Plex Mono',monospace;heig
         <input type="checkbox" id="wp-permit" onchange="willsUpdate()">
         <span class="fp-item-label misc-red" id="lbl-permit">Permit B</span>
       </div>
-      <div class="fp-item misc-item" onclick="toggleWill('wp-msp',event)">
-        <input type="checkbox" id="wp-msp" onchange="willsUpdate()">
-        <span class="fp-item-label misc-red" id="lbl-msp">5 yr MSP</span>
+      <div class="fp-item misc-item" style="cursor:default;">
+        <span style="width:14px;flex-shrink:0;"></span>
+        <span class="fp-item-label misc-red" id="lbl-msp">MSP</span>
+        <select id="wp-msp" onchange="willsUpdate()" style="background:#181c27;border:1px solid #2a2f3f;border-radius:4px;padding:3px 6px;font-size:.65rem;color:#e8e8e8;font-family:'IBM Plex Mono',monospace;cursor:pointer;">
+          <option value="5">5 Year</option>
+          <option value="3">3 Year</option>
+          <option value="1">1 Year</option>
+        </select>
       </div>
     </div>
 
@@ -641,9 +646,14 @@ body{background:#0f1117;color:#e8e8e8;font-family:'IBM Plex Mono',monospace;heig
         <input type="checkbox" id="cw-permit" onchange="csWillsUpdate()">
         <span class="fp-item-label misc-red" id="cslbl-permit">Permit B</span>
       </div>
-      <div class="fp-item cs-item misc-item" onclick="toggleWill('cw-msp',event)">
-        <input type="checkbox" id="cw-msp" onchange="csWillsUpdate()">
-        <span class="fp-item-label misc-red" id="cslbl-msp">5 yr MSP</span>
+      <div class="fp-item cs-item misc-item" style="cursor:default;">
+        <span style="width:14px;flex-shrink:0;"></span>
+        <span class="fp-item-label misc-red" id="cslbl-msp">MSP</span>
+        <select id="cw-msp" onchange="csWillsUpdate()" style="background:#181c27;border:1px solid #2a2f3f;border-radius:4px;padding:3px 6px;font-size:.65rem;color:#e8e8e8;font-family:'IBM Plex Mono',monospace;cursor:pointer;">
+          <option value="5">5 Year</option>
+          <option value="3">3 Year</option>
+          <option value="1">1 Year</option>
+        </select>
       </div>
     </div>
 
@@ -653,7 +663,133 @@ body{background:#0f1117;color:#e8e8e8;font-family:'IBM Plex Mono',monospace;heig
     </div>
     <!-- ── CL placeholder ── -->
     <div class="prod-panel" id="fp-cl">
-      <div class="coming-soon"><div class="coming-soon-label">Concrete Lifting</div><div class="coming-soon-sub">FlightPlan coming soon</div></div>
+      <!-- Shape Mode Toggle -->
+      <div class="sec-label" style="color:#a78bfa;">Area Calculator</div>
+      <div style="padding:4px 14px 8px;display:flex;gap:6px;">
+        <button class="pump-opt active" id="cl-mode-rect" onclick="clSetMode('rect')" style="border-radius:4px;padding:4px 10px;">Rectangle</button>
+        <button class="pump-opt" id="cl-mode-poly" onclick="clSetMode('poly')" style="border-radius:4px;padding:4px 10px;">Polygon</button>
+        <button class="pump-opt" id="cl-mode-manual" onclick="clSetMode('manual')" style="border-radius:4px;padding:4px 10px;">Manual SF</button>
+      </div>
+
+      <!-- Rectangle mode -->
+      <div id="cl-rect-mode">
+        <div class="wall-settings">
+          <label>Length <input type="number" id="cl-rect-len" value="" min="0" step="0.5" placeholder="ft" oninput="clCalc()"> ft</label>
+          <label>Width <input type="number" id="cl-rect-wid" value="" min="0" step="0.5" placeholder="ft" oninput="clCalc()"> ft</label>
+        </div>
+        <div style="padding:0 14px 8px;font-family:'IBM Plex Mono',monospace;font-size:.65rem;color:#a78bfa;">
+          Area: <span id="cl-rect-sf" style="font-weight:500;">—</span> sf
+        </div>
+      </div>
+
+      <!-- Polygon mode -->
+      <div id="cl-poly-mode" style="display:none;">
+        <div class="wall-settings">
+          <label>Waste <input type="number" id="cl-poly-waste" value="0" min="0" max="30" oninput="clCalc()"> %</label>
+        </div>
+        <div class="wall-tbl-wrap">
+          <table class="wtbl">
+            <thead><tr>
+              <th style="width:14px;"></th><th>Length</th>
+              <th style="width:60px;">Dir</th><th></th>
+            </tr></thead>
+            <tbody id="cl-poly-tbody"></tbody>
+          </table>
+        </div>
+        <button class="add-wall-btn" style="border-color:#a78bfa44;color:#a78bfa;" onclick="clAddPolyWall()">+ add wall</button>
+        <div class="cs-canvas-wrap"><canvas id="cl-canvas" width="230" height="160"></canvas></div>
+        <div class="cs-canvas-status empty" id="cl-poly-status">Add walls to preview shape.</div>
+      </div>
+
+      <!-- Manual SF mode -->
+      <div id="cl-manual-mode" style="display:none;">
+        <div class="wall-settings">
+          <label>Area <input type="number" id="cl-manual-sf" value="" min="0" placeholder="sq ft" oninput="clCalc()"> sf</label>
+        </div>
+      </div>
+
+      <!-- Zone Table -->
+      <div class="sec-label" style="color:#a78bfa;margin-top:4px;">PolyRenewal Zones</div>
+      <div style="padding:0 14px 4px;">
+        <table class="wtbl" style="width:100%;">
+          <thead><tr>
+            <th>Label</th><th>SF</th><th>Type</th><th></th>
+          </tr></thead>
+          <tbody id="cl-zone-tbody"></tbody>
+        </table>
+      </div>
+      <button class="add-wall-btn" style="border-color:#a78bfa44;color:#a78bfa;" onclick="clAddZone()">+ add zone</button>
+
+      <!-- BackerRod -->
+      <div class="fp-item" onclick="clToggle('backerrod',event)" style="cursor:pointer;">
+        <input type="checkbox" id="cl-backerrod" onchange="clCalc();clWillsUpdate()" style="accent-color:#a78bfa;">
+        <span class="fp-item-label">BackerRod</span>
+        <span class="w-badge" style="background:#a78bfa18;color:#a78bfa;border-color:#a78bfa44;">W</span>
+        <input class="fp-manual" type="number" id="clv-backerrod" value="0" min="0" onclick="event.stopPropagation()" oninput="clCalc()">
+        <span class="fp-unit">sf</span>
+      </div>
+
+      <!-- Supplemental Services -->
+      <div class="sec-label" style="color:#a78bfa;">Supplemental Services</div>
+      <div class="fp-item" onclick="clToggle('rr',event)">
+        <input type="checkbox" id="cl-rr" onchange="clCalc();clWillsUpdate()">
+        <span class="fp-item-label">Concrete Remove &amp; Replace</span>
+        <input class="fp-manual" type="number" id="clv-rr" value="0" min="0" onclick="event.stopPropagation()" oninput="clCalc()">
+        <span class="fp-unit">sf</span>
+      </div>
+      <div class="fp-item" onclick="clToggle('saw',event)">
+        <input type="checkbox" id="cl-saw" onchange="clCalc();clWillsUpdate()">
+        <span class="fp-item-label">Saw Cutting Concrete</span>
+        <input class="fp-manual" type="number" id="clv-saw" value="0" min="0" onclick="event.stopPropagation()" oninput="clCalc()">
+        <span class="fp-unit">lf</span>
+      </div>
+      <div class="fp-item" onclick="clToggle('crack',event)">
+        <input type="checkbox" id="cl-crack" onchange="clCalc();clWillsUpdate()">
+        <span class="fp-item-label">Caulk Crack Repair</span>
+        <input class="fp-manual" type="number" id="clv-crack" value="0" min="0" onclick="event.stopPropagation()" oninput="clCalc()">
+        <span class="fp-unit">lf</span>
+      </div>
+      <div class="fp-item" onclick="clToggle('joint',event)">
+        <input type="checkbox" id="cl-joint" onchange="clCalc();clWillsUpdate()">
+        <span class="fp-item-label">Caulk Control Joint</span>
+        <input class="fp-manual" type="number" id="clv-joint" value="0" min="0" onclick="event.stopPropagation()" oninput="clCalc()">
+        <span class="fp-unit">lf</span>
+      </div>
+
+      <!-- Summary -->
+      <div class="fp-summary">
+        <div class="fp-sum-grid">
+          <div class="fp-stat"><div class="fp-stat-label">Zones</div><div class="fp-stat-val" style="color:#a78bfa;" id="cls-zones">0</div></div>
+          <div class="fp-stat"><div class="fp-stat-label">Total SF</div><div class="fp-stat-val" style="color:#a78bfa;" id="cls-sf">&mdash;</div></div>
+          <div class="fp-stat"><div class="fp-stat-label">Calc SF</div><div class="fp-stat-val" style="color:#a78bfa;" id="cls-calc">&mdash;</div></div>
+        </div>
+      </div>
+
+      <!-- Legal Section -->
+      <div class="sec-label" style="color:#a78bfa;border-top:2px solid #1e2435;margin-top:4px;padding-top:12px;">Site</div>
+      <div class="fp-item" onclick="toggleWill('cl-digsafe',event)">
+        <input type="checkbox" id="cl-digsafe" onchange="clWillsUpdate()">
+        <span class="fp-item-label">DigSafe Flags</span>
+        <span class="w-badge" style="background:#a78bfa18;color:#a78bfa;border-color:#a78bfa44;">W</span>
+      </div>
+      <div class="sec-label" style="color:#a78bfa;">Required Items</div>
+      <div class="fp-item misc-item" onclick="toggleWill('cl-utilities',event)">
+        <input type="checkbox" id="cl-utilities" onchange="clWillsUpdate()">
+        <span class="fp-item-label misc-red" id="cllbl-utilities">Utilities Protection</span>
+      </div>
+      <div class="fp-item misc-item" onclick="toggleWill('cl-permit',event)">
+        <input type="checkbox" id="cl-permit" onchange="clWillsUpdate()">
+        <span class="fp-item-label misc-red" id="cllbl-permit">Permit B</span>
+      </div>
+      <div class="fp-item misc-item" style="cursor:default;">
+        <span style="width:14px;flex-shrink:0;"></span>
+        <span class="fp-item-label misc-red" id="cllbl-msp">MSP</span>
+        <select id="cl-msp" onchange="clWillsUpdate()" style="background:#181c27;border:1px solid #2a2f3f;border-radius:4px;padding:3px 6px;font-size:.65rem;color:#e8e8e8;font-family:'IBM Plex Mono',monospace;cursor:pointer;">
+          <option value="5">5 Year</option>
+          <option value="3">3 Year</option>
+          <option value="1">1 Year</option>
+        </select>
+      </div>
     </div>
 
   </div><!-- nav-inner -->
@@ -758,6 +894,44 @@ body{background:#0f1117;color:#e8e8e8;font-family:'IBM Plex Mono',monospace;heig
           </div>
           <div class="will-content" id="cs-customer-output"><span class="empty-state">Select items in the CS Wills panel...</span></div>
           <button class="main-copy-btn customer" id="cs-copy-customer" onclick="cscopWill('customer')">Copy CS Customer Wills</button>
+        </div>
+      </div>
+
+      <!-- CL Output -->
+      <div id="out-cl-block" style="display:none;">
+        <div class="will-block" style="border-top:3px solid #a78bfa;">
+          <div class="will-title">
+            <span class="output-prod-header" style="background:#a78bfa11;color:#a78bfa;border:1px solid #a78bfa33;">Concrete Lifting</span><br>
+            Flight Plan &mdash; Material List
+          </div>
+          <div id="cl-mat-rows"></div>
+          <div id="cl-forget-section" style="display:none;margin-top:10px;padding-top:10px;border-top:1px solid #1e2435;">
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:.58rem;letter-spacing:2px;color:#555;text-transform:uppercase;margin-bottom:6px;">Don't Forget</div>
+            <div id="cl-forget-rows"></div>
+          </div>
+          <button class="main-copy-btn" id="cl-copy-btn" onclick="clCopyFP()" style="display:none;background:#1a1030;border:1px solid #a78bfa44;color:#a78bfa;">Copy CL material list</button>
+        </div>
+        <div class="will-block contractor collapsed" id="cl-block-contractor">
+          <div class="will-title" style="display:flex;align-items:center;justify-content:space-between;">
+            <span><span class="output-prod-header" style="background:#a78bfa11;color:#a78bfa;border:1px solid #a78bfa33;margin-bottom:0;">CL</span> Contractor Wills</span>
+            <span style="display:flex;gap:8px;align-items:center;">
+              <button class="inline-copy" id="cl-copy-contractor-inline" onclick="clCopWill('contractor')">Copy</button>
+              <button class="will-collapse-toggle" id="cl-toggle-contractor" onclick="toggleBlock('cl-contractor')">&gt; expand</button>
+            </span>
+          </div>
+          <div class="will-content" id="cl-contractor-output"><span class="empty-state">Select items in the CL FlightPlan...</span></div>
+          <button class="main-copy-btn" id="cl-copy-contractor" onclick="clCopWill('contractor')" style="background:#f97316;">Copy CL Contractor Wills</button>
+        </div>
+        <div class="will-block customer collapsed" id="cl-block-customer">
+          <div class="will-title" style="display:flex;align-items:center;justify-content:space-between;">
+            <span><span class="output-prod-header" style="background:#a78bfa11;color:#a78bfa;border:1px solid #a78bfa33;margin-bottom:0;">CL</span> Customer Wills</span>
+            <span style="display:flex;gap:8px;align-items:center;">
+              <button class="inline-copy" id="cl-copy-customer-inline" onclick="clCopWill('customer')">Copy</button>
+              <button class="will-collapse-toggle" id="cl-toggle-customer" onclick="toggleBlock('cl-customer')">&gt; expand</button>
+            </span>
+          </div>
+          <div class="will-content" id="cl-customer-output"><span class="empty-state">Select items in the CL FlightPlan...</span></div>
+          <button class="main-copy-btn customer" id="cl-copy-customer" onclick="clCopWill('customer')">Copy CL Customer Wills</button>
         </div>
       </div>
 
@@ -1014,7 +1188,7 @@ function updateOutputBlocks() {
   document.getElementById('out-placeholder').style.display = anyActive ? 'none' : 'block';
   document.getElementById('out-bw-block').style.display = activeProducts.bw ? 'block' : 'none';
   document.getElementById('out-cs-block').style.display = activeProducts.cs ? 'block' : 'none';
-  // Combined copy bar only appears when 2+ products are active
+  document.getElementById('out-cl-block').style.display = activeProducts.cl ? 'block' : 'none';
   document.getElementById('combined-copy-bar').style.display = activeCount >= 2 ? 'flex' : 'none';
 }
 
@@ -1030,6 +1204,7 @@ var PROD_LABELS = {
 var PROD_WILL_IDS = {
   bw: {contractor: 'contractor-output',    customer: 'customer-output'},
   cs: {contractor: 'cs-contractor-output', customer: 'cs-customer-output'},
+  cl: {contractor: 'cl-contractor-output', customer: 'cl-customer-output'},
 };
 
 function copyAllWills(which) {
@@ -1127,7 +1302,9 @@ function setWillPump(t){willPump=t;willsUpdate();}
 function toggleFP(id,e){if(e&&(e.target.tagName==='INPUT'||e.target.tagName==='BUTTON'))return;var el=document.getElementById('fp-'+id);if(el&&el.type==='checkbox'){el.checked=!el.checked;calcFP();willsUpdate();}}
 function autoSyncWills(){willsUpdate();}
 function calcFP(){var s=getStats();document.getElementById('fs-walls').textContent=s.count;document.getElementById('fs-lf').textContent=Math.round(s.totalLF)+' lf';document.getElementById('fs-gutter').textContent=Math.round(s.gutterLF)+' lf';var gwc=walls.filter(function(w){return w.gutter;}).length;document.getElementById('fq-gutter').innerHTML=s.hasGutter?s.gutterWaste+' lf':'&mdash;';document.getElementById('fq-wallliner').innerHTML=s.hasLiner?s.linerWaste+' lf':'&mdash;';document.getElementById('fq-ports').innerHTML=gwc>0?gwc+' ea (auto)':'&mdash;';willsUpdate();renderMain();syncCMFields();}
-var BW_MISC=[{id:'wp-utilities',label:'Utilities Protection',lblId:'lbl-utilities'},{id:'wp-permit',label:'Permit B',lblId:'lbl-permit'},{id:'wp-msp',label:'5 yr MSP',lblId:'lbl-msp'}];
+var BW_MISC=[{id:'wp-utilities',label:'Utilities Protection',lblId:'lbl-utilities'},{id:'wp-permit',label:'Permit B',lblId:'lbl-permit'}];
+function getBWMSPLabel(){var el=document.getElementById('wp-msp');return el?el.value+' Year MSP':'5 Year MSP';}
+function updateMSPLabel(lblId,selId){var lbl=document.getElementById(lblId);if(lbl)lbl.className='fp-item-label';}
 function getFPItems(s){var items=[];if(s.hasGutter)items.push({name:'BasementGutter',qty:s.gutterWaste+' lf'});if(chkFP('aquagrate')&&ov('fv-aquagrate')>0)items.push({name:'AquaGrate',qty:ov('fv-aquagrate')+' lf'});if(chkFP('discharge-buried')&&ov('fv-discharge-buried')>0)items.push({name:'Buried discharge',qty:ov('fv-discharge-buried')+' lf'});if(chkFP('discharge-internal')&&ov('fv-discharge-internal')>0)items.push({name:'Side discharge',qty:ov('fv-discharge-internal')+' lf'});if(chkFP('pump'))items.push({name:'Primary sump pump ('+fpPump+')',qty:'1 unit'});if(chkFP('pump2'))items.push({name:'Secondary sump pump ('+fp2Pump+')',qty:'1 unit'});if(s.hasLiner)items.push({name:'Wall liner',qty:s.linerWaste+' lf'});if(chkFP('ports')){var gwc=walls.filter(function(w){return w.gutter;}).length;if(gwc>0)items.push({name:'Inspection ports',qty:gwc+' ea'});}if(chkFP('airsystem'))items.push({name:'Air system',qty:ov('fv-airsystem')+' unit'});if(chkFP('condensation'))items.push({name:'+ Condensation pump',qty:'1 unit'});if(chkFP('windowwell'))items.push({name:'Window well tap',qty:ov('fv-windowwell')+' ea'});return items;}
 function escHtml(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 
@@ -1355,7 +1532,7 @@ function csToggleInsul(type){
   csWillsUpdate();
 }
 
-var CS_MISC=[{id:'cw-utilities',label:'Utilities Protection',lblId:'cslbl-utilities'},{id:'cw-permit',label:'Permit B',lblId:'cslbl-permit'},{id:'cw-msp',label:'5 yr MSP',lblId:'cslbl-msp'}];
+var CS_MISC=[{id:'cw-utilities',label:'Utilities Protection',lblId:'cslbl-utilities'},{id:'cw-permit',label:'Permit B',lblId:'cslbl-permit'}];
 
 function getCsItems(){
   var h=parseFloat(document.getElementById('cs-height').value)||3;
@@ -1438,8 +1615,8 @@ function csOnInsulChange(type){
 }
 
 function csWillsUpdate(){
-  CS_MISC.forEach(function(m){var l=document.getElementById(m.lblId);if(l)l.className=getW(m.id)?'wills-label':'wills-label misc-red';});
-  // Read system state directly from FlightPlan
+  CS_MISC.forEach(function(m){var l=document.getElementById(m.lblId);if(l)l.className=getW(m.id)?'fp-item-label':'fp-item-label misc-red';});
+  var mspLbl=document.getElementById('cslbl-msp');if(mspLbl)mspLbl.className='fp-item-label';
   var cdLF=csWalls.filter(function(w){return w.cd;}).reduce(function(s,w){return s+(parseFloat(w.len)||0);},0);
   var wlLF=csWalls.filter(function(w){return w.wl;}).reduce(function(s,w){return s+(parseFloat(w.len)||0);},0);
   var hasCrawlDrain=cdLF>0;
@@ -1451,6 +1628,7 @@ function csWillsUpdate(){
   var hasCond=document.getElementById('cs-condensation').checked;
   var hasAccessDoor=document.getElementById('cs-accessdoor').checked;
   var cond=hasDehumid&&hasCond;
+  var mspYr=(document.getElementById('cw-msp')||{value:'5'}).value;
   var cL=[];
   if(hasCrawlDrain)cL.push(CS_CB.crawldrain());
   if(hasWallLiner)cL.push(CS_CB.wallliner);
@@ -1463,6 +1641,7 @@ function csWillsUpdate(){
   if(getW('cw-gw-debris'))cL.push(CS_CB.gwDebris);
   if(hasAccessDoor)cL.push(CS_CB.accessdoor);
   if(getW('cw-elec-gw'))cL.push(CS_CB.elecGW);
+  cL.push(cslbl('MSP','Customer has selected a '+mspYr+' Year Maintenance Service Plan.'));
   cL.push(CS_CB.ack);
   var hL=[CS_HB.parking,CS_HB.effects];
   if(getW('cw-debris'))hL.push(CS_HB.debris);
@@ -1487,7 +1666,8 @@ function csRenderWill(lines,elId){
 function resetCSWills(){
   ['cw-insul-r19','cw-insul-spray','cw-gw-debris','cw-debris',
    'cw-elec-gw','cw-elec-ho','cw-plumber','cw-digsafe',
-   'cw-utilities','cw-permit','cw-msp'].forEach(function(id){var el=document.getElementById(id);if(el)el.checked=false;});
+   'cw-utilities','cw-permit'].forEach(function(id){var el=document.getElementById(id);if(el)el.checked=false;});
+  var csMsp=document.getElementById('cw-msp');if(csMsp)csMsp.value='5';
   csWillsUpdate();
 }
 
@@ -1516,9 +1696,10 @@ function globalReset(){
   // Clear BW wills legal-only checkboxes
   ['wp-elec-gw','wp-elec-ho','wp-drywall-gw-half','wp-drywall-gw-full',
    'wp-drywall-ho-half','wp-drywall-ho-full','wp-stairs','wp-cut-gw','wp-cut-ho',
-   'wp-baseboard','wp-digsafe','wp-permit','wp-msp','wp-utilities'].forEach(function(id){
+   'wp-baseboard','wp-digsafe','wp-permit','wp-utilities'].forEach(function(id){
     var el=document.getElementById(id);if(el)el.checked=false;
   });
+  var bwMsp=document.getElementById('wp-msp');if(bwMsp)bwMsp.value='5';
 
   // Clear CS walls
   csWalls=[];csWallId=0;csPump='single';csPump2='single';csWillPump='single';
@@ -1539,9 +1720,10 @@ function globalReset(){
   // Clear CS wills legal-only checkboxes
   ['cw-insul-r19','cw-insul-spray','cw-gw-debris','cw-debris',
    'cw-elec-gw','cw-elec-ho','cw-plumber','cw-digsafe',
-   'cw-utilities','cw-permit','cw-msp'].forEach(function(id){
+   'cw-utilities','cw-permit'].forEach(function(id){
     var el=document.getElementById(id);if(el)el.checked=false;
   });
+  var csMsp2=document.getElementById('cw-msp');if(csMsp2)csMsp2.value='5';
 
   // Clear Cover & Move manual fields
   ['cm-phone','cm-access','cm-site','cm-why','cm-expectations','cm-hazards','cm-questions'].forEach(function(id){
@@ -1555,6 +1737,19 @@ function globalReset(){
   // Recalculate everything
   calcFP();csCalc();csWillsUpdate();willsUpdate();syncCMFields();
   csDrawCanvas(null);
+
+  // Clear CL
+  clZones=[];clZoneId=0;clPolyWalls=[];clPolyWallId=0;
+  clPolyFloorSF=0;clPolyShapeClosed=false;
+  clSetMode('rect');
+  var clLen=document.getElementById('cl-rect-len');if(clLen)clLen.value='';
+  var clWid=document.getElementById('cl-rect-wid');if(clWid)clWid.value='';
+  var clManSF=document.getElementById('cl-manual-sf');if(clManSF)clManSF.value='';
+  clRenderZones();clRenderPolyWalls();
+  ['cl-backerrod','cl-rr','cl-saw','cl-crack','cl-joint'].forEach(function(id){var el=document.getElementById(id);if(el)el.checked=false;});
+  ['clv-backerrod','clv-rr','clv-saw','clv-crack','clv-joint'].forEach(function(id){var el=document.getElementById(id);if(el)el.value='0';});
+  resetCLWills();
+  clDrawPolyCanvas(null);
 
   // Flash button feedback
   var btn=document.getElementById('global-reset-btn');
@@ -1582,9 +1777,10 @@ var HB={parking:lbl('PARKING','Homeowner to provide parking for Groundworks truc
 var INITIALS='Customer Initials: X______________';
 
 function willsUpdate(){
-  BW_MISC.forEach(function(m){var l=document.getElementById(m.lblId);if(l)l.className=getW(m.id)?'wills-label':'wills-label misc-red';});
+  BW_MISC.forEach(function(m){var l=document.getElementById(m.lblId);if(l)l.className=getW(m.id)?'fp-item-label':'fp-item-label misc-red';});
+  // MSP label always white (has a value selected)
+  var mspLbl=document.getElementById('lbl-msp');if(mspLbl)mspLbl.className='fp-item-label';
   var s=getStats();
-  // Read all state directly from FlightPlan
   var hasGutter=s.hasGutter;
   var hasLiner=s.hasLiner;
   var hasAquagrate=chkFP('aquagrate')&&ov('fv-aquagrate')>0;
@@ -1593,6 +1789,7 @@ function willsUpdate(){
   var hasCond=chkFP('condensation');
   var hasWindow=chkFP('windowwell');
   var cond=hasAir&&hasCond;
+  var mspYr=(document.getElementById('wp-msp')||{value:'5'}).value;
   var cL=[];
   if(hasGutter)cL.push(CB.gutter());
   if(hasLiner)cL.push(CB.wallliner);
@@ -1605,6 +1802,7 @@ function willsUpdate(){
   if(getW('wp-stairs'))cL.push(CB.stairs);
   if(getW('wp-cut-gw'))cL.push(CB.cutGW);
   if(hasWindow)cL.push(CB.windowwell);
+  cL.push(lbl('MSP','Customer has selected a '+mspYr+' Year Maintenance Service Plan.'));
   cL.push(CB.ack);
   var hL=[HB.parking,HB.effects];
   if(getW('wp-digsafe'))hL.push(HB.digsafe);
@@ -1619,12 +1817,329 @@ function willsUpdate(){
 function renderWill(lines,elId){var el=document.getElementById(elId);var parts=lines.map(function(l){return'<span data-copyable="true">* '+l+'</span>';});parts.push('<span class="initials-text" data-copyable="true">*\n* '+INITIALS+'</span>');el.innerHTML=parts.join('\n\n');}
 function copyWill(which){var el=document.getElementById(which+'-output');var spans=el.querySelectorAll('[data-copyable="true"]');var lines=[];spans.forEach(function(s){lines.push(s.innerText);});navigator.clipboard.writeText(lines.join('\n\n')).then(function(){['copy-'+which,'copy-'+which+'-inline'].forEach(function(btnId){var btn=document.getElementById(btnId);if(!btn)return;var orig=btn.textContent;btn.textContent='Copied!';btn.classList.add('copied');setTimeout(function(){btn.textContent=orig;btn.classList.remove('copied');},2000);});});}
 function resetWills(){
-  // Only reset legal-only Wills checkboxes (FP items auto-populate from FP state)
   ['wp-elec-gw','wp-elec-ho','wp-drywall-gw-half','wp-drywall-gw-full',
    'wp-drywall-ho-half','wp-drywall-ho-full','wp-stairs','wp-cut-gw','wp-cut-ho',
-   'wp-baseboard','wp-digsafe','wp-permit','wp-msp','wp-utilities']
+   'wp-baseboard','wp-digsafe','wp-permit','wp-utilities']
     .forEach(function(id){var el=document.getElementById(id);if(el)el.checked=false;});
+  var msp=document.getElementById('wp-msp');if(msp)msp.value='5';
   willsUpdate();
+}
+
+
+// ══════════════════════════════════════════════════════════════════════════════
+// CONCRETE LIFTING (CL)
+// ══════════════════════════════════════════════════════════════════════════════
+var clMode='rect'; // 'rect' | 'poly' | 'manual'
+var clZones=[]; var clZoneId=0;
+var clPolyWalls=[]; var clPolyWallId=0;
+var clPolyFloorSF=0; var clPolyShapeClosed=false;
+var clPolyDirDelta={N:[0,-1],E:[1,0],S:[0,1],W:[-1,0]};
+var clPolyDirColors={N:'#0e7faa',E:'#34d399',S:'#f97316',W:'#a78bfa'};
+
+var CL_POLY_TYPES=[
+  {val:'standard',    label:'PolyRenewal Standard'},
+  {val:'stoop',       label:'PolyRenewal Stoop/Steps'},
+  {val:'garage400',   label:'PolyRenewal Garage/Indoor 400-799'},
+  {val:'garage800',   label:'PolyRenewal Garage/Indoor 800+'},
+  {val:'pool',        label:'PolyRenewal Pool Deck'},
+  {val:'pool400',     label:'PolyRenewal Pool Deck 400-799'},
+  {val:'pool800',     label:'PolyRenewal Pool Deck 800+'},
+];
+
+function clSetMode(m){
+  clMode=m;
+  ['rect','poly','manual'].forEach(function(x){
+    document.getElementById('cl-mode-'+x).classList.toggle('active',x===m);
+    document.getElementById('cl-'+x+'-mode').style.display=x===m?'':'none';
+  });
+  clCalc();
+}
+
+function clGetCalcSF(){
+  if(clMode==='rect'){
+    var l=parseFloat(document.getElementById('cl-rect-len').value)||0;
+    var w=parseFloat(document.getElementById('cl-rect-wid').value)||0;
+    return Math.round(l*w);
+  } else if(clMode==='poly'){
+    return clPolyShapeClosed?Math.ceil(clPolyFloorSF):0;
+  } else {
+    return Math.round(parseFloat(document.getElementById('cl-manual-sf').value)||0);
+  }
+}
+
+// Zone table
+function clAddZone(){
+  var id=++clZoneId;
+  var sf=clGetCalcSF();
+  clZones.push({id:id,label:'',sf:sf||0,type:'standard'});
+  clRenderZones(); clCalc();
+  setTimeout(function(){var el=document.getElementById('clz-label-'+id);if(el)el.focus();},40);
+}
+function clRemoveZone(id){clZones=clZones.filter(function(z){return z.id!==id;});clRenderZones();clCalc();}
+function clSetZoneLabel(id,v){var z=clZones.find(function(z){return z.id===id;});if(z){z.label=v;clWillsUpdate();}}
+function clSetZoneSF(id,v){var z=clZones.find(function(z){return z.id===id;});if(z){z.sf=Math.round(parseFloat(v)||0);clCalc();}}
+function clSetZoneType(id,v){var z=clZones.find(function(z){return z.id===id;});if(z){z.type=v;clWillsUpdate();}}
+
+function clRenderZones(){
+  var opts=CL_POLY_TYPES.map(function(t){return'<option value="'+t.val+'">'+t.label+'</option>';}).join('');
+  document.getElementById('cl-zone-tbody').innerHTML=clZones.map(function(z,i){
+    var selOpts=CL_POLY_TYPES.map(function(t){return'<option value="'+t.val+'"'+(z.type===t.val?' selected':'')+'>'+t.label+'</option>';}).join('');
+    return'<tr>'
+      +'<td><input id="clz-label-'+z.id+'" type="text" value="'+escHtml(z.label||'')+'" placeholder="e.g. Garage" style="width:70px;background:#181c27;border:1px solid #2a2f3f;border-radius:4px;padding:3px 5px;font-size:.65rem;color:#e8e8e8;font-family:\'IBM Plex Mono\',monospace;" oninput="clSetZoneLabel('+z.id+',this.value)"></td>'
+      +'<td><input type="number" value="'+(z.sf||'')+'" placeholder="sf" min="0" style="width:48px;background:#181c27;border:1px solid #2a2f3f;border-radius:4px;padding:3px 5px;font-size:.68rem;color:#e8e8e8;font-family:\'IBM Plex Mono\',monospace;" oninput="clSetZoneSF('+z.id+',this.value)"></td>'
+      +'<td><select style="background:#181c27;border:1px solid #2a2f3f;border-radius:4px;padding:2px 4px;font-size:.58rem;color:#e8e8e8;font-family:\'IBM Plex Mono\',monospace;" onchange="clSetZoneType('+z.id+',this.value)">'+selOpts+'</select></td>'
+      +'<td><button class="wall-del" onclick="clRemoveZone('+z.id+')">&#x2715;</button></td>'
+      +'</tr>';
+  }).join('');
+}
+
+// Polygon walls for CL
+function clAddPolyWall(){
+  var id=++clPolyWallId;
+  clPolyWalls.push({id:id,len:'',dir:''});
+  clRenderPolyWalls(); clCalcPoly();
+  setTimeout(function(){var el=document.getElementById('clplen-'+id);if(el)el.focus();},40);
+}
+function clRemovePolyWall(id){clPolyWalls=clPolyWalls.filter(function(w){return w.id!==id;});clRenderPolyWalls();clCalcPoly();}
+function clSetPolyLen(id,v){var w=clPolyWalls.find(function(w){return w.id===id;});if(w){w.len=v;clCalcPoly();}}
+function clSetPolyDir(id,d){var w=clPolyWalls.find(function(w){return w.id===id;});if(w){w.dir=d;clRenderPolyWalls();clCalcPoly();}}
+
+function clRenderPolyWalls(){
+  var DIRS=['N','E','S','W'];
+  document.getElementById('cl-poly-tbody').innerHTML=clPolyWalls.map(function(w,i){
+    var dirBtns=DIRS.map(function(d){return'<button class="dir-btn'+(w.dir===d?' active-'+d:'')+'" onclick="clSetPolyDir('+w.id+',\''+d+'\')">'+d+'</button>';}).join('');
+    return'<tr><td class="wnum">'+(i+1)+'</td>'
+      +'<td><input type="number" id="clplen-'+w.id+'" value="'+(w.len||'')+'" placeholder="ft" min="0" step="0.5" style="width:52px;background:#181c27;border:1px solid #2a2f3f;border-radius:4px;padding:3px 5px;font-size:.7rem;color:#e8e8e8;font-family:\'IBM Plex Mono\',monospace;" oninput="clSetPolyLen('+w.id+',this.value)"></td>'
+      +'<td><div class="dir-group">'+dirBtns+'</div></td>'
+      +'<td><button class="wall-del" onclick="clRemovePolyWall('+w.id+')">&#x2715;</button></td></tr>';
+  }).join('');
+}
+
+function clComputePolyShape(){
+  var pts=[[0,0]];
+  for(var i=0;i<clPolyWalls.length;i++){
+    var w=clPolyWalls[i];var len=parseFloat(w.len);
+    if(!w.dir||isNaN(len)||len<=0)return null;
+    var last=pts[pts.length-1];var d=clPolyDirDelta[w.dir];
+    pts.push([last[0]+d[0]*len,last[1]+d[1]*len]);
+  }
+  return pts;
+}
+function clPolygonArea(pts){var a=0;var n=pts.length-1;for(var i=0;i<n;i++)a+=pts[i][0]*pts[i+1][1]-pts[i+1][0]*pts[i][1];return Math.abs(a)/2;}
+
+function clCalcPoly(){
+  clRenderPolyWalls();
+  var pts=clComputePolyShape();
+  clPolyShapeClosed=false;clPolyFloorSF=0;
+  var statusEl=document.getElementById('cl-poly-status');
+  if(pts&&pts.length>1){
+    var last=pts[pts.length-1];
+    clPolyShapeClosed=Math.abs(last[0])<0.001&&Math.abs(last[1])<0.001;
+    if(clPolyShapeClosed){
+      clPolyFloorSF=clPolygonArea(pts);
+      statusEl.className='cs-canvas-status closed';
+      statusEl.textContent='Shape closed \u2014 '+Math.round(clPolyFloorSF)+' sq ft';
+    } else {
+      statusEl.className='cs-canvas-status open';
+      statusEl.textContent='Open \u2014 end is '+Math.round(last[0])+'ft E, '+Math.round(last[1])+'ft S of start';
+    }
+  } else {
+    statusEl.className='cs-canvas-status empty';
+    statusEl.textContent='Add walls to preview shape.';
+  }
+  clDrawPolyCanvas(pts);
+  clCalc();
+}
+
+function clDrawPolyCanvas(pts){
+  var canvas=document.getElementById('cl-canvas');
+  if(!canvas)return;
+  var ctx=canvas.getContext('2d');
+  var W=canvas.width,H=canvas.height;
+  ctx.clearRect(0,0,W,H);ctx.fillStyle='#080a0f';ctx.fillRect(0,0,W,H);
+  if(!pts||pts.length<2){
+    ctx.fillStyle='#2a2d3e';ctx.font='9px IBM Plex Mono,monospace';ctx.textAlign='center';
+    ctx.fillText('Add walls to preview',W/2,H/2);return;
+  }
+  var last=pts[pts.length-1];
+  var isClosed=Math.abs(last[0])<0.001&&Math.abs(last[1])<0.001;
+  var xs=pts.map(function(p){return p[0];}),ys=pts.map(function(p){return p[1];});
+  var minX=Math.min.apply(null,xs),maxX=Math.max.apply(null,xs);
+  var minY=Math.min.apply(null,ys),maxY=Math.max.apply(null,ys);
+  var pw=maxX-minX||1,ph=maxY-minY||1;
+  var pad=20;var scale=Math.min((W-pad*2)/pw,(H-pad*2)/ph);
+  var offX=(W-pw*scale)/2-minX*scale;var offY=(H-ph*scale)/2-minY*scale;
+  function c(p){return[offX+p[0]*scale,offY+p[1]*scale];}
+  if(isClosed){
+    ctx.beginPath();ctx.moveTo.apply(ctx,c(pts[0]));
+    for(var i=1;i<pts.length;i++)ctx.lineTo.apply(ctx,c(pts[i]));
+    ctx.closePath();ctx.fillStyle='rgba(167,139,250,0.08)';ctx.fill();
+  }
+  for(var i=0;i<pts.length-1;i++){
+    var seg=clPolyWalls[i];
+    var p1=c(pts[i]),p2=c(pts[i+1]);
+    var col=seg?clPolyDirColors[seg.dir]||'#555':'#555';
+    ctx.beginPath();ctx.moveTo(p1[0],p1[1]);ctx.lineTo(p2[0],p2[1]);
+    ctx.strokeStyle=col;ctx.lineWidth=2;ctx.setLineDash([]);ctx.stroke();
+    if(seg&&seg.len){
+      var mx=(p1[0]+p2[0])/2,my=(p1[1]+p2[1])/2;
+      var ang=Math.atan2(p2[1]-p1[1],p2[0]-p1[0]);
+      var nx=Math.cos(ang+Math.PI/2)*10,ny=Math.sin(ang+Math.PI/2)*10;
+      ctx.save();ctx.translate(mx+nx,my+ny);
+      var ta=ang;if(ta>Math.PI/2||ta<-Math.PI/2)ta+=Math.PI;
+      ctx.rotate(ta);ctx.font='8px IBM Plex Mono,monospace';ctx.fillStyle=col;ctx.textAlign='center';
+      ctx.fillText(seg.len+'ft',0,0);ctx.restore();
+    }
+  }
+  if(!isClosed){
+    var p1=c(pts[pts.length-1]),p2=c(pts[0]);
+    ctx.beginPath();ctx.moveTo(p1[0],p1[1]);ctx.lineTo(p2[0],p2[1]);
+    ctx.strokeStyle='#f87171';ctx.lineWidth=1.2;ctx.setLineDash([4,4]);ctx.stroke();ctx.setLineDash([]);
+  }
+  pts.forEach(function(pt,i){
+    var cp=c(pt);
+    ctx.beginPath();ctx.arc(cp[0],cp[1],i===0?4:2.5,0,Math.PI*2);
+    ctx.fillStyle=i===0?'#e2e8f0':'#3a3d50';ctx.fill();
+    if(i===0){ctx.strokeStyle='#a78bfa';ctx.lineWidth=1.5;ctx.stroke();}
+  });
+  var sp=c(pts[0]);
+  ctx.font='500 8px IBM Plex Mono,monospace';ctx.fillStyle='#a78bfa';ctx.textAlign='left';
+  ctx.fillText('START',sp[0]+5,sp[1]-4);
+}
+
+function clCalc(){
+  // Update rect SF display
+  if(clMode==='rect'){
+    var sf=clGetCalcSF();
+    document.getElementById('cl-rect-sf').textContent=sf>0?sf:'—';
+  }
+  // Summary
+  var totalSF=clZones.reduce(function(s,z){return s+(z.sf||0);},0);
+  document.getElementById('cls-zones').textContent=clZones.length;
+  document.getElementById('cls-sf').textContent=totalSF>0?totalSF+' sf':'—';
+  document.getElementById('cls-calc').innerHTML=clGetCalcSF()>0?clGetCalcSF()+' sf':'&mdash;';
+  clWillsUpdate();
+  clRenderMain();
+  syncCMFields();
+}
+
+function clToggle(id,e){
+  if(e&&(e.target.tagName==='INPUT'||e.target.tagName==='BUTTON'))return;
+  var el=document.getElementById('cl-'+id);
+  if(el&&el.type==='checkbox'){el.checked=!el.checked;clCalc();}
+}
+
+function clOv(id){var el=document.getElementById('clv-'+id);return el?(Math.round(parseFloat(el.value)||0)):0;}
+function clChk(id){var el=document.getElementById('cl-'+id);return el&&el.checked;}
+
+function getCLItems(){
+  var items=[];
+  // Zones
+  clZones.forEach(function(z){
+    if(!z.sf)return;
+    var typeLabel=CL_POLY_TYPES.find(function(t){return t.val===z.type;});
+    var label=(z.label||'Zone')+' \u2014 '+(typeLabel?typeLabel.label:'PolyRenewal');
+    items.push({name:label,qty:z.sf+' sf'});
+  });
+  // BackerRod
+  if(clChk('backerrod')&&clOv('backerrod')>0)items.push({name:'BackerRod',qty:clOv('backerrod')+' sf'});
+  // Supplemental
+  if(clChk('rr')&&clOv('rr')>0)items.push({name:'Concrete Remove & Replace',qty:clOv('rr')+' sf'});
+  if(clChk('saw')&&clOv('saw')>0)items.push({name:'Saw Cutting Concrete',qty:clOv('saw')+' lf'});
+  if(clChk('crack')&&clOv('crack')>0)items.push({name:'Caulk Crack Repair',qty:clOv('crack')+' lf'});
+  if(clChk('joint')&&clOv('joint')>0)items.push({name:'Caulk Control Joint',qty:clOv('joint')+' lf'});
+  return items;
+}
+
+var CL_MISC=[{id:'cl-utilities',label:'Utilities Protection',lblId:'cllbl-utilities'},{id:'cl-permit',label:'Permit B',lblId:'cllbl-permit'}];
+
+function clRenderMain(){
+  if(!activeProducts.cl){document.getElementById('out-cl-block').style.display='none';return;}
+  document.getElementById('out-cl-block').style.display='block';
+  CL_MISC.forEach(function(m){var lbl=document.getElementById(m.lblId);if(lbl)lbl.className=getW(m.id)?'fp-item-label':'fp-item-label misc-red';});
+  var mspLbl=document.getElementById('cllbl-msp');if(mspLbl)mspLbl.className='fp-item-label';
+  var items=getCLItems();
+  var matEl=document.getElementById('cl-mat-rows');
+  var forgetEl=document.getElementById('cl-forget-section');
+  var forgetRowsEl=document.getElementById('cl-forget-rows');
+  var btn=document.getElementById('cl-copy-btn');
+  if(!items.length){matEl.innerHTML='<div class="fp-empty">Add zones and select services.</div>';forgetEl.style.display='none';btn.style.display='none';return;}
+  btn.style.display='block';
+  matEl.innerHTML=items.map(function(it){return'<div class="fp-plan-row" data-copyable="true"><span>'+escHtml(it.name)+'</span><span class="fp-plan-qty" style="color:#a78bfa;">'+escHtml(it.qty)+'</span></div>';}).join('');
+  forgetEl.style.display='block';
+  forgetRowsEl.innerHTML=CL_MISC.map(function(m){var checked=getW(m.id);var col=checked?'#c8ccd8':'#f87171';return'<div class="fp-plan-row"><span style="color:'+col+';">'+(checked?'v':'!')+'  '+escHtml(m.label)+'</span><span class="fp-plan-qty" style="color:'+col+';">'+(checked?'confirmed':'check off')+'</span></div>';}).join('');
+}
+
+function clCopyFP(){
+  var matEl=document.getElementById('cl-mat-rows');
+  var rows=matEl.querySelectorAll('[data-copyable="true"]');var lines=[];
+  rows.forEach(function(r){var c=r.querySelectorAll('span');if(c.length>=2)lines.push(c[0].innerText+': '+c[1].innerText);});
+  navigator.clipboard.writeText(lines.join('\n')).then(function(){
+    var btn=document.getElementById('cl-copy-btn');
+    btn.textContent='Copied!';btn.classList.add('copied');
+    setTimeout(function(){btn.textContent='Copy CL material list';btn.classList.remove('copied');},2000);
+  });
+}
+
+function clCopWill(which){
+  var elId=which==='contractor'?'cl-contractor-output':'cl-customer-output';
+  var el=document.getElementById(elId);
+  var spans=el.querySelectorAll('[data-copyable="true"]');var lines=[];
+  spans.forEach(function(s){lines.push(s.innerText);});
+  navigator.clipboard.writeText(lines.join('\n\n')).then(function(){
+    var ids=which==='contractor'?['cl-copy-contractor-inline','cl-copy-contractor']:['cl-copy-customer-inline','cl-copy-customer'];
+    ids.forEach(function(btnId){var btn=document.getElementById(btnId);if(!btn)return;var orig=btn.textContent;btn.textContent='Copied!';btn.classList.add('copied');setTimeout(function(){btn.textContent=orig;btn.classList.remove('copied');},2000);});
+  });
+}
+
+// CL WILLS LANGUAGE
+function cllbl(tag,text){return'<span class="bullet-label">'+tag+':</span> '+text;}
+var CL_INITIALS='Customer Initials: X______________';
+
+function clWillsUpdate(){
+  CL_MISC.forEach(function(m){var lbl=document.getElementById(m.lblId);if(lbl)lbl.className=getW(m.id)?'fp-item-label':'fp-item-label misc-red';});
+  var mspYr=(document.getElementById('cl-msp')||{value:'5'}).value;
+  var cL=[];
+  // One POLYRENEWAL bullet per zone
+  clZones.forEach(function(z){
+    if(!z.sf)return;
+    var typeLabel=CL_POLY_TYPES.find(function(t){return t.val===z.type;});
+    var zoneName=z.label||'the designated area';
+    var prodName=typeLabel?typeLabel.label:'PolyRenewal';
+    cL.push(cllbl('POLYRENEWAL','Groundworks will use '+prodName+' to stabilize '+zoneName+' and attempt lift.'));
+  });
+  // DISCLOSURE — always included when any zone exists
+  if(clZones.length>0){
+    cL.push(cllbl('DISCLOSURE','Customer is aware concrete can crack when lifting and smaller cracks that were not previously noticeable can appear. Some cracks may need to be expanded/opened to give concrete pieces room to move/lift. Sealing all joints and preexisting cracks are recommended and can be added for an additional charge.'));
+  }
+  if(getW('cl-digsafe'))cL.push(cllbl('DIGSAFE','Groundworks will honor all DigSafe markings and will not excavate within the designated safe zones.'));
+  cL.push(cllbl('MSP','Customer has selected a '+mspYr+' Year Maintenance Service Plan.'));
+  cL.push(cllbl('ACKNOWLEDGEMENT','Homeowner has reviewed and understands contractor wills.'));
+  var hL=[
+    cllbl('PARKING','Homeowner to provide parking for Groundworks truck and crew.'),
+    cllbl('PERSONAL EFFECTS','Homeowner to remove personal effects from the work area.'),
+    cllbl('VEHICLE & AREA CLEARANCE','Homeowner will move all vehicles and clear the work area prior to the installation date. The area must remain clear and accessible for the crew on installation day.'),
+  ];
+  if(getW('cl-digsafe'))hL.push(cllbl('DIGSAFE','Homeowner agrees to leave any DigSafe flags in place that mark underground lines and/or hazards that the installation crew will need to be aware of.'));
+  hL.push(cllbl('RESPONSIBILITY','Homeowner is responsible for any pre-existing concrete conditions not related to the PolyRenewal installation. Groundworks is not responsible for pre-existing cracks, joint failures, or deterioration unrelated to the lifting process.'));
+  hL.push(cllbl('ACKNOWLEDGEMENT','Homeowner has reviewed and understands customer wills.'));
+  clRenderWill(cL,'cl-contractor-output');
+  clRenderWill(hL,'cl-customer-output');
+  clRenderMain();
+  syncCMFields();
+}
+
+function clRenderWill(lines,elId){
+  var el=document.getElementById(elId);
+  var parts=lines.map(function(l){return'<span data-copyable="true">* '+l+'</span>';});
+  parts.push('<span class="initials-text" data-copyable="true">*\n* '+CL_INITIALS+'</span>');
+  el.innerHTML=parts.join('\n\n');
+}
+
+function resetCLWills(){
+  ['cl-digsafe','cl-utilities','cl-permit'].forEach(function(id){var el=document.getElementById(id);if(el)el.checked=false;});
+  var clMsp=document.getElementById('cl-msp');if(clMsp)clMsp.value='5';
+  clWillsUpdate();
 }
 
 // ══════════════════════════════════════════════════════════════════════════════
@@ -1666,6 +2181,14 @@ function syncCMFields(){
         overview+=csItems.map(function(i){return'  [  ] '+i.name+': '+i.qty;}).join('\n')+'\n';
       }
     }
+    // CL materials with checkbox prefix
+    if(activeProducts.cl){
+      var clItems=getCLItems();
+      if(clItems.length){
+        overview+=(overview?'\n':'')+'[CONCRETE LIFTING]\nMATERIALS:\n';
+        overview+=clItems.map(function(i){return'  [  ] '+i.name+': '+i.qty;}).join('\n')+'\n';
+      }
+    }
     var overviewEl=document.getElementById('cm-overview');
     if(overviewEl)overviewEl.value=overview.trim()||'Select a product and add materials to auto-generate.';
   }
@@ -1702,14 +2225,37 @@ function renderSummary(){
     if(csCust&&csCust.innerText.indexOf('Select items')===-1)html+='<div style="margin-top:8px;"><div class="summary-section-title" style="color:#34d399;">CS Customer Wills</div><div class="will-content" style="font-size:.7rem;">'+csCust.innerHTML+'</div></div>';
     html+='</div>';
   }
+  if(activeProducts.cl){
+    var clItems=getCLItems();
+    var totalSF=clZones.reduce(function(s,z){return s+(z.sf||0);},0);
+    html+='<div style="margin-bottom:16px;"><div class="summary-section-title" style="color:#a78bfa;">Concrete Lifting</div>';
+    html+='<div style="font-family:monospace;font-size:.74rem;line-height:1.8;color:#c8ccd8;margin-bottom:8px;">Zones: '+clZones.length+' | Total SF: '+(totalSF||'—')+'</div>';
+    if(clItems.length)html+=clItems.map(function(it){return'<div class="fp-plan-row"><span>'+escHtml(it.name)+'</span><span class="fp-plan-qty" style="color:#a78bfa;">'+escHtml(it.qty)+'</span></div>';}).join('');
+    html+='<div style="margin-top:8px;"><div class="summary-section-title" style="color:#f87171;">Don\'t Forget</div>';
+    CL_MISC.forEach(function(m){var checked=getW(m.id);var col=checked?'#c8ccd8':'#f87171';html+='<div class="fp-plan-row"><span style="color:'+col+';">'+(checked?'v':'!')+'  '+escHtml(m.label)+'</span><span class="fp-plan-qty" style="color:'+col+';">'+(checked?'confirmed':'pending')+'</span></div>';});
+    html+='</div>';
+    var clCont=document.getElementById('cl-contractor-output');
+    if(clCont&&clCont.innerText.indexOf('Select items')===-1)html+='<div style="margin-top:8px;"><div class="summary-section-title" style="color:#f97316;">CL Contractor Wills</div><div class="will-content" style="font-size:.7rem;">'+clCont.innerHTML+'</div></div>';
+    var clCust=document.getElementById('cl-customer-output');
+    if(clCust&&clCust.innerText.indexOf('Select items')===-1)html+='<div style="margin-top:8px;"><div class="summary-section-title" style="color:#a78bfa;">CL Customer Wills</div><div class="will-content" style="font-size:.7rem;">'+clCust.innerHTML+'</div></div>';
+    html+='</div>';
+  }
   if(!html)html='<div class="fp-empty">Select a product to generate summary.</div>';
   document.getElementById('summary-content').innerHTML=html;
 }
 
 function toggleBlock(which){
-  var blockId=which==='contractor'?'block-contractor':which==='customer'?'block-customer':which==='cs-contractor'?'cs-block-contractor':'cs-block-customer';
-  var toggleId=which==='contractor'?'toggle-contractor':which==='customer'?'toggle-customer':which==='cs-contractor'?'cs-toggle-contractor':'cs-toggle-customer';
-  var block=document.getElementById(blockId);var btn=document.getElementById(toggleId);
+  var map={
+    'contractor':  {block:'block-contractor',   toggle:'toggle-contractor'},
+    'customer':    {block:'block-customer',      toggle:'toggle-customer'},
+    'cs-contractor':{block:'cs-block-contractor',toggle:'cs-toggle-contractor'},
+    'cs-customer': {block:'cs-block-customer',   toggle:'cs-toggle-customer'},
+    'cl-contractor':{block:'cl-block-contractor',toggle:'cl-toggle-contractor'},
+    'cl-customer': {block:'cl-block-customer',   toggle:'cl-toggle-customer'},
+  };
+  var m=map[which];if(!m)return;
+  var block=document.getElementById(m.block);
+  var btn=document.getElementById(m.toggle);
   if(!block||!btn)return;
   var collapsed=block.classList.toggle('collapsed');
   btn.textContent=collapsed?'> expand':'v collapse';
@@ -1730,9 +2276,11 @@ document.getElementById('cm-overview').addEventListener('input',function(){cmOve
 for(var i=0;i<4;i++)addWall();
 willsUpdate();renderMain();
 
-// CS: 4 default walls
 // CS: start empty — use Rectangle preset button to populate
 csWillsUpdate();csRenderMain();
+
+// CL: start empty
+clRenderZones();clRenderPolyWalls();clCalc();
 
 // Product bar init (BW active)
 updateOutputBlocks();
