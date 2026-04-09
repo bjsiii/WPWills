@@ -25,20 +25,18 @@ body{background:#0f1117;color:#e8e8e8;font-family:'IBM Plex Mono',monospace;heig
 .shell{display:flex;flex:1;min-height:0;}
 
 /* ── LEFT / WILLS PANELS ── */
-.nav-fp,.nav-wills{display:flex;flex-direction:column;flex-shrink:0;overflow:hidden;transition:width .25s cubic-bezier(.4,0,.2,1),min-width .25s cubic-bezier(.4,0,.2,1),max-width .25s cubic-bezier(.4,0,.2,1);}
-.nav-fp{width:auto;min-width:300px;max-width:440px;background:#0b0d13;border-right:1px solid #1e2435;}
-.nav-wills{width:auto;min-width:280px;max-width:420px;background:#0d0f18;border-right:1px solid #1e2435;}
-.nav-fp.collapsed{width:38px!important;min-width:38px!important;max-width:38px!important;}.nav-wills.collapsed{width:38px!important;min-width:38px!important;max-width:38px!important;}
+.nav-fp{display:flex;flex-direction:column;flex-shrink:0;overflow:hidden;transition:width .25s cubic-bezier(.4,0,.2,1),min-width .25s cubic-bezier(.4,0,.2,1),max-width .25s cubic-bezier(.4,0,.2,1);width:auto;min-width:320px;max-width:520px;background:#0b0d13;border-right:1px solid #1e2435;}
+.nav-fp.collapsed{width:38px!important;min-width:38px!important;max-width:38px!important;}
 .nav-inner{flex:1;overflow-y:auto;overflow-x:hidden;}
-.nav-fp.collapsed .nav-inner,.nav-wills.collapsed .nav-inner{opacity:0;pointer-events:none;}
+.nav-fp.collapsed .nav-inner{opacity:0;pointer-events:none;}
 
 /* panel toggle headers */
 .nav-toggle{display:flex;align-items:center;gap:9px;padding:16px 13px 14px;border-bottom:1px solid #1e2435;cursor:pointer;user-select:none;flex-shrink:0;min-height:52px;}
 .nav-toggle-icon{font-size:.7rem;flex-shrink:0;transition:transform .22s;line-height:1;}
-.nav-fp .nav-toggle-icon{color:#4fc3f7;}.nav-wills .nav-toggle-icon{color:#a78bfa;}
-.nav-fp.collapsed .nav-toggle-icon,.nav-wills.collapsed .nav-toggle-icon{transform:rotate(180deg);}
+.nav-fp .nav-toggle-icon{color:#4fc3f7;}
+.nav-fp.collapsed .nav-toggle-icon{transform:rotate(180deg);}
 .nav-toggle-label{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:3px;white-space:nowrap;overflow:hidden;}
-.nav-fp.collapsed .nav-toggle-label,.nav-wills.collapsed .nav-toggle-label{display:none;}
+.nav-fp.collapsed .nav-toggle-label{display:none;}
 
 /* product sub-tabs inside panels */
 .panel-prod-tabs{display:flex;border-bottom:1px solid #1e2435;flex-shrink:0;}
@@ -87,6 +85,7 @@ body{background:#0f1117;color:#e8e8e8;font-family:'IBM Plex Mono',monospace;heig
 .fp-item input[type=checkbox]{appearance:none;-webkit-appearance:none;width:14px;height:14px;border:1.5px solid #3a3f55;border-radius:3px;cursor:pointer;flex-shrink:0;position:relative;transition:all .15s;}
 .fp-item input[type=checkbox]:checked{background:#4fc3f7;border-color:#4fc3f7;}
 .fp-item.cs-item input[type=checkbox]:checked{background:#34d399;border-color:#34d399;}
+.fp-item.misc-item input[type=checkbox]:checked{background:#f87171;border-color:#f87171;}
 .fp-item input[type=checkbox]:checked::after{content:'v';position:absolute;top:-2px;left:1px;font-size:9px;color:#0f1117;font-weight:bold;}
 .fp-item-label{font-family:monospace;font-size:.74rem;color:#c8ccd8;flex:1;user-select:none;line-height:1.3;}
 .fp-item-label small{display:block;font-size:.6rem;color:#8892a4;margin-top:1px;}
@@ -147,6 +146,8 @@ body{background:#0f1117;color:#e8e8e8;font-family:'IBM Plex Mono',monospace;heig
 .wills-child.enabled{opacity:1;pointer-events:auto;}
 .auto-badge{font-family:'IBM Plex Mono',monospace;font-size:.48rem;padding:1px 4px;border-radius:3px;background:#4fc3f711;color:#4fc3f7;border:1px solid #4fc3f733;white-space:nowrap;}
 .auto-badge.cs{background:#34d39911;color:#34d399;border-color:#34d39933;}
+.w-badge{font-family:'IBM Plex Mono',monospace;font-size:.46rem;letter-spacing:.5px;padding:1px 5px;border-radius:3px;background:#a78bfa18;color:#a78bfa;border:1px solid #a78bfa44;white-space:nowrap;flex-shrink:0;}
+.w-badge.cs{background:#34d39918;color:#34d399;border-color:#34d39944;}
 .sub-group-label{font-family:'IBM Plex Mono',monospace;font-size:.56rem;letter-spacing:1px;text-transform:uppercase;padding:4px 8px 2px;}
 .sub-group-label.contractor{color:#f97316;background:#f9731610;border-left:2px solid #f97316;margin:4px 8px 2px;}
 .sub-group-label.customer{color:#4fc3f7;background:#4fc3f710;border-left:2px solid #4fc3f7;margin:4px 8px 2px;}
@@ -302,11 +303,13 @@ body{background:#0f1117;color:#e8e8e8;font-family:'IBM Plex Mono',monospace;heig
       <div class="fp-item" style="cursor:default;">
         <span style="width:14px;flex-shrink:0;"></span>
         <span class="fp-item-label">Gutter<small>set per wall (G column)</small></span>
+        <span class="w-badge">W</span>
         <span class="fp-qty" id="fq-gutter">&mdash;</span>
       </div>
       <div class="fp-item" onclick="toggleFP('pump',event)">
-        <input type="checkbox" id="fp-pump" onchange="syncFromFP('pump');calcFP()">
+        <input type="checkbox" id="fp-pump" onchange="calcFP();willsUpdate()">
         <span class="fp-item-label">Primary sump pump</span>
+        <span class="w-badge">W</span>
       </div>
       <div class="pump-row">
         <button class="pump-opt active" id="fpo-single" onclick="setPumpFP('single')">Single</button>
@@ -323,27 +326,32 @@ body{background:#0f1117;color:#e8e8e8;font-family:'IBM Plex Mono',monospace;heig
       <div class="fp-item" style="cursor:default;">
         <span style="width:14px;flex-shrink:0;"></span>
         <span class="fp-item-label">Wall liner<small>set per wall (WL column)</small></span>
+        <span class="w-badge">W</span>
         <span class="fp-qty" id="fq-wallliner">&mdash;</span>
       </div>
       <div class="fp-item" onclick="toggleFP('aquagrate',event)">
-        <input type="checkbox" id="fp-aquagrate" onchange="syncFromFP('aquagrate');calcFP()">
+        <input type="checkbox" id="fp-aquagrate" onchange="calcFP();willsUpdate()">
         <span class="fp-item-label">AquaGrate<small>manual LF</small></span>
+        <span class="w-badge">W</span>
         <input class="fp-manual" type="number" id="fv-aquagrate" value="0" min="0" onclick="event.stopPropagation()" oninput="calcFP()">
         <span class="fp-unit">lf</span>
       </div>
       <div class="fp-item" onclick="toggleFP('ports',event)">
-        <input type="checkbox" id="fp-ports" onchange="syncFromFP('ports');calcFP()">
+        <input type="checkbox" id="fp-ports" onchange="calcFP();willsUpdate()">
         <span class="fp-item-label">Inspection ports<small>auto: 1 per gutter wall</small></span>
+        <span class="w-badge">W</span>
         <span class="fp-qty" id="fq-ports">&mdash;</span>
       </div>
       <div class="fp-item" onclick="toggleFP('airsystem',event)">
-        <input type="checkbox" id="fp-airsystem" onchange="syncFromFP('airsystem');calcFP()">
+        <input type="checkbox" id="fp-airsystem" onchange="calcFP();willsUpdate()">
         <span class="fp-item-label">Air system</span>
+        <span class="w-badge">W</span>
         <input class="fp-manual" type="number" id="fv-airsystem" value="1" min="1" onclick="event.stopPropagation()" oninput="calcFP()">
       </div>
       <div class="fp-item" style="padding-left:28px;" onclick="toggleFP('condensation',event)">
-        <input type="checkbox" id="fp-condensation" onchange="syncFromFP('condensation');calcFP()">
+        <input type="checkbox" id="fp-condensation" onchange="calcFP();willsUpdate()">
         <span class="fp-item-label" style="font-size:.68rem;">+ Condensation pump<small>gravity cannot drain</small></span>
+        <span class="w-badge">W</span>
       </div>
       <div class="sec-label">Misc</div>
       <div class="fp-item" onclick="toggleFP('discharge-buried',event)">
@@ -359,8 +367,9 @@ body{background:#0f1117;color:#e8e8e8;font-family:'IBM Plex Mono',monospace;heig
         <span class="fp-unit">lf</span>
       </div>
       <div class="fp-item" onclick="toggleFP('windowwell',event)">
-        <input type="checkbox" id="fp-windowwell" onchange="syncFromFP('windowwell');calcFP()">
+        <input type="checkbox" id="fp-windowwell" onchange="calcFP();willsUpdate()">
         <span class="fp-item-label">Window well tap</span>
+        <span class="w-badge">W</span>
         <input class="fp-manual" type="number" id="fv-windowwell" value="1" min="0" onclick="event.stopPropagation()" oninput="calcFP()">
       </div>
       <div class="fp-summary">
@@ -369,6 +378,82 @@ body{background:#0f1117;color:#e8e8e8;font-family:'IBM Plex Mono',monospace;heig
           <div class="fp-stat"><div class="fp-stat-label">Full perim.</div><div class="fp-stat-val" id="fs-lf">0 lf</div></div>
           <div class="fp-stat"><div class="fp-stat-label">Gutter LF</div><div class="fp-stat-val" id="fs-gutter">0 lf</div></div>
         </div>
+      </div>
+      <!-- ── BW Legal Section (formerly Wills panel) ── -->
+      <div class="sec-label" style="border-top:2px solid #1e2435;margin-top:4px;padding-top:12px;">Electrical</div>
+      <div class="sub-group-label contractor">Contractor</div>
+      <div class="fp-item" onclick="toggleWill('wp-elec-gw',event)">
+        <input type="checkbox" id="wp-elec-gw" onchange="willsUpdate()">
+        <span class="fp-item-label">Electrician <span class="wills-tag tag-c">Contractor</span></span>
+        <span class="w-badge">W</span>
+      </div>
+      <div class="sub-group-label customer">Customer</div>
+      <div class="fp-item" onclick="toggleWill('wp-elec-ho',event)">
+        <input type="checkbox" id="wp-elec-ho" onchange="willsUpdate()">
+        <span class="fp-item-label">Electrician <span class="wills-tag tag-h">Customer</span></span>
+        <span class="w-badge">W</span>
+      </div>
+      <div class="sec-label">Demolition</div>
+      <div class="sub-group-label contractor">Contractor</div>
+      <div class="fp-item" onclick="toggleWill('wp-drywall-gw-half',event)">
+        <input type="checkbox" id="wp-drywall-gw-half" onchange="onDwChange('gw-half')">
+        <span class="fp-item-label">Drywall 1/2 Wall <span class="wills-tag tag-c">Contractor</span></span>
+        <span class="w-badge">W</span>
+      </div>
+      <div class="fp-item" onclick="toggleWill('wp-drywall-gw-full',event)">
+        <input type="checkbox" id="wp-drywall-gw-full" onchange="onDwChange('gw-full')">
+        <span class="fp-item-label">Drywall Full Wall <span class="wills-tag tag-c">Contractor</span></span>
+        <span class="w-badge">W</span>
+      </div>
+      <div class="fp-item" onclick="toggleWill('wp-cut-gw',event)">
+        <input type="checkbox" id="wp-cut-gw" onchange="willsUpdate()">
+        <span class="fp-item-label">Cut Through <span class="wills-tag tag-c">Contractor</span></span>
+        <span class="w-badge">W</span>
+      </div>
+      <div class="fp-item" onclick="toggleWill('wp-stairs',event)">
+        <input type="checkbox" id="wp-stairs" onchange="willsUpdate()">
+        <span class="fp-item-label">Stairs <span class="wills-tag tag-c">Contractor</span></span>
+        <span class="w-badge">W</span>
+      </div>
+      <div class="sub-group-label customer">Customer</div>
+      <div class="fp-item" onclick="toggleWill('wp-drywall-ho-half',event)">
+        <input type="checkbox" id="wp-drywall-ho-half" onchange="onDwChange('ho-half')">
+        <span class="fp-item-label">Drywall 1/2 Wall <span class="wills-tag tag-h">Customer</span></span>
+        <span class="w-badge">W</span>
+      </div>
+      <div class="fp-item" onclick="toggleWill('wp-drywall-ho-full',event)">
+        <input type="checkbox" id="wp-drywall-ho-full" onchange="onDwChange('ho-full')">
+        <span class="fp-item-label">Drywall Full Wall <span class="wills-tag tag-h">Customer</span></span>
+        <span class="w-badge">W</span>
+      </div>
+      <div class="fp-item" onclick="toggleWill('wp-cut-ho',event)">
+        <input type="checkbox" id="wp-cut-ho" onchange="willsUpdate()">
+        <span class="fp-item-label">Cut Through <span class="wills-tag tag-h">Customer</span></span>
+        <span class="w-badge">W</span>
+      </div>
+      <div class="fp-item" onclick="toggleWill('wp-baseboard',event)">
+        <input type="checkbox" id="wp-baseboard" onchange="willsUpdate()">
+        <span class="fp-item-label">Baseboard Heater <span class="wills-tag tag-h">Customer</span></span>
+        <span class="w-badge">W</span>
+      </div>
+      <div class="sec-label">Site</div>
+      <div class="fp-item" onclick="toggleWill('wp-digsafe',event)">
+        <input type="checkbox" id="wp-digsafe" onchange="willsUpdate()">
+        <span class="fp-item-label">DigSafe Flags</span>
+        <span class="w-badge">W</span>
+      </div>
+      <div class="sec-label">Required Items</div>
+      <div class="fp-item misc-item" onclick="toggleWill('wp-utilities',event)">
+        <input type="checkbox" id="wp-utilities" onchange="willsUpdate()">
+        <span class="fp-item-label misc-red" id="lbl-utilities">Utilities Protection</span>
+      </div>
+      <div class="fp-item misc-item" onclick="toggleWill('wp-permit',event)">
+        <input type="checkbox" id="wp-permit" onchange="willsUpdate()">
+        <span class="fp-item-label misc-red" id="lbl-permit">Permit B</span>
+      </div>
+      <div class="fp-item misc-item" onclick="toggleWill('wp-msp',event)">
+        <input type="checkbox" id="wp-msp" onchange="willsUpdate()">
+        <span class="fp-item-label misc-red" id="lbl-msp">5 yr MSP</span>
       </div>
     </div>
 
@@ -404,11 +489,13 @@ body{background:#0f1117;color:#e8e8e8;font-family:'IBM Plex Mono',monospace;heig
       <div class="fp-item cs-item" style="cursor:default;">
         <span style="width:14px;flex-shrink:0;"></span>
         <span class="fp-item-label">CrawlDrain<small>set per wall (CD column)</small></span>
+        <span class="w-badge cs">W</span>
         <span class="fp-qty cs" id="csq-crawldrain">&mdash;</span>
       </div>
       <div class="fp-item cs-item" onclick="csToggle('pump',event)">
-        <input type="checkbox" id="cs-pump" onchange="csSyncWill('pump');csCalc()">
+        <input type="checkbox" id="cs-pump" onchange="csCalc();csWillsUpdate()">
         <span class="fp-item-label">Primary sump pump</span>
+        <span class="w-badge cs">W</span>
       </div>
       <div class="pump-row">
         <button class="pump-opt cs-pump active" id="cspo-single" onclick="csSetPump('single')">Single</button>
@@ -425,35 +512,42 @@ body{background:#0f1117;color:#e8e8e8;font-family:'IBM Plex Mono',monospace;heig
       <div class="fp-item cs-item" style="cursor:default;">
         <span style="width:14px;flex-shrink:0;"></span>
         <span class="fp-item-label">Wall liner (SF)<small>CD walls × height</small></span>
+        <span class="w-badge cs">W</span>
         <span class="fp-qty cs" id="csq-wallliner">&mdash;</span>
       </div>
       <div class="fp-item cs-item" style="cursor:default;">
         <span style="width:14px;flex-shrink:0;"></span>
-        <span class="fp-item-label">EtremeBloc Insulation<small>Wall liner SF (CD walls)</small></span>
+        <span class="fp-item-label">EtremeBloc Insulation<small>CD walls × height</small></span>
+        <span class="w-badge cs">W</span>
         <span class="fp-qty cs" id="csq-etremebloc">&mdash;</span>
       </div>
       <div class="fp-item cs-item" onclick="csToggle('crawlliner',event)">
-        <input type="checkbox" id="cs-crawlliner" onchange="csSyncWill('crawlliner');csCalc()">
+        <input type="checkbox" id="cs-crawlliner" onchange="csCalc();csWillsUpdate()">
         <span class="fp-item-label">CrawlLiner (floor)<small>floor SF from shape</small></span>
+        <span class="w-badge cs">W</span>
         <span class="fp-qty cs" id="csq-crawlliner">&mdash;</span>
       </div>
       <div class="fp-item cs-item" onclick="csToggle('drainmat',event)">
-        <input type="checkbox" id="cs-drainmat" onchange="csSyncWill('drainmat');csCalc()">
+        <input type="checkbox" id="cs-drainmat" onchange="csCalc();csWillsUpdate()">
         <span class="fp-item-label">Drainage Mat (floor)<small>floor SF from shape</small></span>
+        <span class="w-badge cs">W</span>
         <span class="fp-qty cs" id="csq-drainmat">&mdash;</span>
       </div>
       <div class="fp-item cs-item" onclick="csToggle('dehumidifier',event)">
-        <input type="checkbox" id="cs-dehumidifier" onchange="csSyncWill('dehumidifier');csCalc()">
+        <input type="checkbox" id="cs-dehumidifier" onchange="csCalc();csWillsUpdate()">
         <span class="fp-item-label">Dehumidifier</span>
+        <span class="w-badge cs">W</span>
         <input class="fp-manual" type="number" id="csv-dehumidifier" value="1" min="1" onclick="event.stopPropagation()" oninput="csCalc()">
       </div>
       <div class="fp-item cs-item" style="padding-left:28px;" onclick="csToggle('condensation',event)">
-        <input type="checkbox" id="cs-condensation" onchange="csSyncWill('condensation');csCalc()">
+        <input type="checkbox" id="cs-condensation" onchange="csCalc();csWillsUpdate()">
         <span class="fp-item-label" style="font-size:.68rem;">+ Condensate pump<small>gravity cannot drain</small></span>
+        <span class="w-badge cs">W</span>
       </div>
       <div class="fp-item cs-item" onclick="csToggle('accessdoor',event)">
-        <input type="checkbox" id="cs-accessdoor" onchange="csSyncWill('accessdoor');csCalc()">
+        <input type="checkbox" id="cs-accessdoor" onchange="csCalc();csWillsUpdate()">
         <span class="fp-item-label">Access door</span>
+        <span class="w-badge cs">W</span>
         <input class="fp-manual" type="number" id="csv-accessdoor" value="1" min="1" onclick="event.stopPropagation()" oninput="csCalc()">
       </div>
 
@@ -461,11 +555,13 @@ body{background:#0f1117;color:#e8e8e8;font-family:'IBM Plex Mono',monospace;heig
       <div class="fp-item cs-item" onclick="csToggle('insulation-r19',event)">
         <input type="checkbox" id="cs-insulation-r19" onchange="csToggleInsul('r19');csCalc()">
         <span class="fp-item-label">Insulation removal — R19<small>floor SF from shape</small></span>
+        <span class="w-badge cs">W</span>
         <span class="fp-qty cs" id="csq-insulation-r19">&mdash;</span>
       </div>
       <div class="fp-item cs-item" onclick="csToggle('insulation-spray',event)">
         <input type="checkbox" id="cs-insulation-spray" onchange="csToggleInsul('spray');csCalc()">
         <span class="fp-item-label">Insulation removal — Spray Foam<small>custom price</small></span>
+        <span class="w-badge cs">W</span>
         <span class="fp-qty cs" style="color:#f97316;">custom</span>
       </div>
       <div class="fp-item cs-item" onclick="csToggle('discharge',event)">
@@ -482,6 +578,69 @@ body{background:#0f1117;color:#e8e8e8;font-family:'IBM Plex Mono',monospace;heig
           <div class="fp-stat"><div class="fp-stat-label">Floor SF</div><div class="fp-stat-val cs" id="css-floor">&mdash;</div></div>
         </div>
       </div>
+      <!-- ── CS Legal Section (formerly Wills panel) ── -->
+      <div class="sec-label cs" style="border-top:2px solid #1e2435;margin-top:4px;padding-top:12px;">Insulation Removal</div>
+      <div class="sub-group-label contractor">Contractor</div>
+      <div class="fp-item cs-item" onclick="toggleWill('cw-insul-r19',event)">
+        <input type="checkbox" id="cw-insul-r19" onchange="csOnInsulChange('r19')">
+        <span class="fp-item-label">R19 Batt Removal <span class="wills-tag tag-c">Contractor</span></span>
+        <span class="w-badge cs">W</span>
+      </div>
+      <div class="fp-item cs-item" onclick="toggleWill('cw-insul-spray',event)">
+        <input type="checkbox" id="cw-insul-spray" onchange="csOnInsulChange('spray')">
+        <span class="fp-item-label">Spray Foam Removal <span class="wills-tag tag-c">Contractor</span></span>
+        <span class="w-badge cs">W</span>
+      </div>
+      <div class="fp-item cs-item" onclick="toggleWill('cw-gw-debris',event)">
+        <input type="checkbox" id="cw-gw-debris" onchange="csWillsUpdate()">
+        <span class="fp-item-label">GW Debris Removal <span class="wills-tag tag-c">Contractor</span></span>
+        <span class="w-badge cs">W</span>
+      </div>
+      <div class="sub-group-label customer">Customer</div>
+      <div class="fp-item cs-item" onclick="toggleWill('cw-debris',event)">
+        <input type="checkbox" id="cw-debris" onchange="csWillsUpdate()">
+        <span class="fp-item-label">HO Debris Removal <span class="wills-tag tag-h">Customer</span></span>
+        <span class="w-badge cs">W</span>
+      </div>
+      <div class="sec-label cs">Electrical</div>
+      <div class="sub-group-label contractor">Contractor</div>
+      <div class="fp-item cs-item" onclick="toggleWill('cw-elec-gw',event)">
+        <input type="checkbox" id="cw-elec-gw" onchange="csWillsUpdate()">
+        <span class="fp-item-label">Electrician <span class="wills-tag tag-c">Contractor</span></span>
+        <span class="w-badge cs">W</span>
+      </div>
+      <div class="sub-group-label customer">Customer</div>
+      <div class="fp-item cs-item" onclick="toggleWill('cw-elec-ho',event)">
+        <input type="checkbox" id="cw-elec-ho" onchange="csWillsUpdate()">
+        <span class="fp-item-label">Electrician <span class="wills-tag tag-h">Customer</span></span>
+        <span class="w-badge cs">W</span>
+      </div>
+      <div class="sec-label cs">Plumbing</div>
+      <div class="sub-group-label customer">Customer</div>
+      <div class="fp-item cs-item" onclick="toggleWill('cw-plumber',event)">
+        <input type="checkbox" id="cw-plumber" onchange="csWillsUpdate()">
+        <span class="fp-item-label">Plumber <span class="wills-tag tag-h">Customer</span></span>
+        <span class="w-badge cs">W</span>
+      </div>
+      <div class="sec-label cs">Site</div>
+      <div class="fp-item cs-item" onclick="toggleWill('cw-digsafe',event)">
+        <input type="checkbox" id="cw-digsafe" onchange="csWillsUpdate()">
+        <span class="fp-item-label">DigSafe Flags</span>
+        <span class="w-badge cs">W</span>
+      </div>
+      <div class="sec-label cs">Required Items</div>
+      <div class="fp-item cs-item misc-item" onclick="toggleWill('cw-utilities',event)">
+        <input type="checkbox" id="cw-utilities" onchange="csWillsUpdate()">
+        <span class="fp-item-label misc-red" id="cslbl-utilities">Utilities Protection</span>
+      </div>
+      <div class="fp-item cs-item misc-item" onclick="toggleWill('cw-permit',event)">
+        <input type="checkbox" id="cw-permit" onchange="csWillsUpdate()">
+        <span class="fp-item-label misc-red" id="cslbl-permit">Permit B</span>
+      </div>
+      <div class="fp-item cs-item misc-item" onclick="toggleWill('cw-msp',event)">
+        <input type="checkbox" id="cw-msp" onchange="csWillsUpdate()">
+        <span class="fp-item-label misc-red" id="cslbl-msp">5 yr MSP</span>
+      </div>
     </div>
 
     <!-- ── FR placeholder ── -->
@@ -496,259 +655,14 @@ body{background:#0f1117;color:#e8e8e8;font-family:'IBM Plex Mono',monospace;heig
   </div><!-- nav-inner -->
 </nav>
 
-<!-- ══ MIDDLE: WILLS PANEL ══ -->
-<nav class="nav-wills" id="nav-wills">
-  <div class="nav-toggle" onclick="toggleNav('wills')">
-    <span class="nav-toggle-icon">&#9664;</span>
-    <span class="nav-toggle-label" id="wills-panel-label" style="color:#4fc3f7;">Wills</span>
-  </div>
-
-  <div class="panel-prod-tabs" id="wills-prod-tabs" style="display:none;">
-    <button class="ppt ppt-bw" id="wills-tab-bw" onclick="setWillsTab('bw')">BW</button>
-    <button class="ppt ppt-cs" id="wills-tab-cs" onclick="setWillsTab('cs')">CS</button>
-    <button class="ppt ppt-fr" id="wills-tab-fr" onclick="setWillsTab('fr')" style="display:none;">FR</button>
-    <button class="ppt ppt-cl" id="wills-tab-cl" onclick="setWillsTab('cl')" style="display:none;">CL</button>
-  </div>
-
-  <div class="nav-inner">
-
-    <!-- ── BW Wills ── -->
-    <div class="prod-panel visible" id="wills-bw">
-      <div class="wills-section" style="border-top:none;margin-top:0;">System</div>
-      <div class="wills-item wp-item" onclick="toggleWill('wp-gutter',event)">
-        <input type="checkbox" id="wp-gutter" onchange="willsUpdate()">
-        <span class="wills-label">BasementGutter</span>
-        <span class="auto-badge" id="ab-gutter" style="display:none;">auto</span>
-      </div>
-      <div class="pump-row" style="padding-left:36px;">
-        <button class="pump-opt" id="wpo-single" onclick="setWillPump('single')">Single</button>
-        <button class="pump-opt" id="wpo-triple" onclick="setWillPump('triple')">Triple</button>
-      </div>
-      <div class="wills-item wp-item" onclick="toggleWill('wp-wallliner',event)">
-        <input type="checkbox" id="wp-wallliner" onchange="willsUpdate()">
-        <span class="wills-label">Wall Liner</span>
-        <span class="auto-badge" id="ab-wallliner" style="display:none;">auto</span>
-      </div>
-      <div class="wills-item wp-item" onclick="toggleWill('wp-aquagrate',event)">
-        <input type="checkbox" id="wp-aquagrate" onchange="willsUpdate()">
-        <span class="wills-label">AquaGrate</span>
-        <span class="auto-badge" id="ab-aquagrate" style="display:none;">auto</span>
-      </div>
-      <div class="wills-item wp-item" onclick="toggleWill('wp-ports',event)">
-        <input type="checkbox" id="wp-ports" onchange="willsUpdate()">
-        <span class="wills-label">Inspection Ports</span>
-        <span class="auto-badge" id="ab-ports" style="display:none;">auto</span>
-      </div>
-      <div class="wills-item wp-item" onclick="toggleWill('wp-airsystem',event)">
-        <input type="checkbox" id="wp-airsystem" onchange="onAirChange()">
-        <span class="wills-label">AirSystem</span>
-        <span class="auto-badge" id="ab-airsystem" style="display:none;">auto</span>
-      </div>
-      <div class="wills-sub">
-        <div class="wills-item wp-item wills-child" id="condensate-row" onclick="toggleWill('wp-condensate',event)">
-          <input type="checkbox" id="wp-condensate" onchange="willsUpdate()">
-          <span class="wills-label">+ Condensate pump<small>gravity cannot drain</small></span>
-          <span class="auto-badge" id="ab-condensate" style="display:none;">auto</span>
-        </div>
-      </div>
-      <div class="wills-item wp-item" onclick="toggleWill('wp-windowwell',event)">
-        <input type="checkbox" id="wp-windowwell" onchange="willsUpdate()">
-        <span class="wills-label">Window Well Tap</span>
-        <span class="auto-badge" id="ab-windowwell" style="display:none;">auto</span>
-      </div>
-      <div class="wills-section">Electrical</div>
-      <div class="sub-group-label contractor">Contractor</div>
-      <div class="wills-item elec-item" onclick="toggleWill('wp-elec-gw',event)">
-        <input type="checkbox" id="wp-elec-gw" onchange="willsUpdate()">
-        <span class="wills-label">Electrician <span class="wills-tag tag-c">Contractor</span></span>
-      </div>
-      <div class="sub-group-label customer">Customer</div>
-      <div class="wills-item elec-item" onclick="toggleWill('wp-elec-ho',event)">
-        <input type="checkbox" id="wp-elec-ho" onchange="willsUpdate()">
-        <span class="wills-label">Electrician <span class="wills-tag tag-h">Customer</span></span>
-      </div>
-      <div class="wills-section">Demolition</div>
-      <div class="sub-group-label contractor">Contractor</div>
-      <div class="wills-item dw-item" onclick="toggleWill('wp-drywall-gw-half',event)">
-        <input type="checkbox" id="wp-drywall-gw-half" onchange="onDwChange('gw-half')">
-        <span class="wills-label">Drywall 1/2 Wall <span class="wills-tag tag-c">Contractor</span></span>
-      </div>
-      <div class="wills-item dw-item" onclick="toggleWill('wp-drywall-gw-full',event)">
-        <input type="checkbox" id="wp-drywall-gw-full" onchange="onDwChange('gw-full')">
-        <span class="wills-label">Drywall Full Wall <span class="wills-tag tag-c">Contractor</span></span>
-      </div>
-      <div class="wills-item dw-item" onclick="toggleWill('wp-cut-gw',event)">
-        <input type="checkbox" id="wp-cut-gw" onchange="willsUpdate()">
-        <span class="wills-label">Cut Through <span class="wills-tag tag-c">Contractor</span></span>
-      </div>
-      <div class="wills-item wp-item" onclick="toggleWill('wp-stairs',event)">
-        <input type="checkbox" id="wp-stairs" onchange="willsUpdate()">
-        <span class="wills-label">Stairs <span class="wills-tag tag-c">Contractor</span></span>
-      </div>
-      <div class="sub-group-label customer">Customer</div>
-      <div class="wills-item dw-item" onclick="toggleWill('wp-drywall-ho-half',event)">
-        <input type="checkbox" id="wp-drywall-ho-half" onchange="onDwChange('ho-half')">
-        <span class="wills-label">Drywall 1/2 Wall <span class="wills-tag tag-h">Customer</span></span>
-      </div>
-      <div class="wills-item dw-item" onclick="toggleWill('wp-drywall-ho-full',event)">
-        <input type="checkbox" id="wp-drywall-ho-full" onchange="onDwChange('ho-full')">
-        <span class="wills-label">Drywall Full Wall <span class="wills-tag tag-h">Customer</span></span>
-      </div>
-      <div class="wills-item dw-item" onclick="toggleWill('wp-cut-ho',event)">
-        <input type="checkbox" id="wp-cut-ho" onchange="willsUpdate()">
-        <span class="wills-label">Cut Through <span class="wills-tag tag-h">Customer</span></span>
-      </div>
-      <div class="wills-item wp-item" onclick="toggleWill('wp-baseboard',event)">
-        <input type="checkbox" id="wp-baseboard" onchange="willsUpdate()">
-        <span class="wills-label">Baseboard Heater <span class="wills-tag tag-h">Customer</span></span>
-      </div>
-      <div class="wills-section">Site</div>
-      <div class="wills-item wp-item" onclick="toggleWill('wp-digsafe',event)">
-        <input type="checkbox" id="wp-digsafe" onchange="willsUpdate()">
-        <span class="wills-label">DigSafe Flags</span>
-      </div>
-      <div class="wills-section">Misc</div>
-      <div class="wills-item misc-item" onclick="toggleWill('wp-utilities',event)">
-        <input type="checkbox" id="wp-utilities" onchange="willsUpdate()">
-        <span class="wills-label misc-red" id="lbl-utilities">Utilities Protection</span>
-      </div>
-      <div class="wills-item misc-item" onclick="toggleWill('wp-permit',event)">
-        <input type="checkbox" id="wp-permit" onchange="willsUpdate()">
-        <span class="wills-label misc-red" id="lbl-permit">Permit B</span>
-      </div>
-      <div class="wills-item misc-item" onclick="toggleWill('wp-msp',event)">
-        <input type="checkbox" id="wp-msp" onchange="willsUpdate()">
-        <span class="wills-label misc-red" id="lbl-msp">5 yr MSP</span>
-      </div>
-      <button class="wills-reset" onclick="resetWills()">Reset BW wills</button>
-    </div>
-
-    <!-- ── CS Wills ── -->
-    <div class="prod-panel" id="wills-cs">
-      <div class="wills-section" style="border-top:none;margin-top:0;">System</div>
-      <div class="wills-item wp-item cs" onclick="toggleWill('cw-crawldrain',event)">
-        <input type="checkbox" id="cw-crawldrain" onchange="csWillsUpdate()">
-        <span class="wills-label">CrawlDrain</span>
-        <span class="auto-badge cs" id="cab-crawldrain" style="display:none;">auto</span>
-      </div>
-      <div class="pump-row" style="padding-left:36px;">
-        <button class="pump-opt cs-pump" id="cwpo-single" onclick="csSetWillPump('single')">Single</button>
-        <button class="pump-opt cs-pump" id="cwpo-triple" onclick="csSetWillPump('triple')">Triple</button>
-      </div>
-      <div class="wills-item wp-item cs" onclick="toggleWill('cw-wallliner',event)">
-        <input type="checkbox" id="cw-wallliner" onchange="csWillsUpdate()">
-        <span class="wills-label">Wall Liner</span>
-        <span class="auto-badge cs" id="cab-wallliner" style="display:none;">auto</span>
-      </div>
-      <div class="wills-item wp-item cs" onclick="toggleWill('cw-etremebloc',event)">
-        <input type="checkbox" id="cw-etremebloc" onchange="csWillsUpdate()">
-        <span class="wills-label">EtremeBloc Insulation</span>
-        <span class="auto-badge cs" id="cab-etremebloc" style="display:none;">auto</span>
-      </div>
-      <div class="wills-item wp-item cs" onclick="toggleWill('cw-crawlliner',event)">
-        <input type="checkbox" id="cw-crawlliner" onchange="csWillsUpdate()">
-        <span class="wills-label">CrawlLiner (floor)</span>
-        <span class="auto-badge cs" id="cab-crawlliner" style="display:none;">auto</span>
-      </div>
-      <div class="wills-item wp-item cs" onclick="toggleWill('cw-drainmat',event)">
-        <input type="checkbox" id="cw-drainmat" onchange="csWillsUpdate()">
-        <span class="wills-label">Drainage Mat</span>
-        <span class="auto-badge cs" id="cab-drainmat" style="display:none;">auto</span>
-      </div>
-      <div class="wills-item wp-item cs" onclick="toggleWill('cw-dehumidifier',event)">
-        <input type="checkbox" id="cw-dehumidifier" onchange="csOnDehumChange()">
-        <span class="wills-label">Dehumidifier</span>
-        <span class="auto-badge cs" id="cab-dehumidifier" style="display:none;">auto</span>
-      </div>
-      <div class="wills-sub">
-        <div class="wills-item wp-item cs wills-child" id="cs-condensate-row" onclick="toggleWill('cw-condensate',event)">
-          <input type="checkbox" id="cw-condensate" onchange="csWillsUpdate()">
-          <span class="wills-label">+ Condensate pump<small>gravity cannot drain</small></span>
-          <span class="auto-badge cs" id="cab-condensate" style="display:none;">auto</span>
-        </div>
-      </div>
-      <div class="wills-item wp-item cs" onclick="toggleWill('cw-accessdoor',event)">
-        <input type="checkbox" id="cw-accessdoor" onchange="csWillsUpdate()">
-        <span class="wills-label">Access Door</span>
-        <span class="auto-badge cs" id="cab-accessdoor" style="display:none;">auto</span>
-      </div>
-      <div class="wills-section">Insulation Removal</div>
-      <div class="sub-group-label contractor">Contractor</div>
-      <div class="wills-item wp-item cs" onclick="toggleWill('cw-insul-r19',event)">
-        <input type="checkbox" id="cw-insul-r19" onchange="csOnInsulChange('r19')">
-        <span class="wills-label">R19 Batt Removal <span class="wills-tag tag-c">Contractor</span></span>
-        <span class="auto-badge cs" id="cab-insul-r19" style="display:none;">auto</span>
-      </div>
-      <div class="wills-item wp-item cs" onclick="toggleWill('cw-insul-spray',event)">
-        <input type="checkbox" id="cw-insul-spray" onchange="csOnInsulChange('spray')">
-        <span class="wills-label">Spray Foam Removal <span class="wills-tag tag-c">Contractor</span></span>
-        <span class="auto-badge cs" id="cab-insul-spray" style="display:none;">auto</span>
-      </div>
-      <div class="wills-item wp-item cs" onclick="toggleWill('cw-gw-debris',event)">
-        <input type="checkbox" id="cw-gw-debris" onchange="csWillsUpdate()">
-        <span class="wills-label">GW Debris Removal <span class="wills-tag tag-c">Contractor</span></span>
-      </div>
-      <div class="sub-group-label customer">Customer</div>
-      <div class="wills-item wp-item cs" onclick="toggleWill('cw-debris',event)">
-        <input type="checkbox" id="cw-debris" onchange="csWillsUpdate()">
-        <span class="wills-label">HO Debris Removal <span class="wills-tag tag-h">Customer</span></span>
-      </div>
-      <div class="wills-section">Electrical</div>
-      <div class="sub-group-label contractor">Contractor</div>
-      <div class="wills-item elec-item" onclick="toggleWill('cw-elec-gw',event)">
-        <input type="checkbox" id="cw-elec-gw" onchange="csWillsUpdate()">
-        <span class="wills-label">Electrician <span class="wills-tag tag-c">Contractor</span></span>
-      </div>
-      <div class="sub-group-label customer">Customer</div>
-      <div class="wills-item elec-item" onclick="toggleWill('cw-elec-ho',event)">
-        <input type="checkbox" id="cw-elec-ho" onchange="csWillsUpdate()">
-        <span class="wills-label">Electrician <span class="wills-tag tag-h">Customer</span></span>
-      </div>
-      <div class="wills-section">Plumbing</div>
-      <div class="sub-group-label customer">Customer</div>
-      <div class="wills-item wp-item cs" onclick="toggleWill('cw-plumber',event)">
-        <input type="checkbox" id="cw-plumber" onchange="csWillsUpdate()">
-        <span class="wills-label">Plumber <span class="wills-tag tag-h">Customer</span></span>
-      </div>
-      <div class="wills-section">Site</div>
-      <div class="wills-item wp-item cs" onclick="toggleWill('cw-digsafe',event)">
-        <input type="checkbox" id="cw-digsafe" onchange="csWillsUpdate()">
-        <span class="wills-label">DigSafe Flags</span>
-      </div>
-      <div class="wills-section">Misc</div>
-      <div class="wills-item misc-item" onclick="toggleWill('cw-utilities',event)">
-        <input type="checkbox" id="cw-utilities" onchange="csWillsUpdate()">
-        <span class="wills-label misc-red" id="cslbl-utilities">Utilities Protection</span>
-      </div>
-      <div class="wills-item misc-item" onclick="toggleWill('cw-permit',event)">
-        <input type="checkbox" id="cw-permit" onchange="csWillsUpdate()">
-        <span class="wills-label misc-red" id="cslbl-permit">Permit B</span>
-      </div>
-      <div class="wills-item misc-item" onclick="toggleWill('cw-msp',event)">
-        <input type="checkbox" id="cw-msp" onchange="csWillsUpdate()">
-        <span class="wills-label misc-red" id="cslbl-msp">5 yr MSP</span>
-      </div>
-      <button class="wills-reset" onclick="resetCSWills()">Reset CS wills</button>
-    </div>
-
-    <!-- ── FR / CL placeholders ── -->
-    <div class="prod-panel" id="wills-fr">
-      <div class="coming-soon"><div class="coming-soon-label">Foundation Repair</div><div class="coming-soon-sub">Wills coming soon</div></div>
-    </div>
-    <div class="prod-panel" id="wills-cl">
-      <div class="coming-soon"><div class="coming-soon-label">Concrete Lifting</div><div class="coming-soon-sub">Wills coming soon</div></div>
-    </div>
-
-  </div><!-- nav-inner -->
-</nav>
-
 <!-- ══ MAIN AREA ══ -->
 <main class="main">
   <div class="main-header">
     <h1>Wills Builder</h1>
     <span class="main-sub">Contract Generator</span>
     <span class="main-sub" id="main-cust"></span>
-    <button class="collapse-all-btn all-open" id="collapse-all-btn" onclick="collapseAllPanels()">&#9664;&#9664; Focus Output</button>
+    <button class="collapse-all-btn" id="global-reset-btn" onclick="globalReset()" style="margin-left:8px;border-color:#f87171;color:#f87171;" onmouseover="this.style.borderColor='#f87171';this.style.color='#f87171';">&#8635; New Customer</button>
+    <button class="collapse-all-btn all-open" id="collapse-all-btn" onclick="collapseAllPanels()">&#9664; Focus Output</button>
   </div>
   <div class="tab-bar">
     <button class="tab-btn active" id="tab-output" onclick="switchTab('output')">Output</button>
@@ -938,7 +852,7 @@ LAYOUT: Three-column layout filling full viewport height.
 - MIDDLE panel (collapsible, Wills label): legal will checklist. Same color logic as FlightPlan.
 - RIGHT area (main): three tabs — Output, Flight Plan FINAL, Cover and Move.
 
-PRODUCT STATE: activeProducts object {bw, cs, fr, cl}. fpTab and willsTab track which product is shown in each panel. Switching product tabs context-switches both panels. Combined copy bar appears only when 2+ products active.
+PRODUCT STATE: activeProducts object {bw, cs, fr, cl}. fpTab tracks which product is shown in the FlightPlan panel. Switching product tabs context-switches the panel. Combined copy bar appears only when 2+ products active.
 
 OUTPUT TAB:
 - Combined copy bar (dark green, top, hidden when single product): "Copy All Contractor Wills" (orange) and "Copy All Customer Wills" (blue). Each product section wrapped in: &lt;&lt;&lt;&lt;&lt;&lt; PRODUCT NAME &gt;&gt;&gt;&gt;&gt;&gt; header in copied text.
@@ -1005,32 +919,22 @@ DESIGN: #0f1117 body, #0b0d13 FlightPlan panel, #0d0f18 Wills panel. Bebas Neue 
 // PRODUCT STATE
 // ══════════════════════════════════════════════════════════════════════════════
 var activeProducts = {bw: true, cs: false, fr: false, cl: false};
-var fpTab = 'bw';   // which product is shown in left panel
-var willsTab = 'bw'; // which product is shown in wills panel
+var fpTab = 'bw';
 
 function toggleProduct(p) {
-  // If only this one is active and we're clicking it, do nothing (at least one must be active)
   var activeCount = Object.values(activeProducts).filter(Boolean).length;
   if (activeProducts[p] && activeCount === 1) return;
-
   activeProducts[p] = !activeProducts[p];
-
-  // Update product bar buttons
   ['bw','cs','fr','cl'].forEach(function(prod) {
     var btn = document.getElementById('pb-' + prod);
     btn.className = 'prod-btn' + (activeProducts[prod] ? ' active-' + prod : '');
   });
-
-  // If newly activated, switch panels to it
   if (activeProducts[p]) {
     setFPTab(p);
-    setWillsTab(p);
   } else {
-    // Switch to first active product
     var first = ['bw','cs','fr','cl'].find(function(x){ return activeProducts[x]; });
-    if (first) { setFPTab(first); setWillsTab(first); }
+    if (first) setFPTab(first);
   }
-
   updateProdTabs();
   updateOutputBlocks();
   renderMain();
@@ -1041,17 +945,10 @@ function toggleProduct(p) {
 function updateProdTabs() {
   var activeList = ['bw','cs','fr','cl'].filter(function(p){ return activeProducts[p]; });
   var multi = activeList.length > 1;
-
-  // Show/hide sub-tab bars
   document.getElementById('fp-prod-tabs').style.display = multi ? 'flex' : 'none';
-  document.getElementById('wills-prod-tabs').style.display = multi ? 'flex' : 'none';
-
-  // Show/hide individual tab buttons
   ['bw','cs','fr','cl'].forEach(function(p) {
     var fpt = document.getElementById('fp-tab-' + p);
-    var wt  = document.getElementById('wills-tab-' + p);
     if (fpt) fpt.style.display = activeProducts[p] ? '' : 'none';
-    if (wt)  wt.style.display  = activeProducts[p] ? '' : 'none';
   });
 }
 
@@ -1064,22 +961,8 @@ function setFPTab(p) {
     if (panel) panel.className = 'prod-panel' + (prod === p ? ' visible' : '');
     if (tab)   tab.className   = 'ppt ppt-' + prod + (prod === p ? ' on' : '');
   });
-  // Update panel header color
   var colors = {bw:'#4fc3f7', cs:'#34d399', fr:'#f97316', cl:'#a78bfa'};
   document.getElementById('fp-panel-label').style.color = colors[p];
-}
-
-function setWillsTab(p) {
-  if (!activeProducts[p]) return;
-  willsTab = p;
-  ['bw','cs','fr','cl'].forEach(function(prod) {
-    var panel = document.getElementById('wills-' + prod);
-    var tab   = document.getElementById('wills-tab-' + prod);
-    if (panel) panel.className = 'prod-panel' + (prod === p ? ' visible' : '');
-    if (tab)   tab.className   = 'ppt ppt-' + prod + (prod === p ? ' on' : '');
-  });
-  var colors = {bw:'#4fc3f7', cs:'#34d399', fr:'#f97316', cl:'#a78bfa'};
-  document.getElementById('wills-panel-label').style.color = colors[p];
 }
 
 function updateOutputBlocks() {
@@ -1157,38 +1040,28 @@ var wallId=0,walls=[],fpPump='single',fp2Pump='single',willPump='single';
 var cmOverviewDirty=false;
 
 function toggleNav(w){
-  document.getElementById('nav-'+w).classList.toggle('collapsed');
+  if(w==='fp')document.getElementById('nav-fp').classList.toggle('collapsed');
   updateCollapseBtn();
 }
 
 function collapseAllPanels(){
   var fpEl=document.getElementById('nav-fp');
-  var wEl=document.getElementById('nav-wills');
-  var btn=document.getElementById('collapse-all-btn');
-  var bothCollapsed=fpEl.classList.contains('collapsed')&&wEl.classList.contains('collapsed');
-  if(bothCollapsed){
-    // Expand both
-    fpEl.classList.remove('collapsed');
-    wEl.classList.remove('collapsed');
-  } else {
-    // Collapse both
-    fpEl.classList.add('collapsed');
-    wEl.classList.add('collapsed');
-  }
+  var isCollapsed=fpEl.classList.contains('collapsed');
+  if(isCollapsed){fpEl.classList.remove('collapsed');}
+  else{fpEl.classList.add('collapsed');}
   updateCollapseBtn();
 }
 
 function updateCollapseBtn(){
   var fpEl=document.getElementById('nav-fp');
-  var wEl=document.getElementById('nav-wills');
   var btn=document.getElementById('collapse-all-btn');
   if(!btn)return;
-  var bothCollapsed=fpEl.classList.contains('collapsed')&&wEl.classList.contains('collapsed');
-  if(bothCollapsed){
-    btn.innerHTML='&#9654;&#9654; Expand Panels';
+  var isCollapsed=fpEl.classList.contains('collapsed');
+  if(isCollapsed){
+    btn.innerHTML='&#9654; Expand Panel';
     btn.className='collapse-all-btn all-closed';
   } else {
-    btn.innerHTML='&#9664;&#9664; Focus Output';
+    btn.innerHTML='&#9664; Focus Output';
     btn.className='collapse-all-btn all-open';
   }
 }
@@ -1205,14 +1078,12 @@ function getStats(){var h=parseFloat(document.getElementById('fp-height').value)
 function ov(id){var el=document.getElementById(id);return el?(parseFloat(el.value)||0):0;}
 function chkFP(id){var el=document.getElementById('fp-'+id);return el&&el.checked;}
 function getW(id){var el=document.getElementById(id);return el?el.checked:false;}
-function setPumpFP(t){fpPump=t;document.getElementById('fpo-single').classList.toggle('active',t==='single');document.getElementById('fpo-triple').classList.toggle('active',t==='triple');setWillPump(t);calcFP();}
+function setPumpFP(t){fpPump=t;document.getElementById('fpo-single').classList.toggle('active',t==='single');document.getElementById('fpo-triple').classList.toggle('active',t==='triple');willPump=t;calcFP();willsUpdate();}
 function setPump2FP(t){fp2Pump=t;document.getElementById('fpo2-single').classList.toggle('active',t==='single');document.getElementById('fpo2-triple').classList.toggle('active',t==='triple');calcFP();}
-function setWillPump(t){willPump=t;document.getElementById('wpo-single').classList.toggle('active',t==='single');document.getElementById('wpo-triple').classList.toggle('active',t==='triple');willsUpdate();}
-function toggleFP(id,e){if(e&&(e.target.tagName==='INPUT'||e.target.tagName==='BUTTON'))return;var el=document.getElementById('fp-'+id);if(el&&el.type==='checkbox'){el.checked=!el.checked;syncFromFP(id);calcFP();}}
-var FP_TO_WILLS={'aquagrate':['wp-aquagrate'],'ports':['wp-ports'],'airsystem':['wp-airsystem'],'condensation':['wp-condensate'],'windowwell':['wp-windowwell']};
-function syncFromFP(fpId){var targets=FP_TO_WILLS[fpId];if(!targets)return;var fpEl=document.getElementById('fp-'+fpId);if(!fpEl)return;var on=fpEl.checked;targets.forEach(function(wid){var wel=document.getElementById(wid);if(wel)wel.checked=on;});if(fpId==='airsystem')onAirChange();var ab=document.getElementById('ab-'+fpId);if(ab)ab.style.display=on?'inline':'none';willsUpdate();}
-function autoSyncWills(){var s=getStats();var wg=document.getElementById('wp-gutter');if(wg){wg.checked=s.hasGutter;var ab=document.getElementById('ab-gutter');if(ab)ab.style.display=s.hasGutter?'inline':'none';}var wl=document.getElementById('wp-wallliner');if(wl){wl.checked=s.hasLiner;var abl=document.getElementById('ab-wallliner');if(abl)abl.style.display=s.hasLiner?'inline':'none';}willsUpdate();}
-function calcFP(){var s=getStats();document.getElementById('fs-walls').textContent=s.count;document.getElementById('fs-lf').textContent=Math.round(s.totalLF)+' lf';document.getElementById('fs-gutter').textContent=Math.round(s.gutterLF)+' lf';var gwc=walls.filter(function(w){return w.gutter;}).length;document.getElementById('fq-gutter').innerHTML=s.hasGutter?s.gutterWaste+' lf':'&mdash;';document.getElementById('fq-wallliner').innerHTML=s.hasLiner?s.linerWaste+' lf':'&mdash;';document.getElementById('fq-ports').innerHTML=gwc>0?gwc+' ea (auto)':'&mdash;';autoSyncWills();renderMain();syncCMFields();}
+function setWillPump(t){willPump=t;willsUpdate();}
+function toggleFP(id,e){if(e&&(e.target.tagName==='INPUT'||e.target.tagName==='BUTTON'))return;var el=document.getElementById('fp-'+id);if(el&&el.type==='checkbox'){el.checked=!el.checked;calcFP();willsUpdate();}}
+function autoSyncWills(){willsUpdate();}
+function calcFP(){var s=getStats();document.getElementById('fs-walls').textContent=s.count;document.getElementById('fs-lf').textContent=Math.round(s.totalLF)+' lf';document.getElementById('fs-gutter').textContent=Math.round(s.gutterLF)+' lf';var gwc=walls.filter(function(w){return w.gutter;}).length;document.getElementById('fq-gutter').innerHTML=s.hasGutter?s.gutterWaste+' lf':'&mdash;';document.getElementById('fq-wallliner').innerHTML=s.hasLiner?s.linerWaste+' lf':'&mdash;';document.getElementById('fq-ports').innerHTML=gwc>0?gwc+' ea (auto)':'&mdash;';willsUpdate();renderMain();syncCMFields();}
 var BW_MISC=[{id:'wp-utilities',label:'Utilities Protection',lblId:'lbl-utilities'},{id:'wp-permit',label:'Permit B',lblId:'lbl-permit'},{id:'wp-msp',label:'5 yr MSP',lblId:'lbl-msp'}];
 function getFPItems(s){var items=[];if(s.hasGutter)items.push({name:'BasementGutter',qty:s.gutterWaste+' lf'});if(chkFP('aquagrate')&&ov('fv-aquagrate')>0)items.push({name:'AquaGrate',qty:ov('fv-aquagrate')+' lf'});if(chkFP('discharge-buried')&&ov('fv-discharge-buried')>0)items.push({name:'Buried discharge',qty:ov('fv-discharge-buried')+' lf'});if(chkFP('discharge-internal')&&ov('fv-discharge-internal')>0)items.push({name:'Side discharge',qty:ov('fv-discharge-internal')+' lf'});if(chkFP('pump'))items.push({name:'Primary sump pump ('+fpPump+')',qty:'1 unit'});if(chkFP('pump2'))items.push({name:'Secondary sump pump ('+fp2Pump+')',qty:'1 unit'});if(s.hasLiner)items.push({name:'Wall liner',qty:s.linerWaste+' lf'});if(chkFP('ports')){var gwc=walls.filter(function(w){return w.gutter;}).length;if(gwc>0)items.push({name:'Inspection ports',qty:gwc+' ea'});}if(chkFP('airsystem'))items.push({name:'Air system',qty:ov('fv-airsystem')+' unit'});if(chkFP('condensation'))items.push({name:'+ Condensation pump',qty:'1 unit'});if(chkFP('windowwell'))items.push({name:'Window well tap',qty:ov('fv-windowwell')+' ea'});return items;}
 function escHtml(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
@@ -1332,15 +1203,6 @@ function csCalc(){
   document.getElementById('css-perim').textContent=Math.round(perimTotal)+' lf';
   document.getElementById('css-floor').innerHTML=csShapeClosed?Math.round(csFloorSF)+' sf':'&mdash;';
 
-  // Auto-sync wills for CD and WL
-  var hasCd=cdLF>0;var hasWl=wlLF>0;
-  var cw=document.getElementById('cw-crawldrain');
-  if(cw){cw.checked=hasCd;var ab=document.getElementById('cab-crawldrain');if(ab)ab.style.display=hasCd?'inline':'none';}
-  var cwl=document.getElementById('cw-wallliner');
-  if(cwl){cwl.checked=hasWl;var abl=document.getElementById('cab-wallliner');if(abl)abl.style.display=hasWl?'inline':'none';}
-  var cweb=document.getElementById('cw-etremebloc');
-  if(cweb){cweb.checked=hasCd;var abeb=document.getElementById('cab-etremebloc');if(abeb)abeb.style.display=hasCd?'inline':'none';}
-
   csDrawCanvas(pts);
   csWillsUpdate();
   csRenderMain();
@@ -1421,38 +1283,19 @@ function csDrawCanvas(pts){
   ctx.fillText('START',sp[0]+5,sp[1]-4);
 }
 
-function csSyncWillsFromWalls(){
-  // called when CD/WL checkboxes change
-  csCalc();
-}
-
-function csSetPump(t){csPump=t;document.getElementById('cspo-single').classList.toggle('active',t==='single');document.getElementById('cspo-triple').classList.toggle('active',t==='triple');csSetWillPump(t);csCalc();}
+function csSyncWillsFromWalls(){csCalc();}
+function csSetPump(t){csPump=t;document.getElementById('cspo-single').classList.toggle('active',t==='single');document.getElementById('cspo-triple').classList.toggle('active',t==='triple');csWillPump=t;csCalc();csWillsUpdate();}
 function csSetPump2(t){csPump2=t;document.getElementById('cspo2-single').classList.toggle('active',t==='single');document.getElementById('cspo2-triple').classList.toggle('active',t==='triple');csCalc();}
-function csSetWillPump(t){csWillPump=t;document.getElementById('cwpo-single').classList.toggle('active',t==='single');document.getElementById('cwpo-triple').classList.toggle('active',t==='triple');csWillsUpdate();}
-
-function csToggle(id,e){if(e&&(e.target.tagName==='INPUT'||e.target.tagName==='BUTTON'))return;var el=document.getElementById('cs-'+id);if(el&&el.type==='checkbox'){el.checked=!el.checked;csSyncWill(id);csCalc();}}
-
-var CS_FP_TO_WILL={crawlliner:'cw-crawlliner',drainmat:'cw-drainmat',dehumidifier:'cw-dehumidifier',condensation:'cw-condensate',accessdoor:'cw-accessdoor'};
-function csSyncWill(fpId){
-  var wId=CS_FP_TO_WILL[fpId];if(!wId)return;
-  var fpEl=document.getElementById('cs-'+fpId);if(!fpEl)return;
-  var on=fpEl.checked;
-  var wel=document.getElementById(wId);if(wel)wel.checked=on;
-  var ab=document.getElementById('cab-'+fpId);if(ab)ab.style.display=on?'inline':'none';
-  if(fpId==='dehumidifier')csOnDehumChange();
-  csWillsUpdate();
-}
+function csSetWillPump(t){csWillPump=t;csWillsUpdate();}
+function csToggle(id,e){if(e&&(e.target.tagName==='INPUT'||e.target.tagName==='BUTTON'))return;var el=document.getElementById('cs-'+id);if(el&&el.type==='checkbox'){el.checked=!el.checked;csCalc();csWillsUpdate();}}
+function csSyncWill(fpId){csCalc();csWillsUpdate();}
 
 function csToggleInsul(type){
-  // R19 and spray foam are mutually exclusive
   if(type==='r19'){document.getElementById('cs-insulation-spray').checked=false;}
   else{document.getElementById('cs-insulation-r19').checked=false;}
-  var onR19=document.getElementById('cs-insulation-r19').checked;
-  var onSpray=document.getElementById('cs-insulation-spray').checked;
-  document.getElementById('cw-insul-r19').checked=onR19;
-  document.getElementById('cw-insul-spray').checked=onSpray;
-  var abR=document.getElementById('cab-insul-r19');if(abR)abR.style.display=onR19?'inline':'none';
-  var abS=document.getElementById('cab-insul-spray');if(abS)abS.style.display=onSpray?'inline':'none';
+  // sync to Wills checkboxes (these still exist as legal-only items)
+  document.getElementById('cw-insul-r19').checked=document.getElementById('cs-insulation-r19').checked;
+  document.getElementById('cw-insul-spray').checked=document.getElementById('cs-insulation-spray').checked;
   csWillsUpdate();
 }
 
@@ -1530,12 +1373,7 @@ var CS_HB={
 };
 var CS_INITIALS='Customer Initials: X______________';
 
-function csOnDehumChange(){
-  var on=document.getElementById('cw-dehumidifier').checked;
-  document.getElementById('cs-condensate-row').classList.toggle('enabled',on);
-  if(!on)document.getElementById('cw-condensate').checked=false;
-  csWillsUpdate();
-}
+function csOnDehumChange(){csWillsUpdate();}
 function csOnInsulChange(type){
   if(type==='r19'){document.getElementById('cw-insul-spray').checked=false;document.getElementById('cs-insulation-spray').checked=false;}
   else{document.getElementById('cw-insul-r19').checked=false;document.getElementById('cs-insulation-r19').checked=false;}
@@ -1544,18 +1382,29 @@ function csOnInsulChange(type){
 
 function csWillsUpdate(){
   CS_MISC.forEach(function(m){var l=document.getElementById(m.lblId);if(l)l.className=getW(m.id)?'wills-label':'wills-label misc-red';});
-  var cond=getW('cw-dehumidifier')&&getW('cw-condensate');
+  // Read system state directly from FlightPlan
+  var cdLF=csWalls.filter(function(w){return w.cd;}).reduce(function(s,w){return s+(parseFloat(w.len)||0);},0);
+  var wlLF=csWalls.filter(function(w){return w.wl;}).reduce(function(s,w){return s+(parseFloat(w.len)||0);},0);
+  var hasCrawlDrain=cdLF>0;
+  var hasWallLiner=wlLF>0;
+  var hasEtremeBloc=cdLF>0;
+  var hasCrawlLiner=document.getElementById('cs-crawlliner').checked;
+  var hasDrainMat=document.getElementById('cs-drainmat').checked;
+  var hasDehumid=document.getElementById('cs-dehumidifier').checked;
+  var hasCond=document.getElementById('cs-condensation').checked;
+  var hasAccessDoor=document.getElementById('cs-accessdoor').checked;
+  var cond=hasDehumid&&hasCond;
   var cL=[];
-  if(getW('cw-crawldrain'))cL.push(CS_CB.crawldrain());
-  if(getW('cw-wallliner'))cL.push(CS_CB.wallliner);
-  if(getW('cw-etremebloc'))cL.push(CS_CB.etremebloc);
-  if(getW('cw-crawlliner'))cL.push(CS_CB.crawlliner);
-  if(getW('cw-drainmat'))cL.push(CS_CB.drainmat);
-  if(getW('cw-dehumidifier'))cL.push(CS_CB.dehumidifier(cond));
+  if(hasCrawlDrain)cL.push(CS_CB.crawldrain());
+  if(hasWallLiner)cL.push(CS_CB.wallliner);
+  if(hasEtremeBloc)cL.push(CS_CB.etremebloc);
+  if(hasCrawlLiner)cL.push(CS_CB.crawlliner);
+  if(hasDrainMat)cL.push(CS_CB.drainmat);
+  if(hasDehumid)cL.push(CS_CB.dehumidifier(cond));
   if(getW('cw-insul-r19'))cL.push(CS_CB.insulR19);
   if(getW('cw-insul-spray'))cL.push(CS_CB.insulSpray);
   if(getW('cw-gw-debris'))cL.push(CS_CB.gwDebris);
-  if(getW('cw-accessdoor'))cL.push(CS_CB.accessdoor);
+  if(hasAccessDoor)cL.push(CS_CB.accessdoor);
   if(getW('cw-elec-gw'))cL.push(CS_CB.elecGW);
   cL.push(CS_CB.ack);
   var hL=[CS_HB.parking,CS_HB.effects];
@@ -1579,21 +1428,95 @@ function csRenderWill(lines,elId){
 }
 
 function resetCSWills(){
-  ['cw-crawldrain','cw-wallliner','cw-etremebloc','cw-crawlliner','cw-drainmat',
-   'cw-dehumidifier','cw-condensate','cw-insul-r19','cw-insul-spray','cw-debris',
-   'cw-gw-debris','cw-accessdoor','cw-elec-gw','cw-elec-ho','cw-plumber','cw-digsafe',
+  ['cw-insul-r19','cw-insul-spray','cw-gw-debris','cw-debris',
+   'cw-elec-gw','cw-elec-ho','cw-plumber','cw-digsafe',
    'cw-utilities','cw-permit','cw-msp'].forEach(function(id){var el=document.getElementById(id);if(el)el.checked=false;});
-  document.getElementById('cs-condensate-row').classList.remove('enabled');
-  ['crawldrain','wallliner','etremebloc','crawlliner','drainmat','dehumidifier','condensate',
-   'insul-r19','insul-spray','accessdoor'].forEach(function(id){var ab=document.getElementById('cab-'+id);if(ab)ab.style.display='none';});
   csWillsUpdate();
+}
+
+function globalReset(){
+  // Clear customer name
+  var custEl=document.getElementById('fp-customer');if(custEl)custEl.value='';
+  document.getElementById('main-cust').textContent='';
+
+  // Clear BW walls
+  walls=[];wallId=0;fpPump='single';fp2Pump='single';willPump='single';
+  document.getElementById('fpo-single').classList.add('active');document.getElementById('fpo-triple').classList.remove('active');
+  document.getElementById('fpo2-single').classList.add('active');document.getElementById('fpo2-triple').classList.remove('active');
+  renderWalls();
+
+  // Clear BW FP checkboxes
+  ['fp-pump','fp-pump2','fp-aquagrate','fp-ports','fp-airsystem','fp-condensation',
+   'fp-discharge-buried','fp-discharge-internal','fp-windowwell'].forEach(function(id){
+    var el=document.getElementById(id);if(el)el.checked=false;
+  });
+  ['fv-aquagrate','fv-discharge-buried','fv-discharge-internal'].forEach(function(id){
+    var el=document.getElementById(id);if(el)el.value='0';
+  });
+  var ais=document.getElementById('fv-airsystem');if(ais)ais.value='1';
+  var ww=document.getElementById('fv-windowwell');if(ww)ww.value='1';
+
+  // Clear BW wills legal-only checkboxes
+  ['wp-elec-gw','wp-elec-ho','wp-drywall-gw-half','wp-drywall-gw-full',
+   'wp-drywall-ho-half','wp-drywall-ho-full','wp-stairs','wp-cut-gw','wp-cut-ho',
+   'wp-baseboard','wp-digsafe','wp-permit','wp-msp','wp-utilities'].forEach(function(id){
+    var el=document.getElementById(id);if(el)el.checked=false;
+  });
+
+  // Clear CS walls
+  csWalls=[];csWallId=0;csPump='single';csPump2='single';csWillPump='single';
+  csFloorSF=0;csPerimLF=0;csShapeClosed=false;
+  document.getElementById('cspo-single').classList.add('active');document.getElementById('cspo-triple').classList.remove('active');
+  document.getElementById('cspo2-single').classList.add('active');document.getElementById('cspo2-triple').classList.remove('active');
+  csRenderWalls();
+
+  // Clear CS FP checkboxes
+  ['cs-pump','cs-pump2','cs-crawlliner','cs-drainmat','cs-dehumidifier',
+   'cs-condensation','cs-accessdoor','cs-insulation-r19','cs-insulation-spray','cs-discharge'].forEach(function(id){
+    var el=document.getElementById(id);if(el)el.checked=false;
+  });
+  var csvd=document.getElementById('csv-dehumidifier');if(csvd)csvd.value='1';
+  var csva=document.getElementById('csv-accessdoor');if(csva)csva.value='1';
+  var csvdis=document.getElementById('csv-discharge');if(csvdis)csvdis.value='0';
+
+  // Clear CS wills legal-only checkboxes
+  ['cw-insul-r19','cw-insul-spray','cw-gw-debris','cw-debris',
+   'cw-elec-gw','cw-elec-ho','cw-plumber','cw-digsafe',
+   'cw-utilities','cw-permit','cw-msp'].forEach(function(id){
+    var el=document.getElementById(id);if(el)el.checked=false;
+  });
+
+  // Clear Cover & Move manual fields
+  ['cm-phone','cm-why','cm-expectations','cm-hazards','cm-questions'].forEach(function(id){
+    var el=document.getElementById(id);if(el)el.value='';
+  });
+  ['dep-check','dep-card','dep-24mo','dep-other','fin-check','fin-card','fin-24mo','fin-other'].forEach(function(id){
+    var el=document.getElementById(id);if(el)el.checked=false;
+  });
+  cmOverviewDirty=false;
+
+  // Recalculate everything
+  calcFP();csCalc();csWillsUpdate();willsUpdate();syncCMFields();
+  csDrawCanvas(null);
+
+  // Flash button feedback
+  var btn=document.getElementById('global-reset-btn');
+  if(btn){btn.textContent='Cleared!';btn.style.borderColor='#34d399';btn.style.color='#34d399';
+    setTimeout(function(){btn.textContent='New Customer';btn.style.borderColor='';btn.style.color='';},2000);}
 }
 
 // ══════════════════════════════════════════════════════════════════════════════
 // BW WILLS (unchanged from v1)
 // ══════════════════════════════════════════════════════════════════════════════
-function toggleWill(id,e){if(e&&e.target.tagName==='BUTTON')return;var el=document.getElementById(id);if(!el)return;if(!(e&&e.target===el))el.checked=!el.checked;if(id==='wp-airsystem')onAirChange();else if(id==='cw-airsystem'||id==='cw-dehumidifier')csOnDehumChange();else if(id.indexOf('wp-drywall')===0)onDwChange(id.replace('wp-drywall-',''));else if(id.indexOf('cw-insul')===0)csOnInsulChange(id.indexOf('r19')>-1?'r19':'spray');else willsUpdate();}
-function onAirChange(){var on=document.getElementById('wp-airsystem').checked;document.getElementById('condensate-row').classList.toggle('enabled',on);if(!on)document.getElementById('wp-condensate').checked=false;willsUpdate();}
+function toggleWill(id,e){
+  if(e&&e.target.tagName==='BUTTON')return;
+  var el=document.getElementById(id);if(!el)return;
+  if(!(e&&e.target===el))el.checked=!el.checked;
+  if(id.indexOf('wp-drywall')===0)onDwChange(id.replace('wp-drywall-',''));
+  else if(id.indexOf('cw-insul')===0)csOnInsulChange(id.indexOf('r19')>-1?'r19':'spray');
+  else if(id.indexOf('cw-')===0)csWillsUpdate();
+  else willsUpdate();
+}
 function onDwChange(sel){['gw-half','gw-full','ho-half','ho-full'].forEach(function(s){if(s!==sel){var el=document.getElementById('wp-drywall-'+s);if(el)el.checked=false;}});willsUpdate();}
 var LN=' If/when any base plate(s) are reinstalled, nails MUST NOT be used to secure the base plate(s) to the concrete floor, as the drainage system is located beneath and will be damaged. This will also void your warranty. A construction adhesive such as Liquid Nails or comparable must be used instead.';
 function lbl(tag,text){return'<span class="bullet-label">'+tag+':</span> '+text;}
@@ -1603,18 +1526,49 @@ var INITIALS='Customer Initials: X______________';
 
 function willsUpdate(){
   BW_MISC.forEach(function(m){var l=document.getElementById(m.lblId);if(l)l.className=getW(m.id)?'wills-label':'wills-label misc-red';});
-  var cond=getW('wp-airsystem')&&getW('wp-condensate');
+  var s=getStats();
+  // Read all state directly from FlightPlan
+  var hasGutter=s.hasGutter;
+  var hasLiner=s.hasLiner;
+  var hasAquagrate=chkFP('aquagrate')&&ov('fv-aquagrate')>0;
+  var hasPorts=chkFP('ports')&&walls.filter(function(w){return w.gutter;}).length>0;
+  var hasAir=chkFP('airsystem');
+  var hasCond=chkFP('condensation');
+  var hasWindow=chkFP('windowwell');
+  var cond=hasAir&&hasCond;
   var cL=[];
-  if(getW('wp-gutter'))cL.push(CB.gutter());if(getW('wp-wallliner'))cL.push(CB.wallliner);if(getW('wp-aquagrate'))cL.push(CB.aquagrate);if(getW('wp-ports'))cL.push(CB.ports);if(getW('wp-airsystem'))cL.push(CB.airsystem(cond));if(getW('wp-elec-gw'))cL.push(CB.elecGW);if(getW('wp-drywall-gw-half'))cL.push(CB.drywallGWhalf);if(getW('wp-drywall-gw-full'))cL.push(CB.drywallGWfull);if(getW('wp-stairs'))cL.push(CB.stairs);if(getW('wp-cut-gw'))cL.push(CB.cutGW);if(getW('wp-windowwell'))cL.push(CB.windowwell);
+  if(hasGutter)cL.push(CB.gutter());
+  if(hasLiner)cL.push(CB.wallliner);
+  if(hasAquagrate)cL.push(CB.aquagrate);
+  if(hasPorts)cL.push(CB.ports);
+  if(hasAir)cL.push(CB.airsystem(cond));
+  if(getW('wp-elec-gw'))cL.push(CB.elecGW);
+  if(getW('wp-drywall-gw-half'))cL.push(CB.drywallGWhalf);
+  if(getW('wp-drywall-gw-full'))cL.push(CB.drywallGWfull);
+  if(getW('wp-stairs'))cL.push(CB.stairs);
+  if(getW('wp-cut-gw'))cL.push(CB.cutGW);
+  if(hasWindow)cL.push(CB.windowwell);
   cL.push(CB.ack);
   var hL=[HB.parking,HB.effects];
-  if(getW('wp-digsafe'))hL.push(HB.digsafe);if(getW('wp-elec-ho'))hL.push(HB.elecHO);if(getW('wp-drywall-ho-half'))hL.push(HB.drywallHOhalf);if(getW('wp-drywall-ho-full'))hL.push(HB.drywallHOfull);if(getW('wp-cut-ho'))hL.push(HB.cutHO);if(getW('wp-baseboard'))hL.push(HB.baseboard);
+  if(getW('wp-digsafe'))hL.push(HB.digsafe);
+  if(getW('wp-elec-ho'))hL.push(HB.elecHO);
+  if(getW('wp-drywall-ho-half'))hL.push(HB.drywallHOhalf);
+  if(getW('wp-drywall-ho-full'))hL.push(HB.drywallHOfull);
+  if(getW('wp-cut-ho'))hL.push(HB.cutHO);
+  if(getW('wp-baseboard'))hL.push(HB.baseboard);
   hL.push(HB.responsibility);hL.push(HB.ack);
   renderWill(cL,'contractor-output');renderWill(hL,'customer-output');renderMain();syncCMFields();
 }
 function renderWill(lines,elId){var el=document.getElementById(elId);var parts=lines.map(function(l){return'<span data-copyable="true">* '+l+'</span>';});parts.push('<span class="initials-text" data-copyable="true">*\n* '+INITIALS+'</span>');el.innerHTML=parts.join('\n\n');}
 function copyWill(which){var el=document.getElementById(which+'-output');var spans=el.querySelectorAll('[data-copyable="true"]');var lines=[];spans.forEach(function(s){lines.push(s.innerText);});navigator.clipboard.writeText(lines.join('\n\n')).then(function(){['copy-'+which,'copy-'+which+'-inline'].forEach(function(btnId){var btn=document.getElementById(btnId);if(!btn)return;var orig=btn.textContent;btn.textContent='Copied!';btn.classList.add('copied');setTimeout(function(){btn.textContent=orig;btn.classList.remove('copied');},2000);});});}
-function resetWills(){['wp-gutter','wp-aquagrate','wp-ports','wp-airsystem','wp-condensate','wp-wallliner','wp-elec-gw','wp-elec-ho','wp-drywall-gw-half','wp-drywall-gw-full','wp-drywall-ho-half','wp-drywall-ho-full','wp-stairs','wp-cut-gw','wp-cut-ho','wp-baseboard','wp-digsafe','wp-permit','wp-msp','wp-utilities','wp-windowwell'].forEach(function(id){var el=document.getElementById(id);if(el)el.checked=false;});document.getElementById('condensate-row').classList.remove('enabled');['gutter','aquagrate','ports','wallliner','airsystem','condensate','windowwell'].forEach(function(id){var ab=document.getElementById('ab-'+id);if(ab)ab.style.display='none';});willsUpdate();}
+function resetWills(){
+  // Only reset legal-only Wills checkboxes (FP items auto-populate from FP state)
+  ['wp-elec-gw','wp-elec-ho','wp-drywall-gw-half','wp-drywall-gw-full',
+   'wp-drywall-ho-half','wp-drywall-ho-full','wp-stairs','wp-cut-gw','wp-cut-ho',
+   'wp-baseboard','wp-digsafe','wp-permit','wp-msp','wp-utilities']
+    .forEach(function(id){var el=document.getElementById(id);if(el)el.checked=false;});
+  willsUpdate();
+}
 
 // ══════════════════════════════════════════════════════════════════════════════
 // SHARED: TABS, CM, SUMMARY
