@@ -464,6 +464,10 @@ body{background:#0f1117;color:#e8e8e8;font-family:'IBM Plex Mono',monospace;heig
         <label>Wall Ht <input type="number" id="cs-height" value="3" min="0.5" step="0.5" oninput="csCalc()"> ft</label>
         <label>Waste <input type="number" id="cs-waste" value="5" min="0" max="50" oninput="csCalc()"> %</label>
       </div>
+      <div style="padding:0 14px 8px;display:flex;gap:6px;align-items:center;">
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:.52rem;letter-spacing:1px;text-transform:uppercase;color:#3a3f55;">Preset:</span>
+        <button class="add-wall-btn cs" style="margin:0;width:auto;padding:4px 12px;border-style:solid;" onclick="csPresetRectangle()">&#9645; Rectangle</button>
+      </div>
       <!-- CS wall table: # | Length | Dir | CD | WL | del -->
       <div class="wall-tbl-wrap">
         <table class="wtbl">
@@ -790,12 +794,21 @@ body{background:#0f1117;color:#e8e8e8;font-family:'IBM Plex Mono',monospace;heig
             <div class="cm-label">Date</div>
             <input class="cm-input auto-filled" type="text" id="cm-date" readonly>
           </div>
-          <div></div>
+          <div class="cm-field-group" style="margin-bottom:0;">
+            <div class="cm-label">Site Access</div>
+            <div class="cm-sublabel">How crew accesses the work site</div>
+            <input class="cm-input" type="text" id="cm-access" placeholder="e.g. side gate, bulkhead, garage..." oninput="cmOverviewDirty=false;syncCMFields()">
+          </div>
+        </div>
+        <div class="cm-field-group">
+          <div class="cm-label">Site Notes</div>
+          <div class="cm-sublabel">Site conditions and crew instructions (dust, plastic draping, protected areas, etc.)</div>
+          <textarea class="cm-input" id="cm-site" rows="2" placeholder="e.g. Customer concerned about dust. Please drape plastic over remaining personal goods..." oninput="cmOverviewDirty=false;syncCMFields()"></textarea>
         </div>
         <div class="cm-field-group">
           <div class="cm-label">Installation Overview</div>
           <div class="cm-sublabel">Auto-generated. Edit as needed.</div>
-          <textarea class="cm-input auto-filled" id="cm-overview" rows="4"></textarea>
+          <textarea class="cm-input auto-filled" id="cm-overview" rows="5"></textarea>
         </div>
         <div class="cm-field-group">
           <div class="cm-label">Customer Why</div>
@@ -846,68 +859,98 @@ body{background:#0f1117;color:#e8e8e8;font-family:'IBM Plex Mono',monospace;heig
     <div class="rebuild-box" id="rebuild-box">
       <div class="rebuild-text" id="rebuild-text">I work for Groundworks as a sales rep. Please rebuild my FlightPlan + Wills Builder app as a single HTML file.
 
-LAYOUT: Three-column layout filling full viewport height.
-- TOP product selector bar: Basement Waterproofing (blue), Crawlspace Repair (green), Foundation Repair (orange), Concrete Lifting (purple). Each is independently toggleable — not mutually exclusive. At least one must stay active.
-- LEFT panel (collapsible, FlightPlan label): material calculator. Color matches active product (blue=BW, green=CS, orange=FR, purple=CL). When 2+ products active, shows sub-tabs.
-- MIDDLE panel (collapsible, Wills label): legal will checklist. Same color logic as FlightPlan.
+LAYOUT: Two-column layout filling full viewport height.
+- TOP: product selector bar (Basement Waterproofing blue, Crawlspace Repair green, Foundation Repair orange, Concrete Lifting purple). Each independently toggleable — not mutually exclusive. At least one must stay active.
+- LEFT panel (collapsible, "FlightPlan" label, Bebas Neue, color matches active product): single panel containing all material inputs AND all legal/contractual checkboxes for that product. No separate Wills panel. When 2+ products active, shows product sub-tabs.
 - RIGHT area (main): three tabs — Output, Flight Plan FINAL, Cover and Move.
+- Header buttons: red "New Customer" (global reset) and "Focus Output" (collapses left panel).
 
-PRODUCT STATE: activeProducts object {bw, cs, fr, cl}. fpTab tracks which product is shown in the FlightPlan panel. Switching product tabs context-switches the panel. Combined copy bar appears only when 2+ products active.
+PRODUCT STATE: activeProducts {bw, cs, fr, cl}. fpTab tracks active product in left panel. setFPTab() switches panel content. Combined copy bar in Output tab appears only when 2+ products active.
+
+LEFT PANEL STRUCTURE (per product, single scroll):
+- Materials section (top): walls, measurements, system items with [W] badges
+- Legal section (bottom, after summary stats, separated by double border): electrical, demo, site, required items — all with [W] badges
+- [W] badge = purple for BW, green for CS — marks every item that generates a will bullet
+- System items auto-generate will bullets from FlightPlan state — no separate checkbox needed
+- Legal items (electrician, demo, digsafe, permits, MSP) are checkboxes in the FlightPlan panel
+
+QUANTITIES: All whole numbers. Math.ceil() for waste-adjusted values. Default waste 5%. No decimals.
+
+PANEL: color matches active product. BW=blue #4fc3f7, CS=green #34d399, FR=orange #f97316, CL=purple #a78bfa.
+
+BASEMENT WATERPROOFING (BW) FLIGHTPLAN:
+- Customer name (syncs to CM header and main header)
+- Wall table: #, Length ft, G (gutter, blue checkbox), WL (wall liner, orange checkbox), delete
+- Height ft, Waste % (default 5%)
+- System [W]: BasementGutter (auto from G walls), Primary pump Single/Triple, Secondary pump Single/Triple, Wall liner (auto from WL walls), AquaGrate (manual LF), Inspection ports (auto 1 per gutter wall), Air system (qty), Condensate pump child
+- Misc: Additional discharge LF, Side discharge LF, Window well tap [W]
+- Summary 3 cols: Walls, Full perim LF, Gutter LF
+- Legal [W]: Electrical (Contractor/Customer), Demolition Contractor (Drywall 1/2, Full, Cut Through, Stairs), Demolition Customer (Drywall 1/2, Full, Cut Through, Baseboard Heater) — all 4 drywall mutually exclusive, Site (DigSafe), Required Items (Utilities Protection, Permit B, 5yr MSP — RED until checked)
+
+BW willsUpdate() reads directly from FlightPlan state — no separate Wills checkboxes for system items.
+
+CRAWLSPACE REPAIR (CS) FLIGHTPLAN:
+- Shape Preset row: "Rectangle" button — clears walls and adds 4 pre-assigned N/E/S/W walls, focus on wall 1. Confirms before clearing if walls exist. CS starts empty on load.
+- Wall table: #, Length ft, Direction (N/E/S/W buttons), CD (CrawlDrain, green checkbox), WL (wall liner, orange checkbox), delete
+- Height ft, Waste % (default 5%)
+- Mini canvas: real-time shape preview, color by direction, green START dot, red dashed closing line when open. Status: open (orange, offset) or closed (green, floor SF shown).
+- CRITICAL FIX: csRenderWalls() is NOT called inside csCalc() — only on structural changes (add/remove/dir/checkbox). This prevents focus loss mid-typing.
+- System [W]: CrawlDrain (auto from CD, LF+waste), Primary pump Single/Triple [W], Secondary pump Single/Triple, Wall liner SF (WL walls x height) [W], EtremeBloc SF (CD walls x height) [W], CrawlLiner floor SF [W], Drainage Mat floor SF [W], Dehumidifier (qty) [W], Condensate pump child [W], Access door (qty) [W]
+- Misc [W]: Insulation R19 (floor SF) [W], Insulation Spray Foam (custom) [W] — BOTH can be checked simultaneously (not mutually exclusive), Discharge line (manual LF)
+- Summary 3 cols: Walls, Perim LF, Floor SF
+- Legal [W]: Insulation Removal (R19 Contractor, Spray Foam Contractor, GW Debris Contractor, HO Debris Customer), Electrical (Contractor/Customer), Plumbing (Plumber Customer), Site (DigSafe), Required Items (Utilities, Permit B, 5yr MSP — RED until checked)
+
+CS csWillsUpdate() reads directly from FlightPlan state (CD/WL wall counts, checkbox states) — no separate Wills checkboxes for system items.
 
 OUTPUT TAB:
-- Combined copy bar (dark green, top, hidden when single product): "Copy All Contractor Wills" (orange) and "Copy All Customer Wills" (blue). Each product section wrapped in: &lt;&lt;&lt;&lt;&lt;&lt; PRODUCT NAME &gt;&gt;&gt;&gt;&gt;&gt; header in copied text.
-- Per-product material list blocks (blue border=BW, green border=CS).
-- Per-product Contractor Wills (orange, collapsed) and Customer Wills (blue, collapsed), each with inline Copy and expand toggle (plain text characters: &gt; expand / v collapse).
-- Copy excludes Don't Forget section (data-copyable attribute pattern).
+- Combined copy bar (dark green, top, hidden when 1 product): "Copy All Contractor Wills" (orange), "Copy All Customer Wills" (blue). Format: <<<<<< PRODUCT NAME >>>>>> header then bullets, one blank line between products.
+- Per-product: material list (blue border=BW, green=CS), Contractor Wills (orange, collapsed), Customer Wills (blue, collapsed). Inline Copy + plain-text expand toggle (> expand / v collapse). Don't Forget excluded from copy (data-copyable pattern).
 
-QUANTITIES: All LF and SF quantities are whole numbers. Use Math.ceil() for waste-adjusted values. Default waste 5% for all products. No decimals anywhere in output.
+COVER AND MOVE TAB:
+- Auto-filled (readonly): Customer Name, Date
+- Row: Customer Phone | Site Access (short text — feeds [ACCESS] block)
+- Site Notes (textarea — feeds [SITE] block)
+- Installation Overview (auto-generated, editable textarea):
+    [ACCESS]
+    Customer has indicated access to the work site will be through the ___.
 
-PANEL LABEL COLORS: BW FlightPlan=blue #4fc3f7, BW Wills=blue #4fc3f7. CS FlightPlan=green #34d399, CS Wills=green #34d399. FR=orange #f97316. CL=purple #a78bfa.
+    [SITE]
+    (site notes text)
 
-BASEMENT WATERPROOFING (BW) — FLIGHTPLAN:
-- Customer name input (syncs to Cover and Move and main header)
-- Wall table: number, Length ft, G gutter checkbox (blue), WL liner checkbox (orange), delete. NO width column.
-- Height ft and Waste % (default 5%) inputs
-- System: Gutter (auto from G), Primary pump (Single/Triple), Secondary pump (Single/Triple), Wall liner (auto from WL), AquaGrate (manual LF), Inspection ports (auto 1 per gutter wall), Air system (qty), Condensate pump child
-- Misc: Additional discharge LF, Side discharge LF, Window well tap qty
-- Summary 3 cols: Walls, Full perimeter LF, Gutter LF
-- All dashes use innerHTML with &amp;mdash;
-- Auto-syncs to Wills: aquagrate, ports, airsystem, condensation, windowwell. Pump type syncs to Wills.
+    [BASEMENT WATERPROOFING]
+    MATERIALS:
+      [  ] MaterialName: qty
+      [  ] MaterialName: qty
 
-BW WILLS: System (Gutter/pump), Wall Liner, AquaGrate, Inspection Ports, AirSystem + Condensate child, Window Well Tap. Electrical: Electrician [Contractor], Electrician [Customer]. Demolition Contractor: Drywall 1/2, Drywall Full, Cut Through, Stairs. Demolition Customer: Drywall 1/2, Drywall Full, Cut Through, Baseboard Heater. All four drywall mutually exclusive. Site: DigSafe. Misc: Utilities Protection, Permit B, 5yr MSP (all RED until checked).
+    [CRAWLSPACE REPAIR]
+    MATERIALS:
+      [  ] MaterialName: qty
+- Access and Site inputs reset cmOverviewDirty=false so overview refreshes when they change
+- Manual fields: Customer Why, Customer Expectations, Potential Hazards, Foreman Questions
+- Payment: Deposit + Final Payment checkboxes (Check, Card, 24-mo Financing, Other Financing)
+- Download .docx (pure JS ZIP STORED, no CDN, works offline). Margins 360 DXA, table 11520 DXA cols 10260+1260. File: CoverMove_CustomerName_Date.docx
 
-CRAWLSPACE REPAIR (CS) — FLIGHTPLAN:
-- Wall table: number, Length ft, Direction (N/E/S/W buttons), CD checkbox (green=CrawlDrain), WL checkbox (orange=wall liner), delete
-- Height ft and Waste % (default 5%) inputs
-- Mini canvas preview: draws shape in real time, color-coded by direction, green START dot, red dashed closing line when open. Status bar: open (orange, offset from start) or closed (green, floor SF).
-- System: CrawlDrain (auto from CD, LF with waste), Primary pump (Single/Triple), Secondary pump (Single/Triple), Wall liner SF (WL walls x height, auto), EtremeBloc SF (CD walls x height, auto), CrawlLiner (floor SF, checkbox), Drainage Mat (floor SF, checkbox), Dehumidifier (qty), Condensate pump child (grayed until Dehumidifier)
-- Misc: Insulation R19 (floor SF, mutually exclusive with spray), Insulation Spray Foam (custom price, mutually exclusive with R19), Access door (qty), Discharge line (manual LF)
-- Summary 3 cols: Walls, Perimeter LF, Floor SF
-- CD checkbox auto-syncs CrawlDrain + EtremeBloc + wall liner wills. CrawlLiner/DrainMat/Dehumidifier/condensate/accessdoor sync to wills on check.
-
-CS WILLS: System: CrawlDrain/pump, Wall Liner, EtremeBloc, CrawlLiner, Drainage Mat, Dehumidifier + Condensate child. Insulation Removal: R19 [Contractor], Spray Foam [Contractor], HO Debris Removal [Customer], Access Door. Electrical: [Contractor], [Customer]. Plumbing: Plumber [Contractor]. Site: DigSafe. Misc: Utilities, Permit B, 5yr MSP (RED until checked).
-
-COMBINED COPY FORMAT (2+ products):
-&lt;&lt;&lt;&lt;&lt;&lt; BASEMENT WATERPROOFING &gt;&gt;&gt;&gt;&gt;&gt;
-[bullets]
-
-&lt;&lt;&lt;&lt;&lt;&lt; CRAWLSPACE REPAIR &gt;&gt;&gt;&gt;&gt;&gt;
-[bullets]
+GLOBAL RESET ("New Customer" button, red, in header):
+- Clears all BW walls, CS walls, all FP checkboxes, all legal checkboxes, customer name, CM fields (phone, access, site, why, expectations, hazards, questions), payment checkboxes, cmOverviewDirty=false
+- Recalculates everything, redraws canvas
 
 KEY WILL LANGUAGE:
-- BW AIR SYSTEM no condensate: gravity drain language. With condensate: utility room + condensate pump language.
+- BW SYSTEM: "BasementGutter perimeter drain system"
+- BW WALL LINER: "from sill plate to gutter on any wall containing a BasementGutter system"
+- BW AIR SYSTEM no condensate: gravity drain. With condensate: utility room + condensate pump.
+- CS SYSTEM: "CrawlDrain perimeter drain system"
 - CS DEHUMIDIFIER no condensate: gravity drain. With condensate: condensate pump installed.
-- Liquid Nails warning on: GW drywall both, GW cut through, HO drywall both, HO cut through.
+- Liquid Nails warning: both GW drywall, GW cut through, both HO drywall, HO cut through
 - HO drywall 1/2: "lower 10 inches of studs"
 - PARKING and PERSONAL EFFECTS always in customer wills header
 - RESPONSIBILITY and ACKNOWLEDGEMENT always in customer wills footer
 - ACKNOWLEDGEMENT always in contractor wills footer
+- CS PLUMBER (customer): "A licensed plumber will be contracted by the customer to complete prior to installation date. The work needed is:"
 - Initials line: Customer Initials: X______________
-- MISC items RED until checked
+- MISC items RED until checked, then white
 
-DOCX (Cover and Move): pure JS ZIP STORED method, no CDN. Margins 360 DXA. Table 11520 DXA, cols 10260+1260. File named CoverMove_CustomerName_Date.docx.
-
-DESIGN: #0f1117 body, #0b0d13 FlightPlan panel, #0d0f18 Wills panel. Bebas Neue headings, IBM Plex Mono everywhere. Expand/collapse toggles plain text characters. Rebuild prompt collapsed at bottom.</div>
+DOCX: pure JS ZIP STORED method, no CDN, offline. Margins 360 DXA. Table 11520 DXA, cols 10260+1260.
+DESIGN: #0f1117 body, #0b0d13 FlightPlan panel. Bebas Neue headings, IBM Plex Mono everywhere. Expand/collapse plain text characters. Rebuild prompt collapsed at bottom.</div>
       <button class="rebuild-copy-btn" id="rebuild-copy-btn" onclick="copyRebuildPrompt()">Copy</button>
     </div>
   </div>
@@ -1124,6 +1167,21 @@ function csAddWall(){
   csRenderWalls();csCalc();
   setTimeout(function(){var el=document.getElementById('cslen-'+id);if(el)el.focus();},40);
 }
+
+function csPresetRectangle(){
+  if(csWalls.length>0){
+    if(!confirm('Replace current walls with a 4-wall rectangle?'))return;
+  }
+  csWalls=[];csWallId=0;
+  var dirs=['N','E','S','W'];
+  dirs.forEach(function(d){
+    var id=++csWallId;
+    csWalls.push({id:id,len:'',dir:d,cd:false,wl:false});
+  });
+  csRenderWalls();csCalc();
+  // Focus first length input
+  setTimeout(function(){var el=document.getElementById('cslen-1');if(el)el.focus();},40);
+}
 function csRemoveWall(id){csWalls=csWalls.filter(function(w){return w.id!==id;});csRenderWalls();csCalc();}
 function csSetLen(id,v){var w=csWalls.find(function(w){return w.id===id;});if(w){w.len=v;csCalc();}}
 function csSetDir(id,d){var w=csWalls.find(function(w){return w.id===id;});if(w){w.dir=d;csRenderWalls();csCalc();}}
@@ -1291,9 +1349,7 @@ function csToggle(id,e){if(e&&(e.target.tagName==='INPUT'||e.target.tagName==='B
 function csSyncWill(fpId){csCalc();csWillsUpdate();}
 
 function csToggleInsul(type){
-  if(type==='r19'){document.getElementById('cs-insulation-spray').checked=false;}
-  else{document.getElementById('cs-insulation-r19').checked=false;}
-  // sync to Wills checkboxes (these still exist as legal-only items)
+  // Both R19 and spray foam can be checked simultaneously
   document.getElementById('cw-insul-r19').checked=document.getElementById('cs-insulation-r19').checked;
   document.getElementById('cw-insul-spray').checked=document.getElementById('cs-insulation-spray').checked;
   csWillsUpdate();
@@ -1375,8 +1431,9 @@ var CS_INITIALS='Customer Initials: X______________';
 
 function csOnDehumChange(){csWillsUpdate();}
 function csOnInsulChange(type){
-  if(type==='r19'){document.getElementById('cw-insul-spray').checked=false;document.getElementById('cs-insulation-spray').checked=false;}
-  else{document.getElementById('cw-insul-r19').checked=false;document.getElementById('cs-insulation-r19').checked=false;}
+  // Both types can be checked simultaneously — just sync and update
+  document.getElementById('cw-insul-r19').checked=document.getElementById('cs-insulation-r19').checked;
+  document.getElementById('cw-insul-spray').checked=document.getElementById('cs-insulation-spray').checked;
   csWillsUpdate();
 }
 
@@ -1487,7 +1544,7 @@ function globalReset(){
   });
 
   // Clear Cover & Move manual fields
-  ['cm-phone','cm-why','cm-expectations','cm-hazards','cm-questions'].forEach(function(id){
+  ['cm-phone','cm-access','cm-site','cm-why','cm-expectations','cm-hazards','cm-questions'].forEach(function(id){
     var el=document.getElementById(id);if(el)el.value='';
   });
   ['dep-check','dep-card','dep-24mo','dep-other','fin-check','fin-card','fin-24mo','fin-other'].forEach(function(id){
@@ -1587,12 +1644,30 @@ function syncCMFields(){
   if(dateEl&&!dateEl._set){var now=new Date();dateEl.value=(now.getMonth()+1)+'/'+now.getDate()+'/'+now.getFullYear();dateEl._set=true;}
   if(!cmOverviewDirty){
     var overview='';
-    // BW materials
-    if(activeProducts.bw){var s=getStats();var items=getFPItems(s);if(items.length){overview+='[BASEMENT WATERPROOFING]\nMATERIALS:\n'+items.map(function(i){return'  '+i.name+': '+i.qty;}).join('\n')+'\n';}}
-    // CS materials
-    if(activeProducts.cs){var csItems=getCsItems();if(csItems.length){overview+=(overview?'\n':'')+'[CRAWLSPACE REPAIR]\nMATERIALS:\n'+csItems.map(function(i){return'  '+i.name+': '+i.qty;}).join('\n')+'\n';}}
+    // ACCESS block
+    var access=(document.getElementById('cm-access')||{}).value||'';
+    overview+='[ACCESS]\nCustomer has indicated access to the work site will be through the '+(access||'___')+'.\n\n';
+    // SITE block
+    var site=(document.getElementById('cm-site')||{}).value||'';
+    overview+='[SITE]\n'+(site||'(no site notes entered)')+'\n\n';
+    // BW materials with checkbox prefix
+    if(activeProducts.bw){
+      var s=getStats();var items=getFPItems(s);
+      if(items.length){
+        overview+='[BASEMENT WATERPROOFING]\nMATERIALS:\n';
+        overview+=items.map(function(i){return'  [  ] '+i.name+': '+i.qty;}).join('\n')+'\n';
+      }
+    }
+    // CS materials with checkbox prefix
+    if(activeProducts.cs){
+      var csItems=getCsItems();
+      if(csItems.length){
+        overview+=(overview?'\n':'')+'[CRAWLSPACE REPAIR]\nMATERIALS:\n';
+        overview+=csItems.map(function(i){return'  [  ] '+i.name+': '+i.qty;}).join('\n')+'\n';
+      }
+    }
     var overviewEl=document.getElementById('cm-overview');
-    if(overviewEl)overviewEl.value=overview||'Select a product and add materials to auto-generate.';
+    if(overviewEl)overviewEl.value=overview.trim()||'Select a product and add materials to auto-generate.';
   }
 }
 
@@ -1656,7 +1731,7 @@ for(var i=0;i<4;i++)addWall();
 willsUpdate();renderMain();
 
 // CS: 4 default walls
-for(var i=0;i<4;i++)csAddWall();
+// CS: start empty — use Rectangle preset button to populate
 csWillsUpdate();csRenderMain();
 
 // Product bar init (BW active)
