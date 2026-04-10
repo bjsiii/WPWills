@@ -2522,15 +2522,8 @@ function capitalizeWords(s){
 function openAssessor(){
   if(!_assessorUrl)return;
   window.open(_assessorUrl,'_blank','noopener');
-  // Re-parse address at click time to get street portion
   var addr=(document.getElementById('fp-address')||{}).value||'';
-  var town=parseAddressTown(addr);
-  if(town){
-    var lower=addr.toLowerCase();
-    var idx=lower.indexOf(town);
-    var street=idx>0?addr.substring(0,idx).trim().replace(/,\s*$/,'').trim():addr;
-    if(street)navigator.clipboard.writeText(street).catch(function(){});
-  }
+  if(addr)navigator.clipboard.writeText(addr).catch(function(){});
 }
 
 // SHARED: TABS, CM, SUMMARY
