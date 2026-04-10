@@ -2495,16 +2495,28 @@ function assessorLookupUpdate(){
   var btn=document.getElementById('assessor-btn');
   if(!btn)return;
   if(url){
-    var display=capitalizeWords(town);
     btn.className='assessor-btn found';
-    btn.title='Open '+display+' assessor — also copies "'+display+'" to clipboard';
-  } else if(town){
-    btn.className='assessor-btn not-found';
-    btn.title='Town not found in MA/RI database';
+    btn.textContent='\uD83D\uDD0D '+capitalizeWords(town);
   } else {
     btn.className='assessor-btn not-found';
-    btn.title='Enter address to look up assessor';
+    btn.textContent='\uD83D\uDD0D Assessor';
   }
+}
+
+function parseStreetAddress(addr){
+  // Return just the street portion — everything before the first comma,
+  // or before the town name if no comma
+  if(!addr)return addr;
+  var s=addr.trim();
+  var commaIdx=s.indexOf(',');
+  if(commaIdx>0)return s.substring(0,commaIdx).trim();
+  // No comma — strip town name and state/zip from the end
+  if(_assessorTown){
+    var lower=s.toLowerCase();
+    var idx=lower.indexOf(_assessorTown);
+    if(idx>0)return s.substring(0,idx).trim();
+  }
+  return s;
 }
 
 function capitalizeWords(s){
@@ -2514,11 +2526,10 @@ function capitalizeWords(s){
 function openAssessor(){
   if(!_assessorUrl)return;
   window.open(_assessorUrl,'_blank','noopener');
-  // Also copy the matched town name to clipboard for pasting into assessor search
-  if(_assessorTown){
-    var display=_assessorTown.replace(/\b\w/g,function(c){return c.toUpperCase();});
-    navigator.clipboard.writeText(display).catch(function(){});
-  }
+  // Copy just the street address to clipboard for pasting into assessor search
+  var addr=(document.getElementById('fp-address')||{}).value||'';
+  var street=parseStreetAddress(addr);
+  if(street)navigator.clipboard.writeText(street).catch(function(){});
 }
 
 // SHARED: TABS, CM, SUMMARY
