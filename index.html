@@ -15,6 +15,10 @@ body{background:#0f1117;color:#e8e8e8;font-family:'IBM Plex Mono',monospace;heig
 .job-info-bar input{flex:1;max-width:340px;background:#181c27;border:1px solid #2a2f3f;border-radius:5px;padding:5px 10px;font-size:.76rem;color:#e8e8e8;font-family:'IBM Plex Mono',monospace;}
 .job-info-bar input::placeholder{color:#556080;}
 .job-info-bar input:focus{outline:none;border-color:#4fc3f7;}
+.assessor-btn{font-family:'IBM Plex Mono',monospace;font-size:.6rem;letter-spacing:1px;background:transparent;border:1px solid #2a2f3f;color:#556080;padding:4px 9px;border-radius:4px;cursor:pointer;white-space:nowrap;transition:all .15s;flex-shrink:0;}
+.assessor-btn.found{border-color:#4fc3f7;color:#4fc3f7;}
+.assessor-btn.found:hover{background:#4fc3f710;}
+.assessor-btn.not-found{border-color:#2a2f3f;color:#556080;cursor:default;}
 .product-bar{display:flex;align-items:stretch;background:#080a0f;border-bottom:2px solid #1e2435;flex-shrink:0;padding:0 12px;gap:2px;}
 .prod-btn{font-family:'IBM Plex Mono',monospace;font-size:.58rem;letter-spacing:1.5px;text-transform:uppercase;padding:8px 14px;cursor:pointer;border:none;background:transparent;color:#5a6070;border-bottom:3px solid transparent;margin-bottom:-2px;transition:all .15s;white-space:nowrap;position:relative;}
 .prod-btn:hover{color:#8892a4;}
@@ -256,9 +260,12 @@ body{background:#0f1117;color:#e8e8e8;font-family:'IBM Plex Mono',monospace;heig
 <!-- ── JOB INFO BAR ── -->
 <div class="job-info-bar">
   <label>Customer</label>
-  <input type="text" id="fp-customer" placeholder="Name / address" oninput="renderMain();syncCMFields()">
+  <input type="text" id="fp-customer" placeholder="Name" oninput="renderMain();syncCMFields()" style="max-width:200px;">
+  <label>Address</label>
+  <input type="text" id="fp-address" placeholder="123 Main St, Franklin, MA" oninput="syncCMFields();assessorLookupUpdate()" style="max-width:280px;">
+  <button class="assessor-btn not-found" id="assessor-btn" onclick="openAssessor()" title="Open town assessor portal">&#128269; Assessor</button>
   <label>Phone</label>
-  <input type="text" id="cm-phone" placeholder="(555) 555-5555" style="max-width:160px;" oninput="syncCMFields()">
+  <input type="text" id="cm-phone" placeholder="(555) 555-5555" style="max-width:140px;" oninput="syncCMFields()">
   <button class="collapse-all-btn" id="global-reset-btn" onclick="globalReset()" style="border-color:#f87171;color:#f87171;margin-left:4px;">&#8635; New Customer</button>
 </div>
 
@@ -975,9 +982,15 @@ body{background:#0f1117;color:#e8e8e8;font-family:'IBM Plex Mono',monospace;heig
         </div>
         <div class="cm-row">
           <div class="cm-field-group" style="margin-bottom:0;">
+            <div class="cm-label">Property Address</div>
+            <div class="cm-sublabel">Auto-filled from Job Info bar</div>
+            <input class="cm-input auto-filled" type="text" id="cm-address-display" readonly>
+          </div>
+          <div class="cm-field-group" style="margin-bottom:0;">
             <div class="cm-label">Date</div>
             <input class="cm-input auto-filled" type="text" id="cm-date" readonly>
           </div>
+        </div>
           <div class="cm-field-group" style="margin-bottom:0;">
             <div class="cm-label">Site Access</div>
             <div class="cm-sublabel">How crew accesses the work site</div>
@@ -1743,6 +1756,8 @@ function globalReset(){
   ['cm-phone','cm-access','cm-site','cm-why','cm-expectations','cm-hazards','cm-questions'].forEach(function(id){
     var el=document.getElementById(id);if(el)el.value='';
   });
+  var addrEl=document.getElementById('fp-address');if(addrEl)addrEl.value='';
+  assessorLookupUpdate();
   ['dep-check','dep-card','dep-24mo','dep-other','fin-check','fin-card','fin-24mo','fin-other'].forEach(function(id){
     var el=document.getElementById(id);if(el)el.checked=false;
   });
@@ -2161,6 +2176,311 @@ function resetCLWills(){
 }
 
 // ══════════════════════════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════════════════════════════
+// ASSESSOR LOOKUP
+// ══════════════════════════════════════════════════════════════════════════════
+var ASSESSOR_MAP=(function(){
+  var towns=[
+    // MA — Barnstable
+    {n:'barnstable',u:'https://townofbarnstable.us/Departments/Assessing/Property_Values/Property-Look-Up.asp'},
+    {n:'bourne',u:'http://www.assessedvalues2.com/index.aspx?jurcode=36'},
+    {n:'brewster',u:'http://www.assessedvalues2.com/index.aspx?jurcode=41'},
+    {n:'chatham',u:'https://www.mapsonline.net/chathamma/web_assessor/search.php'},
+    {n:'dennis',u:'http://www.assessedvalues2.com/index.aspx?jurcode=75'},
+    {n:'eastham',u:'https://www.mapsonline.net/easthamma/web_assessor/search.php'},
+    {n:'falmouth',u:'https://falmouth.patriotproperties.com/'},
+    {n:'harwich',u:'http://www.assessedvalues2.com/index.aspx?jurcode=126'},
+    {n:'mashpee',u:'http://www.assessedvalues2.com/index.aspx?jurcode=172'},
+    {n:'orleans',u:'https://www.town.orleans.ma.us/assessing/pages/searchable-data-base'},
+    {n:'provincetown',u:'http://www.provincetown-ma.gov/index.aspx?NID=220'},
+    {n:'sandwich',u:'http://www.assessedvalues2.com/index.aspx?jurcode=261'},
+    {n:'truro',u:'http://www.assessedvalues2.com/index.aspx?jurcode=300'},
+    {n:'wellfleet',u:'http://www.assessedvalues2.com/index.aspx?jurcode=318'},
+    {n:'yarmouth',u:'https://gis.vgsi.com/yarmouthma/'},
+    // MA — Bristol
+    {n:'acushnet',u:'https://acushnet.patriotproperties.com/'},
+    {n:'attleboro',u:'https://attleboro.patriotproperties.com/'},
+    {n:'berkley',u:'https://berkley.patriotproperties.com/'},
+    {n:'dartmouth',u:'https://gis.vgsi.com/dartmouthma/'},
+    {n:'dighton',u:'https://www.axisgis.com/dightonma/'},
+    {n:'easton',u:'https://easton.patriotproperties.com/'},
+    {n:'fairhaven',u:'https://fairhaven.patriotproperties.com/'},
+    {n:'fall river',u:'https://fallriver.patriotproperties.com/'},
+    {n:'freetown',u:'http://assessedvalues2.com/index.aspx?jurcode=102'},
+    {n:'mansfield',u:'https://mansfield.patriotproperties.com/'},
+    {n:'new bedford',u:'https://www.newbedford-ma.gov/assessors/parcel-lookup/'},
+    {n:'north attleboro',u:'https://gis.vgsi.com/northattleboroma/'},
+    {n:'norton',u:'https://nortonma.mapgeo.io/'},
+    {n:'raynham',u:'https://raynhamma.mapgeo.io/'},
+    {n:'rehoboth',u:'https://rehobothma.mapgeo.io/'},
+    {n:'seekonk',u:'http://epas.csc-ma.us/PublicAccess/Pages/SearchParcel.aspx?town=SEEKONK'},
+    {n:'somerset',u:'http://epas.csc-ma.us/Somerset/'},
+    {n:'swansea',u:'https://gis.vgsi.com/swanseaMA/'},
+    {n:'taunton',u:'https://gis.vgsi.com/tauntonma/'},
+    {n:'westport',u:'https://westportma.mapgeo.io/'},
+    // MA — Essex
+    {n:'amesbury',u:'https://gis.vgsi.com/amesburyma/'},
+    {n:'andover',u:'https://andover.patriotproperties.com/'},
+    {n:'beverly',u:'https://beverly.patriotproperties.com/'},
+    {n:'boxford',u:'https://gis.vgsi.com/BoxfordMA/'},
+    {n:'danvers',u:'https://danvers.patriotproperties.com/'},
+    {n:'essex',u:'https://essex.patriotproperties.com/'},
+    {n:'gloucester',u:'https://gis.vgsi.com/GloucesterMA/'},
+    {n:'groveland',u:'https://groveland.patriotproperties.com/'},
+    {n:'hamilton',u:'https://gis.vgsi.com/hamiltonma/'},
+    {n:'haverhill',u:'https://haverhill.patriotproperties.com/'},
+    {n:'ipswich',u:'https://ipswich.patriotproperties.com/'},
+    {n:'lawrence',u:'https://gis.vgsi.com/lawrencema/'},
+    {n:'lynn',u:'https://lynn.patriotproperties.com/'},
+    {n:'lynnfield',u:'https://lynnfield.patriotproperties.com/'},
+    {n:'manchester',u:'https://manchester.patriotproperties.com/'},
+    {n:'manchester-by-the-sea',u:'https://manchester.patriotproperties.com/'},
+    {n:'marblehead',u:'https://marblehead.patriotproperties.com/'},
+    {n:'merrimac',u:'https://merrimac.patriotproperties.com/'},
+    {n:'middleton',u:'https://middleton.patriotproperties.com/'},
+    {n:'nahant',u:'https://www.axisgis.com/nahantma/'},
+    {n:'newbury',u:'https://newbury.patriotproperties.com/'},
+    {n:'newburyport',u:'https://gis.vgsi.com/newburyportma/'},
+    {n:'north andover',u:'http://epas.csc-ma.us/PublicAccess/Pages/SearchParcel.aspx?town=NORTHANDOVER'},
+    {n:'peabody',u:'https://peabodyma.mapgeo.io/'},
+    {n:'rockport',u:'https://www.mapsonline.net/rockportma/'},
+    {n:'rowley',u:'https://gis.vgsi.com/RowleyMA/'},
+    {n:'salem',u:'https://salem.patriotproperties.com/'},
+    {n:'salisbury',u:'https://salisbury.patriotproperties.com/'},
+    {n:'saugus',u:'https://saugus.patriotproperties.com/'},
+    {n:'swampscott',u:'https://swampscott.patriotproperties.com/'},
+    {n:'topsfield',u:'https://topsfield.patriotproperties.com/'},
+    {n:'wenham',u:'https://www.axisgis.com/WenhamMA/'},
+    {n:'west newbury',u:'https://westnewbury.patriotproperties.com/'},
+    // MA — Middlesex
+    {n:'acton',u:'https://acton.patriotproperties.com/'},
+    {n:'arlington',u:'https://arlington.patriotproperties.com/'},
+    {n:'ashland',u:'https://ashlandma.mapgeo.io/'},
+    {n:'ayer',u:'https://ayer.patriotproperties.com/'},
+    {n:'bedford',u:'https://bedford.patriotproperties.com/'},
+    {n:'belmont',u:'https://belmont.patriotproperties.com/'},
+    {n:'billerica',u:'https://billerica.patriotproperties.com/'},
+    {n:'boxborough',u:'https://boxborough.patriotproperties.com/'},
+    {n:'burlington',u:'https://burlington.patriotproperties.com/'},
+    {n:'cambridge',u:'https://cambridge.patriotproperties.com/'},
+    {n:'carlisle',u:'https://carlisle.patriotproperties.com/'},
+    {n:'chelmsford',u:'https://gis.vgsi.com/chelmsfordma/'},
+    {n:'concord',u:'https://gis.vgsi.com/concordma/'},
+    {n:'dracut',u:'https://gis.vgsi.com/dracutma/'},
+    {n:'dunstable',u:'https://dunstable.patriotproperties.com/'},
+    {n:'everett',u:'https://everett.patriotproperties.com/'},
+    {n:'framingham',u:'https://gis.vgsi.com/framinghamma/'},
+    {n:'groton',u:'https://gis.vgsi.com/grotonma/'},
+    {n:'holliston',u:'https://holliston.patriotproperties.com/'},
+    {n:'hopkinton',u:'https://next.axisgis.com/HopkintonMA/'},
+    {n:'hudson',u:'https://gis.vgsi.com/hudsonma/'},
+    {n:'lexington',u:'https://gis.vgsi.com/lexingtonma/'},
+    {n:'lincoln',u:'https://lincoln.patriotproperties.com/'},
+    {n:'littleton',u:'https://littleton.patriotproperties.com/'},
+    {n:'lowell',u:'https://gis.vgsi.com/lowellma/'},
+    {n:'malden',u:'https://malden.patriotproperties.com/'},
+    {n:'marlborough',u:'https://marlborough.patriotproperties.com/'},
+    {n:'maynard',u:'https://maynard.patriotproperties.com/'},
+    {n:'medford',u:'https://gis.vgsi.com/medfordma/'},
+    {n:'medway',u:'https://medway.patriotproperties.com/'},
+    {n:'melrose',u:'https://melrose.patriotproperties.com/'},
+    {n:'natick',u:'https://natick.patriotproperties.com/'},
+    {n:'newton',u:'https://newtonma.mapgeo.io/datasets/properties'},
+    {n:'north reading',u:'https://northreading.patriotproperties.com/'},
+    {n:'pepperell',u:'https://pepperell.patriotproperties.com/'},
+    {n:'reading',u:'https://reading.patriotproperties.com/'},
+    {n:'sherborn',u:'https://sherborn.patriotproperties.com/'},
+    {n:'shirley',u:'https://shirley.patriotproperties.com/'},
+    {n:'somerville',u:'https://gis.vgsi.com/SomervilleMA/'},
+    {n:'stoneham',u:'https://stoneham.patriotproperties.com/'},
+    {n:'stow',u:'https://gis.vgsi.com/stowma/'},
+    {n:'sudbury',u:'https://sudbury.patriotproperties.com/'},
+    {n:'tewksbury',u:'https://gis.vgsi.com/TewksburyMA/'},
+    {n:'townsend',u:'https://townsend.patriotproperties.com/'},
+    {n:'tyngsborough',u:'https://tyngsborough.patriotproperties.com/'},
+    {n:'wakefield',u:'https://wakefield.patriotproperties.com/'},
+    {n:'waltham',u:'https://waltham.patriotproperties.com/'},
+    {n:'watertown',u:'https://gis.vgsi.com/WatertownMA/'},
+    {n:'wayland',u:'https://gis.vgsi.com/WaylandMA/'},
+    {n:'westford',u:'https://westford.patriotproperties.com/'},
+    {n:'weston',u:'https://weston.patriotproperties.com/'},
+    {n:'wilmington',u:'https://gis.vgsi.com/wilmingtonma/'},
+    {n:'winchester',u:'https://winchester.patriotproperties.com/'},
+    {n:'woburn',u:'https://gis.vgsi.com/woburnma/'},
+    // MA — Norfolk
+    {n:'avon',u:'https://gis.vgsi.com/AvonMA/'},
+    {n:'bellingham',u:'https://bellingham.patriotproperties.com/'},
+    {n:'braintree',u:'https://braintree.patriotproperties.com/'},
+    {n:'brookline',u:'https://brookline.patriotproperties.com/'},
+    {n:'canton',u:'https://canton.patriotproperties.com/'},
+    {n:'cohasset',u:'https://cohasset.patriotproperties.com/'},
+    {n:'dedham',u:'https://gis.vgsi.com/dedhamma/'},
+    {n:'dover',u:'https://dover.patriotproperties.com/'},
+    {n:'foxborough',u:'https://foxborough.patriotproperties.com/'},
+    {n:'franklin',u:'https://franklin.patriotproperties.com/'},
+    {n:'holbrook',u:'https://holbrook.patriotproperties.com/'},
+    {n:'medfield',u:'https://medfield.patriotproperties.com/'},
+    {n:'millis',u:'https://millis.patriotproperties.com/'},
+    {n:'milton',u:'https://milton.patriotproperties.com/'},
+    {n:'needham',u:'https://needham.patriotproperties.com/'},
+    {n:'norfolk',u:'https://gis.vgsi.com/norfolkma/'},
+    {n:'norwood',u:'https://gis.vgsi.com/norwoodma/'},
+    {n:'plainville',u:'https://plainville.patriotproperties.com/'},
+    {n:'quincy',u:'https://gis.vgsi.com/quincyma/'},
+    {n:'randolph',u:'https://gis.vgsi.com/RandolphMA/'},
+    {n:'sharon',u:'https://gis.vgsi.com/SharonMA/'},
+    {n:'stoughton',u:'https://stoughton.patriotproperties.com/'},
+    {n:'walpole',u:'https://gis.vgsi.com/walpolema/'},
+    {n:'wellesley',u:'https://wellesley.patriotproperties.com/'},
+    {n:'westwood',u:'https://gis.vgsi.com/westwoodma/'},
+    {n:'weymouth',u:'https://weymouth.patriotproperties.com/'},
+    {n:'wrentham',u:'https://gis.vgsi.com/wrenthamma/'},
+    // MA — Plymouth
+    {n:'abington',u:'https://gis.vgsi.com/abingtonma/'},
+    {n:'bridgewater',u:'https://bridgewater.patriotproperties.com/'},
+    {n:'brockton',u:'https://hosting.tighebond.com/BrocktonMA_Public/'},
+    {n:'carver',u:'https://carver.patriotproperties.com/'},
+    {n:'duxbury',u:'https://www.axisgis.com/duxburyma/'},
+    {n:'east bridgewater',u:'https://eastbridgewater.patriotproperties.com/'},
+    {n:'halifax',u:'https://halifax.patriotproperties.com/'},
+    {n:'hanover',u:'https://gis.vgsi.com/hanoverma/'},
+    {n:'hanson',u:'https://hanson.patriotproperties.com/'},
+    {n:'hingham',u:'https://gis.vgsi.com/hinghamma/'},
+    {n:'hull',u:'https://hull.patriotproperties.com/'},
+    {n:'kingston',u:'https://kingston.patriotproperties.com/'},
+    {n:'lakeville',u:'https://lakeville.patriotproperties.com/'},
+    {n:'marion',u:'https://marion.patriotproperties.com/'},
+    {n:'marshfield',u:'https://marshfield.patriotproperties.com/'},
+    {n:'mattapoisett',u:'https://gis.vgsi.com/mattapoisettma/'},
+    {n:'middleborough',u:'https://gis.vgsi.com/MiddleboroughMA/'},
+    {n:'norwell',u:'https://gis.vgsi.com/NorwellMA/'},
+    {n:'pembroke',u:'https://pembroke.patriotproperties.com/'},
+    {n:'plymouth',u:'https://plymouth.patriotproperties.com/'},
+    {n:'rochester',u:'https://rochester.patriotproperties.com/'},
+    {n:'rockland',u:'https://rockland.patriotproperties.com/'},
+    {n:'scituate',u:'https://scituate.patriotproperties.com/'},
+    {n:'wareham',u:'https://gis.vgsi.com/warehamma/'},
+    {n:'west bridgewater',u:'https://westbridgewater.patriotproperties.com/'},
+    {n:'whitman',u:'https://whitman.patriotproperties.com/'},
+    // MA — Suffolk
+    {n:'boston',u:'https://www.cityofboston.gov/assessing/search/'},
+    {n:'chelsea',u:'https://gis.vgsi.com/chelseama/'},
+    {n:'revere',u:'https://revere.patriotproperties.com/'},
+    {n:'winthrop',u:'https://gis.vgsi.com/winthropma/'},
+    // MA — Worcester (key towns)
+    {n:'auburn',u:'https://gis.vgsi.com/AuburnMA/'},
+    {n:'fitchburg',u:'https://fitchburg.patriotproperties.com/'},
+    {n:'gardner',u:'https://gis.vgsi.com/gardnerma/'},
+    {n:'grafton',u:'https://gis.vgsi.com/graftonma/'},
+    {n:'holden',u:'https://gis.vgsi.com/holdenma/'},
+    {n:'leominster',u:'https://leominster.patriotproperties.com/'},
+    {n:'milford',u:'https://milford.patriotproperties.com/'},
+    {n:'millbury',u:'https://gis.vgsi.com/millburyma/'},
+    {n:'northborough',u:'https://northborough.patriotproperties.com/'},
+    {n:'shrewsbury',u:'https://gis.vgsi.com/ShrewsburyMA/'},
+    {n:'southborough',u:'https://southborough.patriotproperties.com/'},
+    {n:'spencer',u:'https://spencer.patriotproperties.com/'},
+    {n:'sterling',u:'https://sterling.patriotproperties.com/'},
+    {n:'sturbridge',u:'https://gis.vgsi.com/sturbridgema/'},
+    {n:'sutton',u:'https://gis.vgsi.com/suttonMA/'},
+    {n:'upton',u:'https://upton.patriotproperties.com/'},
+    {n:'uxbridge',u:'https://uxbridge.patriotproperties.com/'},
+    {n:'westborough',u:'https://westborough.patriotproperties.com/'},
+    {n:'worcester',u:'https://gis.vgsi.com/worcesterma/'},
+    // RI — Providence
+    {n:'burrillville',u:'https://data.nereval.com/SearchInfo.aspx?town=Burrillville'},
+    {n:'central falls',u:'https://data.nereval.com/SearchInfo.aspx?town=Central+Falls'},
+    {n:'cranston',u:'http://gis.vgsi.com/CranstonRI/'},
+    {n:'cumberland',u:'http://gis.vgsi.com/cumberlandri/'},
+    {n:'east providence',u:'https://data.nereval.com/Search.aspx?town=East+Providence'},
+    {n:'foster',u:'http://gis.vgsi.com/fosterri/'},
+    {n:'glocester',u:'https://data.nereval.com/SearchInfo.aspx?town=Glocester'},
+    {n:'johnston',u:'http://gis.vgsi.com/johnstonri/'},
+    {n:'north providence',u:'https://data.nereval.com/SearchInfo.aspx?town=North+Providence'},
+    {n:'north smithfield',u:'https://data.nereval.com/SearchInfo.aspx?town=North+Smithfield'},
+    {n:'pawtucket',u:'http://gis.vgsi.com/PawtucketRI/'},
+    {n:'providence',u:'https://data.nereval.com/SearchInfo.aspx?town=Providence'},
+    {n:'smithfield',u:'http://gis.vgsi.com/smithfieldri/'},
+    {n:'woonsocket',u:'https://gis.vgsi.com/woonsocketri/'},
+    // RI — Kent
+    {n:'coventry',u:'https://data.nereval.com/SearchInfo.aspx?town=Coventry'},
+    {n:'east greenwich',u:'https://data.nereval.com/SearchInfo.aspx?town=East+Greenwich'},
+    {n:'warwick',u:'http://gis.vgsi.com/warwickri/'},
+    {n:'west greenwich',u:'https://data.nereval.com/SearchInfo.aspx?town=West+Greenwich'},
+    {n:'west warwick',u:'https://data.nereval.com/SearchInfo.aspx?town=West+Warwick'},
+    // RI — Washington
+    {n:'charlestown',u:'http://gis.vgsi.com/CharlestownRI/'},
+    {n:'exeter',u:'http://gis.vgsi.com/exeterri/Search.aspx'},
+    {n:'narragansett',u:'https://data.nereval.com/SearchInfo.aspx?town=Narragansett'},
+    {n:'north kingstown',u:'http://gis.vgsi.com/northkingstownri/'},
+    {n:'richmond',u:'http://gis.vgsi.com/richmondri/'},
+    {n:'south kingstown',u:'http://gis.vgsi.com/SouthKingstownRI2/'},
+    {n:'westerly',u:'http://gis.vgsi.com/WesterlyRI/'},
+    // RI — Newport
+    {n:'jamestown',u:'http://data.nereval.com/SearchInfo.aspx?town=Jamestown'},
+    {n:'little compton',u:'http://gis.vgsi.com/LittleComptonRI/'},
+    {n:'middletown',u:'http://gis.vgsi.com/MiddletownRI/'},
+    {n:'newport',u:'https://data.nereval.com/SearchInfo.aspx?town=Newport'},
+    {n:'portsmouth',u:'http://gis.vgsi.com/portsmouthri/'},
+    {n:'tiverton',u:'https://data.nereval.com/SearchInfo.aspx?town=Tiverton'},
+    // RI — Bristol
+    {n:'barrington',u:'https://data.nereval.com/SearchInfo.aspx?town=Barrington'},
+    {n:'bristol',u:'https://data.nereval.com/SearchInfo.aspx?town=Bristol'},
+    {n:'warren',u:'https://data.nereval.com/SearchInfo.aspx?town=Warren'},
+  ];
+  var map={};
+  towns.forEach(function(t){map[t.n]=t.u;});
+  return map;
+})();
+
+function parseAddressTown(addr){
+  if(!addr)return null;
+  // Try to extract town from formats like:
+  // "123 Main St, Franklin, MA 02038"
+  // "123 Main St, Franklin MA"
+  // "Franklin" (just a town name)
+  var s=addr.trim();
+  // Remove zip code
+  s=s.replace(/\b\d{5}(-\d{4})?\b/g,'').trim();
+  // Remove trailing state abbreviations (MA, RI, CT, NH, etc.)
+  s=s.replace(/,?\s*\b[A-Z]{2}\b\s*$/,'').trim();
+  // Remove trailing comma
+  s=s.replace(/,\s*$/,'').trim();
+  // Get last segment after comma
+  var parts=s.split(',');
+  var town=parts[parts.length-1].trim().toLowerCase();
+  return town||null;
+}
+
+var _assessorUrl=null;
+
+function assessorLookupUpdate(){
+  var addr=(document.getElementById('fp-address')||{}).value||'';
+  var town=parseAddressTown(addr);
+  var url=town?ASSESSOR_MAP[town]:null;
+  _assessorUrl=url||null;
+  var btn=document.getElementById('assessor-btn');
+  if(!btn)return;
+  if(url){
+    btn.className='assessor-btn found';
+    btn.title='Open '+capitalizeWords(town)+' assessor portal';
+  } else if(town){
+    btn.className='assessor-btn not-found';
+    btn.title='Town not found in MA/RI database';
+  } else {
+    btn.className='assessor-btn not-found';
+    btn.title='Enter address to look up assessor';
+  }
+}
+
+function capitalizeWords(s){
+  return s.replace(/\b\w/g,function(c){return c.toUpperCase();});
+}
+
+function openAssessor(){
+  if(_assessorUrl)window.open(_assessorUrl,'_blank','noopener');
+}
+
 // SHARED: TABS, CM, SUMMARY
 // ══════════════════════════════════════════════════════════════════════════════
 function switchTab(t){
@@ -2177,6 +2497,10 @@ function syncCMFields(){
   var phoneEl=document.getElementById('cm-phone');
   var phoneDisplay=document.getElementById('cm-phone-display');
   if(phoneDisplay&&phoneEl)phoneDisplay.value=phoneEl.value||'';
+  // Sync address from job-info bar to CM display
+  var addrEl=document.getElementById('fp-address');
+  var addrDisplay=document.getElementById('cm-address-display');
+  if(addrDisplay&&addrEl)addrDisplay.value=addrEl.value||'';
   var dateEl=document.getElementById('cm-date');
   if(dateEl&&!dateEl._set){var now=new Date();dateEl.value=(now.getMonth()+1)+'/'+now.getDate()+'/'+now.getFullYear();dateEl._set=true;}
   if(!cmOverviewDirty){
@@ -2308,6 +2632,7 @@ clRenderZones();clRenderPolyWalls();clCalc();
 updateOutputBlocks();
 updateProdTabs();
 syncCMFields();
+assessorLookupUpdate();
 </script>
 </body>
 </html>
