@@ -44,7 +44,7 @@ body{background:#0d1b2a;color:#cde4f5;font-family:'IBM Plex Mono',monospace;heig
 .nav-toggle-icon{font-size:.7rem;flex-shrink:0;transition:transform .22s;line-height:1;}
 .nav-fp .nav-toggle-icon{color:#4fc3f7;}
 .nav-fp.collapsed .nav-toggle-icon{transform:rotate(180deg);}
-.nav-toggle-label{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:3px;white-space:nowrap;overflow:hidden;}
+.nav-toggle-label{font-family:'Bebas Neue',sans-serif;font-size:1.4rem;font-weight:700;letter-spacing:2px;white-space:nowrap;overflow:hidden;}
 .nav-fp.collapsed .nav-toggle-label{display:none;}
 
 /* product sub-tabs inside panels */
@@ -64,8 +64,10 @@ body{background:#0d1b2a;color:#cde4f5;font-family:'IBM Plex Mono',monospace;heig
 .fp-customer label{font-family:'IBM Plex Mono',monospace;font-size:.55rem;letter-spacing:1.5px;text-transform:uppercase;color:#e8eaf0;display:block;margin-bottom:4px;}
 .fp-customer input{width:100%;background:#142233;border:1px solid #1e3a55;border-radius:5px;padding:5px 8px;font-size:.76rem;color:#cde4f5;font-family:'IBM Plex Mono',monospace;}
 .fp-customer input::placeholder{color:#8899aa;}.fp-customer input:focus{outline:none;border-color:#4fc3f7;}
-.sec-label{font-family:'IBM Plex Mono',monospace;font-size:.56rem;letter-spacing:2px;text-transform:uppercase;color:#ffffff;padding:10px 14px 4px;display:flex;align-items:center;justify-content:space-between;}
+.sec-label{font-family:'IBM Plex Mono',monospace;font-size:.56rem;letter-spacing:2px;text-transform:uppercase;color:#4fc3f7;padding:10px 14px 4px;display:flex;align-items:center;justify-content:space-between;}
 .sec-label.cs{color:#34d399;}
+.sec-label.fr{color:#f97316;}
+.sec-label.cl{color:#a78bfa;}
 .wall-settings{display:flex;gap:8px;flex-wrap:wrap;padding:6px 14px 8px;}
 .wall-settings label{font-family:'IBM Plex Mono',monospace;font-size:.6rem;color:#e8eaf0;display:flex;align-items:center;gap:4px;}
 .wall-settings input{width:42px;background:#142233;border:1px solid #1e3a55;border-radius:4px;padding:3px 4px;font-size:.68rem;color:#cde4f5;font-family:'IBM Plex Mono',monospace;}
@@ -166,7 +168,7 @@ body{background:#0d1b2a;color:#cde4f5;font-family:'IBM Plex Mono',monospace;heig
 /* ── MAIN AREA ── */
 .main{flex:1;display:flex;flex-direction:column;min-width:0;overflow:hidden;}
 .main-header{display:flex;align-items:center;gap:10px;padding:10px 20px 0;}
-.main-header h1{font-family:'Bebas Neue',sans-serif;font-size:1.4rem;letter-spacing:2px;color:#4fc3f7;}
+.main-header h1{font-family:'Bebas Neue',sans-serif;font-size:1.4rem;letter-spacing:2px;color:#4fc3f7;margin:0;line-height:1;}
 .main-sub{font-family:'IBM Plex Mono',monospace;font-size:.62rem;letter-spacing:1px;color:#e8eaf0;}
 .collapse-all-btn{font-family:'IBM Plex Mono',monospace;font-size:.55rem;letter-spacing:1.5px;text-transform:uppercase;background:transparent;border:1px solid #1e3a55;color:#e8eaf0;padding:5px 11px;border-radius:4px;cursor:pointer;transition:all .15s;white-space:nowrap;margin-left:auto;}
 .collapse-all-btn:hover{border-color:#4fc3f7;color:#4fc3f7;}
@@ -681,7 +683,7 @@ body{background:#0d1b2a;color:#cde4f5;font-family:'IBM Plex Mono',monospace;heig
     <!-- ── CL placeholder ── -->
     <div class="prod-panel" id="fp-cl">
       <!-- Shape Mode Toggle -->
-      <div class="sec-label" style="color:#a78bfa;">Area Calculator</div>
+      <div class="sec-label cl">Area Calculator</div>
       <div style="padding:4px 14px 8px;display:flex;gap:6px;">
         <button class="pump-opt active" id="cl-mode-rect" onclick="clSetMode('rect')" style="border-radius:4px;padding:4px 10px;">Rectangle</button>
         <button class="pump-opt" id="cl-mode-poly" onclick="clSetMode('poly')" style="border-radius:4px;padding:4px 10px;">Polygon</button>
@@ -726,7 +728,7 @@ body{background:#0d1b2a;color:#cde4f5;font-family:'IBM Plex Mono',monospace;heig
       </div>
 
       <!-- Zone Table -->
-      <div class="sec-label" style="color:#a78bfa;margin-top:4px;">PolyRenewal Zones</div>
+      <div class="sec-label cl" style="margin-top:4px;">PolyRenewal Zones</div>
       <div style="padding:0 14px 4px;">
         <table class="wtbl" style="width:100%;">
           <thead><tr>
@@ -747,7 +749,7 @@ body{background:#0d1b2a;color:#cde4f5;font-family:'IBM Plex Mono',monospace;heig
       </div>
 
       <!-- Supplemental Services -->
-      <div class="sec-label" style="color:#a78bfa;">Supplemental Services</div>
+      <div class="sec-label cl">Supplemental Services</div>
       <div class="fp-item" onclick="clToggle('rr',event)">
         <input type="checkbox" id="cl-rr" onchange="clCalc();clWillsUpdate()">
         <span class="fp-item-label">Concrete Remove &amp; Replace</span>
@@ -783,13 +785,13 @@ body{background:#0d1b2a;color:#cde4f5;font-family:'IBM Plex Mono',monospace;heig
       </div>
 
       <!-- Legal Section -->
-      <div class="sec-label" style="color:#a78bfa;border-top:2px solid #1e3a55;margin-top:4px;padding-top:12px;">Site</div>
+      <div class="sec-label cl" style="border-top:2px solid #1e3a55;margin-top:4px;padding-top:12px;">Site</div>
       <div class="fp-item" onclick="toggleWill('cl-digsafe',event)">
         <input type="checkbox" id="cl-digsafe" onchange="clWillsUpdate()">
         <span class="fp-item-label">DigSafe Flags</span>
         <span class="w-badge" style="background:#a78bfa18;color:#a78bfa;border-color:#a78bfa44;">W</span>
       </div>
-      <div class="sec-label" style="color:#a78bfa;">Required Items</div>
+      <div class="sec-label cl">Required Items</div>
       <div class="fp-item misc-item" onclick="toggleWill('cl-utilities',event)">
         <input type="checkbox" id="cl-utilities" onchange="clWillsUpdate()">
         <span class="fp-item-label misc-red" id="cllbl-utilities">Utilities Protection</span>
@@ -816,7 +818,6 @@ body{background:#0d1b2a;color:#cde4f5;font-family:'IBM Plex Mono',monospace;heig
 <main class="main">
   <div class="main-header">
     <h1>Wills Builder</h1>
-    <span class="main-sub">Contract Generator</span>
     <span class="main-sub" id="main-cust"></span>
     <button class="collapse-all-btn all-open" id="collapse-all-btn" onclick="collapseAllPanels()">&#9664; Focus Output</button>
   </div>
@@ -1344,9 +1345,9 @@ function renderMain(){
   BW_MISC.forEach(function(m){var lbl=document.getElementById(m.lblId);if(lbl)lbl.className=getW(m.id)?'wills-label':'wills-label misc-red';});
   if(!items.length){matEl.innerHTML='<div class="fp-empty">Add walls and select materials in the left panel.</div>';forgetEl.style.display='none';btn.style.display='none';return;}
   btn.style.display='block';
+  var mspYrBW=(document.getElementById('wp-msp')||{value:'5'}).value;
   matEl.innerHTML=items.map(function(it){return'<div class="fp-plan-row" data-copyable="true"><span>'+escHtml(it.name)+'</span><span class="fp-plan-qty">'+escHtml(it.qty)+'</span></div>';}).join('');
   forgetEl.style.display='block';
-  var mspYrBW=(document.getElementById('wp-msp')||{value:'5'}).value;
   forgetRowsEl.innerHTML=BW_MISC.map(function(m){var checked=getW(m.id);var col=checked?'#cde4f5':'#f87171';return'<div class="fp-plan-row"><span style="color:'+col+';">'+(checked?'v':'!')+'  '+escHtml(m.label)+'</span><span class="fp-plan-qty" style="color:'+col+';">'+(checked?'confirmed':'check off')+'</span></div>';}).join('')
     +'<div class="fp-plan-row"><span style="color:#cde4f5;">v  MSP: '+mspYrBW+' Year</span><span class="fp-plan-qty" style="color:#cde4f5;">confirmed</span></div>';
 }
@@ -2595,6 +2596,8 @@ function renderSummary(){
     if(items.length)html+=items.map(function(it){return'<div class="fp-plan-row"><span>'+escHtml(it.name)+'</span><span class="fp-plan-qty">'+escHtml(it.qty)+'</span></div>';}).join('');
     html+='<div style="margin-top:8px;"><div class="summary-section-title" style="color:#f87171;">Don\'t Forget</div>';
     BW_MISC.forEach(function(m){var checked=getW(m.id);var col=checked?'#cde4f5':'#f87171';html+='<div class="fp-plan-row"><span style="color:'+col+';">'+(checked?'v':'!')+'  '+escHtml(m.label)+'</span><span class="fp-plan-qty" style="color:'+col+';">'+(checked?'confirmed':'pending')+'</span></div>';});
+    var mspBW=(document.getElementById('wp-msp')||{value:'5'}).value;
+    html+='<div class="fp-plan-row"><span style="color:#cde4f5;">v  MSP: '+mspBW+' Year</span><span class="fp-plan-qty" style="color:#cde4f5;">confirmed</span></div>';
     html+='</div>';
     var contEl=document.getElementById('contractor-output');
     if(contEl&&contEl.innerText.indexOf('Select items')===-1)html+='<div style="margin-top:8px;"><div class="summary-section-title" style="color:#f97316;">BW Contractor Wills</div><div class="will-content" style="font-size:.7rem;">'+contEl.innerHTML+'</div></div>';
@@ -2609,6 +2612,8 @@ function renderSummary(){
     if(csItems.length)html+=csItems.map(function(it){return'<div class="fp-plan-row"><span>'+escHtml(it.name)+'</span><span class="fp-plan-qty cs">'+escHtml(it.qty)+'</span></div>';}).join('');
     html+='<div style="margin-top:8px;"><div class="summary-section-title" style="color:#f87171;">Don\'t Forget</div>';
     CS_MISC.forEach(function(m){var checked=getW(m.id);var col=checked?'#cde4f5':'#f87171';html+='<div class="fp-plan-row"><span style="color:'+col+';">'+(checked?'v':'!')+'  '+escHtml(m.label)+'</span><span class="fp-plan-qty cs" style="color:'+col+';">'+(checked?'confirmed':'pending')+'</span></div>';});
+    var mspCS=(document.getElementById('cw-msp')||{value:'5'}).value;
+    html+='<div class="fp-plan-row"><span style="color:#cde4f5;">v  MSP: '+mspCS+' Year</span><span class="fp-plan-qty cs" style="color:#cde4f5;">confirmed</span></div>';
     html+='</div>';
     var csCont=document.getElementById('cs-contractor-output');
     if(csCont&&csCont.innerText.indexOf('Select items')===-1)html+='<div style="margin-top:8px;"><div class="summary-section-title" style="color:#f97316;">CS Contractor Wills</div><div class="will-content" style="font-size:.7rem;">'+csCont.innerHTML+'</div></div>';
@@ -2624,6 +2629,8 @@ function renderSummary(){
     if(clItems.length)html+=clItems.map(function(it){return'<div class="fp-plan-row"><span>'+escHtml(it.name)+'</span><span class="fp-plan-qty" style="color:#a78bfa;">'+escHtml(it.qty)+'</span></div>';}).join('');
     html+='<div style="margin-top:8px;"><div class="summary-section-title" style="color:#f87171;">Don\'t Forget</div>';
     CL_MISC.forEach(function(m){var checked=getW(m.id);var col=checked?'#cde4f5':'#f87171';html+='<div class="fp-plan-row"><span style="color:'+col+';">'+(checked?'v':'!')+'  '+escHtml(m.label)+'</span><span class="fp-plan-qty" style="color:'+col+';">'+(checked?'confirmed':'pending')+'</span></div>';});
+    var mspCL=(document.getElementById('cl-msp')||{value:'5'}).value;
+    html+='<div class="fp-plan-row"><span style="color:#cde4f5;">v  MSP: '+mspCL+' Year</span><span class="fp-plan-qty" style="color:#cde4f5;">confirmed</span></div>';
     html+='</div>';
     var clCont=document.getElementById('cl-contractor-output');
     if(clCont&&clCont.innerText.indexOf('Select items')===-1)html+='<div style="margin-top:8px;"><div class="summary-section-title" style="color:#f97316;">CL Contractor Wills</div><div class="will-content" style="font-size:.7rem;">'+clCont.innerHTML+'</div></div>';
