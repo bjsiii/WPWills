@@ -2484,17 +2484,20 @@ function parseAddressTown(addr){
 }
 
 var _assessorUrl=null;
+var _assessorTown=null;
 
 function assessorLookupUpdate(){
   var addr=(document.getElementById('fp-address')||{}).value||'';
   var town=parseAddressTown(addr);
   var url=town?ASSESSOR_MAP[town]:null;
   _assessorUrl=url||null;
+  _assessorTown=url?town:null;
   var btn=document.getElementById('assessor-btn');
   if(!btn)return;
   if(url){
+    var display=capitalizeWords(town);
     btn.className='assessor-btn found';
-    btn.title='Open '+capitalizeWords(town)+' assessor portal';
+    btn.title='Open '+display+' assessor — also copies "'+display+'" to clipboard';
   } else if(town){
     btn.className='assessor-btn not-found';
     btn.title='Town not found in MA/RI database';
@@ -2509,7 +2512,13 @@ function capitalizeWords(s){
 }
 
 function openAssessor(){
-  if(_assessorUrl)window.open(_assessorUrl,'_blank','noopener');
+  if(!_assessorUrl)return;
+  window.open(_assessorUrl,'_blank','noopener');
+  // Also copy the matched town name to clipboard for pasting into assessor search
+  if(_assessorTown){
+    var display=_assessorTown.replace(/\b\w/g,function(c){return c.toUpperCase();});
+    navigator.clipboard.writeText(display).catch(function(){});
+  }
 }
 
 // SHARED: TABS, CM, SUMMARY
