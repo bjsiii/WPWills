@@ -2435,21 +2435,53 @@ var ASSESSOR_MAP=(function(){
 
 function parseAddressTown(addr){
   if(!addr)return null;
-  // Try to extract town from formats like:
-  // "123 Main St, Franklin, MA 02038"
-  // "123 Main St, Franklin MA"
-  // "Franklin" (just a town name)
   var s=addr.trim();
   // Remove zip code
   s=s.replace(/\b\d{5}(-\d{4})?\b/g,'').trim();
-  // Remove trailing state abbreviations (MA, RI, CT, NH, etc.)
-  s=s.replace(/,?\s*\b[A-Z]{2}\b\s*$/,'').trim();
-  // Remove trailing comma
+  // Remove trailing state abbreviation (case-insensitive)
+  s=s.replace(/,?\s*\b[a-zA-Z]{2}\b\s*$/,'').trim();
+  // Remove trailing comma/whitespace
   s=s.replace(/,\s*$/,'').trim();
-  // Get last segment after comma
-  var parts=s.split(',');
-  var town=parts[parts.length-1].trim().toLowerCase();
-  return town||null;
+
+  // Strategy 1: if commas present, last segment is the town
+  if(s.indexOf(',')!==-1){
+    var parts=s.split(',');
+    var candidate=parts[parts.length-1].trim().toLowerCase();
+    if(candidate&&ASSESSOR_MAP[candidate])return candidate;
+    // Also try second-to-last (handles "street, town, state" after state stripped)
+    if(parts.length>=2){
+      var c2=parts[parts.length-2].trim().toLowerCase();
+      if(c2&&ASSESSOR_MAP[c2])return c2;
+    }
+    return candidate; // return best guess even if not in map
+  }
+
+  // Strategy 2: no commas — scan for longest matching town name in the string
+  var lower=s.toLowerCase();
+  var bestMatch=null;var bestLen=0;
+  var keys=Object.keys(ASSESSOR_MAP);
+  for(var i=0;i<keys.length;i++){
+    var k=keys[i];
+    var idx=lower.indexOf(k);
+    if(idx!==-1&&k.length>bestLen){
+      // Make sure it's a word boundary match
+      var before=idx>0?lower[idx-1]:'';
+      var after=idx+k.length<lower.length?lower[idx+k.length]:'';
+      var startOk=before===''||before===' '||before===',';
+      var endOk=after===''||after===' '||after===',';
+      if(startOk&&endOk){bestMatch=k;bestLen=k.length;}
+    }
+  }
+  if(bestMatch)return bestMatch;
+
+  // Strategy 3: last word(s) — try progressively longer suffixes
+  var words=s.toLowerCase().split(/\s+/).filter(Boolean);
+  for(var w=words.length;w>=1;w--){
+    var attempt=words.slice(words.length-w).join(' ');
+    if(ASSESSOR_MAP[attempt])return attempt;
+  }
+
+  return null;
 }
 
 var _assessorUrl=null;
