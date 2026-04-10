@@ -2504,19 +2504,15 @@ function assessorLookupUpdate(){
 }
 
 function parseStreetAddress(addr){
-  // Return just the street portion — everything before the first comma,
-  // or before the town name if no comma
-  if(!addr)return addr;
-  var s=addr.trim();
-  var commaIdx=s.indexOf(',');
-  if(commaIdx>0)return s.substring(0,commaIdx).trim();
-  // No comma — strip town name and state/zip from the end
-  if(_assessorTown){
-    var lower=s.toLowerCase();
-    var idx=lower.indexOf(_assessorTown);
-    if(idx>0)return s.substring(0,idx).trim();
-  }
-  return s;
+  if(!addr||!_assessorTown)return addr;
+  // Find town name in address (case-insensitive) and return everything before it
+  var lower=addr.toLowerCase();
+  var idx=lower.indexOf(_assessorTown);
+  if(idx>0)return addr.substring(0,idx).trim().replace(/,\s*$/,'').trim();
+  // Fallback: everything before first comma
+  var commaIdx=addr.indexOf(',');
+  if(commaIdx>0)return addr.substring(0,commaIdx).trim();
+  return addr;
 }
 
 function capitalizeWords(s){
