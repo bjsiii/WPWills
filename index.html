@@ -2438,45 +2438,44 @@ function parseAddressTown(addr){
   var s=addr.trim();
   // Remove zip code
   s=s.replace(/\b\d{5}(-\d{4})?\b/g,'').trim();
-  // Remove trailing state abbreviation (case-insensitive)
+  // Remove trailing state abbreviation (case-insensitive), with or without preceding comma
   s=s.replace(/,?\s*\b[a-zA-Z]{2}\b\s*$/,'').trim();
-  // Remove trailing comma/whitespace
+  // Remove any trailing comma
   s=s.replace(/,\s*$/,'').trim();
 
-  // Strategy 1: if commas present, last segment is the town
-  if(s.indexOf(',')!==-1){
-    var parts=s.split(',');
-    var candidate=parts[parts.length-1].trim().toLowerCase();
-    if(candidate&&ASSESSOR_MAP[candidate])return candidate;
-    // Also try second-to-last (handles "street, town, state" after state stripped)
-    if(parts.length>=2){
-      var c2=parts[parts.length-2].trim().toLowerCase();
-      if(c2&&ASSESSOR_MAP[c2])return c2;
+  var lower=s.toLowerCase();
+
+  // Strategy 1: comma-delimited — check each segment from right to left
+  if(lower.indexOf(',')!==-1){
+    var parts=lower.split(',');
+    for(var p=parts.length-1;p>=0;p--){
+      var seg=parts[p].trim();
+      if(seg&&ASSESSOR_MAP[seg])return seg;
     }
-    return candidate; // return best guess even if not in map
+    // Return last segment as best guess even if not in map
+    return parts[parts.length-1].trim()||null;
   }
 
-  // Strategy 2: no commas — scan for longest matching town name in the string
-  var lower=s.toLowerCase();
-  var bestMatch=null;var bestLen=0;
+  // Strategy 2: scan all known town names — longest match wins
   var keys=Object.keys(ASSESSOR_MAP);
+  var bestMatch=null;var bestLen=0;
   for(var i=0;i<keys.length;i++){
     var k=keys[i];
+    if(k.length<=bestLen)continue;
     var idx=lower.indexOf(k);
-    if(idx!==-1&&k.length>bestLen){
-      // Make sure it's a word boundary match
-      var before=idx>0?lower[idx-1]:'';
-      var after=idx+k.length<lower.length?lower[idx+k.length]:'';
-      var startOk=before===''||before===' '||before===',';
-      var endOk=after===''||after===' '||after===',';
-      if(startOk&&endOk){bestMatch=k;bestLen=k.length;}
+    if(idx===-1)continue;
+    // Check it's surrounded by word boundaries (space, comma, start, end)
+    var charBefore=idx>0?lower[idx-1]:' ';
+    var charAfter=idx+k.length<lower.length?lower[idx+k.length]:' ';
+    if((charBefore===' '||charBefore===',')&&(charAfter===' '||charAfter===',')){
+      bestMatch=k;bestLen=k.length;
     }
   }
   if(bestMatch)return bestMatch;
 
-  // Strategy 3: last word(s) — try progressively longer suffixes
-  var words=s.toLowerCase().split(/\s+/).filter(Boolean);
-  for(var w=words.length;w>=1;w--){
+  // Strategy 3: try last N words as town name (handles no-comma, no-boundary-match cases)
+  var words=lower.split(/\s+/).filter(Boolean);
+  for(var w=Math.min(words.length,4);w>=1;w--){
     var attempt=words.slice(words.length-w).join(' ');
     if(ASSESSOR_MAP[attempt])return attempt;
   }
